@@ -4,10 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1>GAME O' CARDS</h1>
     <p id="p1">Player 1: 500 health</p>
     <p id="p2">Player 2: 500 health</p>
+    <h4 id="whichturn">YOUR TURN</h4>
+    <h3>Your Cards</h3>
+    <button type="button" id="draw">Draw Card</button>
+    <table id="cards">
+        <tr class="cardrow">
+            <td id="c1" class="card"></td>
+            <td id="c2" class="card"></td>
+            <td id="c3" class="card"></td>
+            <td id="c4" class="card"></td>
+            <td id="c5" class="card"></td>
+        </tr>
+        <tr class="cardrow">
+            <td id="c6" class="card"></td>
+            <td id="c7" class="card"></td>
+            <td id="c8" class="card"></td>
+            <td id="c9" class="card"></td>
+            <td id="c10" class="card"></td>
+        </tr>
+    </table>
+    <h3>Opp Cards</h3>
+    <table id="oppcards">
+        <tr class="cardrow">
+            <td id="o1" class="card"></td>
+            <td id="o2" class="card"></td>
+            <td id="o3" class="card"></td>
+            <td id="o4" class="card"></td>
+            <td id="o5" class="card"></td>
+        </tr>
+        <tr class="cardrow">
+            <td id="o6" class="card"></td>
+            <td id="o7" class="card"></td>
+            <td id="o8" class="card"></td>
+            <td id="o9" class="card"></td>
+            <td id="o10" class="card"></td>
+        </tr>
+    </table>
+    <p id="text"></p>
+    <button type="button" id="turn">End Turn</button>
     <script src="script.js"></script>
 </body>
 </html>
