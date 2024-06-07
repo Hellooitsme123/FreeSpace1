@@ -3,18 +3,21 @@ function byId(id) {
 }
 var p1txt = byId("p1");
 var p2txt = byId("p2");
+var gametitle = byId("gametitle");
 var turnbtn = byId("turn");
 var whichturn = byId("whichturn");
 var drawbtn = byId("draw");
+var turns = 0;
+var deathmode = "";
 var Game = {
     turn: 1,
     p1: {
-        health: 500,
+        health: 300,
         mana: 10,
         inventory: {},
     },
     p2: {
-        health: 500,
+        health: 300,
         mana: 10,
         inventory: {},
     },
@@ -24,7 +27,7 @@ var cards = {
     spearman: {
         name: "spearman",
         formal: "Spearman",
-        atk: 40,
+        atk: 45,
         hp: 30,
         ammo: 1,
         maxammo: 1,
@@ -37,7 +40,7 @@ var cards = {
     wizard: {
         name: "wizard",
         formal: "Wizard",
-        atk: 30,
+        atk: 35,
         hp: 20,
         ammo: 2,
         maxammo: 2,
@@ -50,7 +53,7 @@ var cards = {
     turret: {
         name: "turret",
         formal: "Turret",
-        atk: 15,
+        atk: 20,
         hp: 50,
         ammo: 3,
         maxammo: 3,
@@ -63,7 +66,7 @@ var cards = {
     sniper: {
         name: "sniper",
         formal: "Sniper",
-        atk: 100,
+        atk: 120,
         hp: 50,
         ammo: 1,
         maxammo: 1,
@@ -97,9 +100,9 @@ var cards = {
         desc: "HEALORBACIOUS",
         type: "Healing",
     },
-    lifebean: {
-        name: "lifebean",
-        formal: "Life Bean",
+    healbubble: {
+        name: "healbubble",
+        formal: "Heal Bubble",
         hp: 30,
         heal: 15,
         uses: -1,
@@ -108,14 +111,97 @@ var cards = {
         cool: 2,
         coolleft: 0,
         manause: 1,
-        desc: "LIFE BEANIC",
+        desc: "HEAL BUBBLONIUM",
         type: "Healing",
+    },
+    juggernaut: {
+        name: "juggernaut",
+        formal: "Juggernaut",
+        atk: 65,
+        hp: 100,
+        ammo: 1,
+        maxammo: 1,
+        manause: 4,
+        cool: 4,
+        coolleft: 2,
+        desc: "JUGGERNAUTIOUS",
+        type: "Attack",
+    },
+    flamethrower: {
+        name: "flamethrower",
+        formal: "Flamethrower",
+        atk: 13,
+        hp: 40,
+        ammo: 8,
+        maxammo: 1,
+        manause: 0.5,
+        cool: 3,
+        coolleft: 2,
+        desc: "FLAMETHROWERY",
+        type: "Attack",
+    },
+    charger: {
+        name: "charger",
+        formal: "Charger",
+        atk: 20,
+        hp: 30,
+        ammo: 1,
+        maxammo: 1,
+        manause: 3,
+        cool: 2,
+        coolleft: 0,
+        desc: "CHARGERINEKIT",
+        type: "Attack",
+    },
+    solarprism: {
+        name: "solarprism",
+        formal: "Solar Prism",
+        atk: 20,
+        hp: 40,
+        ammo: 1,
+        maxammo: 1,
+        manause: 0,
+        cool: 2,
+        coolleft: 0,
+        desc: "SOLAR PRISMISM",
+        type: "Attack",
+    },
+    weakener: {
+        name: "weakener",
+        formal: "Weakener",
+        atk: 20,
+        hp: 20,
+        ammo: 1,
+        maxammo: 1,
+        manause: 2,
+        cool: 1,
+        coolleft: 1,
+        desc: "WEAKENERIUM",
+        type: "Attack",
+    },
+    supplycrate: {
+        name: "supplycrate",
+        formal: "Supply Crate",
+        hp: 30,
+        manause: 2,
+        coolleft: 0,
+        desc: "SUPPLY CRATORIANITE",
+        type: "Support",
+    },
+    atkpotion: {
+        name: "atkpotion",
+        formal: "Attack Potion",
+        hp: 15,
+        manause: 2,
+        coolleft: 0,
+        desc: "ATTACK POTIONORIONIO",
+        type: "Support",
     },
 }
 var p1 = Game.p1;
 var p2 = Game.p2;
 var template = {
-    health: 500,
+    health: 300,
     mana: 10,
 }
 function randKey(obj) {
@@ -154,12 +240,21 @@ Array.from(document.getElementsByClassName("card")).forEach(function(element) {
     element.innerHTML = "loading...";
 });
 function update() {
+    gametitle.innerHTML = "GAME O' CARDS "+deathmode;
     p1txt.innerHTML = "Player 1: "+p1.health+" Health | "+p1.mana+" Mana";
     p2txt.innerHTML = "Player 2: "+p2.health+" Health | "+p2.mana+" Mana";
     if (turn == 1) {
         whichturn.innerHTML = "YOUR TURN";
     } else {
         whichturn.innerHTML = "OPP TURN";
+    }
+    if (p1.health <= 0) {
+        gametitle.innerHTML = "YOU LOSE!!!!";
+        throw new Error('GAME ENDED');
+    }
+    if (p2.health <= 0) {
+        gametitle.innerHTML = "YOU WIN!!!!";
+        throw new Error('GAME ENDED');
     }
     Array.from(document.getElementsByClassName("card")).forEach(function(element) {
         let card = element;
@@ -184,6 +279,9 @@ function update() {
                 } else {
                     card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.heal+" HEAL | "+curcard.uses+" USES | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
                 }
+            }
+            if (curcard.type == "Support") {
+                card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
             }
             
         } else {
@@ -244,13 +342,54 @@ function firstOpp(player) {
         return "Opp";
     }
 }
-function playerTurn() {
-    for (let i = 0; i < Object.keys(p2.inventory).length; i++) {
-        let zecard = p2.inventory[Object.keys(p2.inventory)[i]];
-        if (zecard.coolleft != 0) {
-            zecard.coolleft -= 1;
+function turnover(player) {
+    // argument 'player' means the player that just ended their turn
+    turns++;
+    let curdeath;
+    if (turns % 10 == 0) {
+        if (deathmode != "") {
+            curdeath = deathmode.replace("[DEATH MODE ","");
+            curdeath = Number(curdeath.replace("]",""));
+        } else {
+            curdeath = 0;
+        }
+        deathmode = "[DEATH MODE "+(curdeath+1)+"]";
+        p1.health -= 100;
+        p2.health -= 100;
+        p1.mana += 15;
+        p2.mana += 15;
+        if (p1.health > p2.health) {
+            p2.mana += 10;
+            p1.health -= 50;
+        } else {
+            p1.mana += 10;
+            p2.health -= 50;
         }
     }
+    let plr;
+    if (player == "p1") {
+        plr = p1;
+    } else {
+        plr = p2;
+    }
+    for (let i = 0; i < Object.keys(plr.inventory).length; i++) {
+        let zecard = plr.inventory[Object.keys(plr.inventory)[i]];
+        if (zecard.coolleft != 0) {
+            zecard.coolleft -= 1;
+            
+        }
+        if (zecard.type == "Attack") {
+            if (zecard.ammo < zecard.maxammo) {
+                zecard.ammo += 1;
+            }
+        }
+        if (zecard.name == "charger" && zecard.atk < 80) {
+            zecard.atk += 25;
+        }
+    }
+}
+function playerTurn() {
+    turnover("p2");
     p2.mana += 5;
     turn = 1;
     update();
@@ -275,20 +414,18 @@ function oppAttack() {
     useCard(null,true,index);
 }
 function oppDraw() {
-    drawCard("p2");
-    p2.mana -= 2;
-    if (randNum(0,1) == 1) {
-        oppAttack();
-    }   
+    if (Object.keys(p2.inventory).length < 10) {
+        drawCard("p2");
+        p2.mana -= 2.5;
+        if (randNum(0,1) == 1) {
+            oppAttack();
+        }   
+    }
+    
 }
 function oppTurn() {
     // states: spend, save, neutral
-    for (let i = 0; i < Object.keys(p1.inventory).length; i++) {
-        let zecard = p1.inventory[Object.keys(p1.inventory)[i]];
-        if (zecard.coolleft != 0) {
-            zecard.coolleft -= 1;
-        }
-    }
+    turnover("p1");
     p1.mana += 5;
     turn = 2;
     let tries = 0;
@@ -371,18 +508,30 @@ function useCard(element = null,opp = null,index = null) {
                 } else {
                     let zeattacked = opponent.inventory[attacked];
                     opponent.inventory[attacked].hp -= card.atk;
+                    if (card.name == "solarprism") {
+                        opponent.health -= card.atk;
+                    }
+                    if (card.name == "charger") {
+                        card.atk = 20;
+                    }
+                    if (card.name == "weakener") {
+                        zeattacked.atk -= 10;
+                        if (zeattacked.atk < 5) {
+                            zeattacked.atk = 5;
+                        }
+                    }
                     if (opponent.inventory[attacked].hp <= 0) {
                         if (card.name == "soulkeeper") {
                             user.mana += 0.5;
                             user.mana = Number(user.mana.toFixed(1));
-                            if (card.hp < 100) {
-                                card.hp += 7;
+                            if (card.hp < 90) {
+                                card.hp += 8;
                             }
-                            if (user.health < 600) {
+                            if (user.health < 250) {
                                 user.health += 3;
                             }
-                            if (card.atk < 85) {
-                                card.atk += 3;
+                            if (card.atk < 70) {
+                                card.atk += 4;
                             }
                             
                         }
@@ -401,19 +550,18 @@ function useCard(element = null,opp = null,index = null) {
                 for (let i = 0; i < Object.keys(user.inventory).length; i++) {
                     let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
                     if (tempchosen.type == "Attack") {
-                        chosen = tempchosen.name;
+                        chosen = tempchosen;
                         break;
                     }
                 }
-                console.log(chosen);
-                if (chosen == null || user.inventory[chosen].type != "Attack") {
+                if (chosen == null || chosen.type != "Attack") {
                     chosen = "Opp";
                 }
                 let zechosen;
                 if (chosen != "Opp") {
-                    zechosen = user.inventory[chosen];
+                    zechosen = chosen;
                 } else {
-                    zechosen == "Opp";
+                    zechosen = "Opp";
                 }
                 console.log(chosen,zechosen);
                 if (zechosen == "Opp") {
@@ -434,6 +582,39 @@ function useCard(element = null,opp = null,index = null) {
                     }
                 }
             }
+            if (card.type == "Support") {
+                if (card.name == "supplycrate") {
+                    let chosen;
+                    for (let i = 0; i < Object.keys(user.inventory).length; i++) {
+                        let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
+                        if (tempchosen.type == "Attack") {
+                            chosen = tempchosen;
+                            break;
+                        }
+                    }
+                    if (chosen == null || chosen.type != "Attack") {
+                        return false;
+                    }
+                    chosen.ammo += Math.round((100-chosen.atk)/15);
+                    delete user.inventory[Object.keys(user.inventory)[index]];
+                }
+                if (card.name == "atkpotion") {
+                    let chosen;
+                    for (let i = 0; i < Object.keys(user.inventory).length; i++) {
+                        let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
+                        if (tempchosen.type == "Attack") {
+                            chosen = tempchosen;
+                            break;
+                        }
+                    }
+                    if (chosen == null || chosen.type != "Attack") {
+                        return false;
+                    }
+                    chosen.atk *= 1.5;
+                    delete user.inventory[Object.keys(user.inventory)[index]];
+                }
+                user.mana -= card.manause;
+            }
         }
     }
     update();
@@ -452,8 +633,8 @@ turnbtn.addEventListener('click',function(){
     
 });
 drawbtn.addEventListener('click',function(){
-    if (p1.mana >= 2 && turn == 1 && Object.keys(p1.inventory).length < 10) {
-        p1.mana -= 2;
+    if (p1.mana >= 2.5 && turn == 1 && Object.keys(p1.inventory).length < 10) {
+        p1.mana -= 2.5;
         drawCard("p1");
         update();
     }
