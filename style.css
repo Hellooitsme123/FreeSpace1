@@ -4,10 +4,11 @@ table {
 td {
     border: 1px solid black;
     border-radius: 10px;
-    height: 140px;
+    height: 160px;
     width: 140px;
     text-align: center;
     font-size: 12px;
+    
 }
 .desc {
     font-size: 12px;
@@ -15,4 +16,11 @@ td {
 .title {
     font-size:16px;
     font-weight:bolder;
+}
+/*#c1 {
+    background-image:url("img/cards/solarprism.png");
+    background-size: 140px 160px;
+}*/
+hr {
+    border: 1px solid black;
 }
