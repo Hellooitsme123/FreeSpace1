@@ -266,7 +266,7 @@ var cards = {
         cool: 2,
         desc: "ENERGY CAPSULIBANULI",
         type: "Support",
-        img: "",
+        img: "energycapsule.png",
     },
     dysonsphere: {
         name: "dysonsphere",
@@ -293,7 +293,7 @@ var cards = {
         coolleft: 1,
         desc: "ETHEREAL GUARDIANOSOS",
         type: "Attack",
-        img: "",
+        img: "etherealguardian.png",
     },
     jester: {
         name: "jester",
@@ -306,6 +306,48 @@ var cards = {
         cool: 1,
         coolleft: 1,
         desc: "JESTERIPIDES",
+        type: "Attack",
+        img: "",
+    },
+    circuitnode: {
+        name: "circuitnode",
+        formal: "Circuit Node",
+        atk: 20,
+        hp: 30,
+        ammo: 1,
+        maxammo: 1,
+        manause: 2,
+        cool: 2,
+        coolleft: 0,
+        desc: "CIRCUIT NODISHIAN",
+        type: "Attack",
+        img: "",
+    },
+    reaper: {
+        name: "reaper",
+        formal: "Reaper [IN DEVELOPMENT]",
+        atk: 70,
+        hp: 40,
+        ammo: 1,
+        maxammo: 1,
+        manause: 2,
+        cool: 1,
+        coolleft: 1,
+        desc: "REAPERITIATE",
+        type: "Attack",
+        img: "",
+    },
+    froster: {
+        name: "froster",
+        formal: "Froster [IN DEVELOPMENT]",
+        atk: 70,
+        hp: 40,
+        ammo: 1,
+        maxammo: 1,
+        manause: 2,
+        cool: 1,
+        coolleft: 1,
+        desc: "FROSTERILICAL",
         type: "Attack",
         img: "",
     },
@@ -330,7 +372,7 @@ function assign(object, source) {
         object[key] = source[key];
     });
 }
-function drawCard(player,specific = false,choice = null) {
+function drawCard(player,specific = false,choice = null,otherargs = null) {
     let chosenkey = randKey(cards);
     if (specific == true) {
         chosenkey = cards[choice];
@@ -354,6 +396,12 @@ function drawCard(player,specific = false,choice = null) {
     } else {
         Game[player].inventory[key.name] = key;
     }
+    if (otherargs == null) {
+        let sound = new Audio('sounds/draw-card.mp3');
+        sound.volume = 0.4;
+        sound.play();
+    }
+    
     if (key.name == "etherealguardian") {
         let chosen;
         for (let i = 0; i < Object.keys(Game[player].inventory).length; i++) {
@@ -480,6 +528,12 @@ function update() {
             
         }
         if (curcard != null && curcard != undefined) {
+            if (curcard.hp <= 0 && id.includes("c")) {
+                delete p1.inventory[Object.keys(Game.p1.inventory)[index]];
+            }
+            if (curcard.hp <= 0 && id.includes("o")) {
+                delete p2.inventory[Object.keys(Game.p2.inventory)[index]];
+            }
             card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | ";
             if (Object.hasOwn(curcard,"atk")) {
                 card.innerHTML += curcard.atk+" ATK | ";
@@ -552,10 +606,10 @@ function update() {
 }
 function start() {
     for (let i = 0; i < 3; i++) {
-        drawCard("p1");
+        drawCard("p1",false,null,"Start");
     }
     for (let j = 0; j < 3; j++) {
-        drawCard("p2");
+        drawCard("p2",false,null,"Start");
     }
     update();
 }
@@ -835,7 +889,13 @@ function useCard(element = null,opp = null,index = null) {
                     let zeattacked = opponent.inventory[attacked];
                     if (card.effects.some(str => str.includes("Confused")) == true) {
                         zeattacked.hp += card.atk*2;
+                    } else {
+                        let sound = new Audio('sounds/sword.mp3');
+                        sound.volume = 0.4;
+                        sound.play();
                     }
+                    
+                    
                     opponent.inventory[attacked].hp -= card.atk;
                     if (card.name == "solarprism") {
                         opponent.health -= card.atk;
@@ -888,6 +948,17 @@ function useCard(element = null,opp = null,index = null) {
                         if (zeattacked.effects.some(str => str.includes(substr)) == false) {
                             zeattacked.effects.push("Confused{1,2}");
                         }
+                    }
+                    if (card.name == "circuitnode") {
+                        let add = 0;
+                        let chosen;
+                        for (let i = 0; i < Object.keys(user.inventory).length; i++) {
+                            let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
+                            if (tempchosen.name == "circuitnode") {
+                                add += 30;
+                            }
+                        }
+                        zeattacked.hp -= add;
                     }
                     if (opponent.inventory[attacked].hp <= 0) {
                         if (card.name == "soulkeeper") {
