@@ -8,8 +8,14 @@
 </head>
 <body>
     <h1 id="gametitle">GAME O' CARDS</h1>
+    <div class="open-modal-btn-wrapper">
+        <button class="open-modal-btn">
+            Changelog
+        </button>
+    </div>
     <p id="p1">Player 1: 500 health</p>
     <p id="p2">Player 2: 500 health</p>
+    
     <h4 id="whichturn">YOUR TURN</h4>
     <p id="curmode">Current Mode: Normal</p>
     <button type="button" id="mode">Change Mode</button>
@@ -50,6 +56,35 @@
     </table>
     <p id="text"></p>
     <button type="button" id="turn">End Turn</button>
+    
+ 
+    <div class="modal-overlay hide">
+        <div class="modal-wrapper">
+            <div class="close-btn-wrapper">
+                <button class="close-modal-btn">
+                    Close
+                </button>
+            </div>
+            <h1>Update v0.1.2b</h1>
+            <div class="modal-content" id="modal-content">
+                <h3>Added 7 new cards:</h3>
+                <ul>
+                    <li>Reaper, which applies 'Death' effect. This effect kills affected card after 3 turns.</li>
+                    <li>Froster, which applies 'Frozen' effect. Affected card cannot play and will slowly lose healh and attack.</li>
+                    <li>Ninja, which has a camouflage effect when attacking. This makes cards unable to see it.</li>
+                    <li>Transportation Bus, which swaps the first and last card.</li>
+                    <li>Clone Box, which clones the first card.</li>
+                    <li>Oblivion, which appears if the clone box is the first card. Very useful.</li>
+                    <li>Drawback, which deletes all of your cards but heals you and gives you mana based on their total health. (Mana = Total/13, Health = Total/3.5)</li>
+                </ul><br>
+                <h3>Balance Changes:</h3>
+                <ul>
+                    <li>Circuit Node (now Cultist) starts with higher atk, making it more useful if there are no duplicates nearby.</li>
+                </ul>
+                <h3>Cards as of current: </h3>
+            </div>
+        </div>
+    </div>
     <audio id="sfx1">
         <source src="sounds/draw-card.mp3" type="audio/mpeg">
     </audio>

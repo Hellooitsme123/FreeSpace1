@@ -131,7 +131,7 @@ var cards = {
         hp: 100,
         ammo: 1,
         maxammo: 1,
-        manause: 3,
+        manause: 2,
         cool: 4,
         coolleft: 2,
         desc: "JUGGERNAUTIOUS",
@@ -309,28 +309,28 @@ var cards = {
         type: "Attack",
         img: "",
     },
-    circuitnode: {
-        name: "circuitnode",
-        formal: "Circuit Node",
-        atk: 20,
+    cultist: {
+        name: "cultist",
+        formal: "Cultist",
+        atk: 45,
         hp: 30,
         ammo: 1,
         maxammo: 1,
         manause: 2,
         cool: 2,
         coolleft: 0,
-        desc: "CIRCUIT NODISHIAN",
+        desc: "CULTISHTIDIAN",
         type: "Attack",
         img: "",
     },
     reaper: {
         name: "reaper",
-        formal: "Reaper [IN DEVELOPMENT]",
-        atk: 70,
+        formal: "Reaper",
+        atk: 50,
         hp: 40,
         ammo: 1,
         maxammo: 1,
-        manause: 2,
+        manause: 3,
         cool: 1,
         coolleft: 1,
         desc: "REAPERITIATE",
@@ -339,7 +339,7 @@ var cards = {
     },
     froster: {
         name: "froster",
-        formal: "Froster [IN DEVELOPMENT]",
+        formal: "Froster",
         atk: 70,
         hp: 40,
         ammo: 1,
@@ -349,7 +349,75 @@ var cards = {
         coolleft: 1,
         desc: "FROSTERILICAL",
         type: "Attack",
-        img: "",
+        img: "froster.png",
+    },
+    ninja: {
+        name: "ninja",
+        formal: "Ninja",
+        atk: 30,
+        hp: 40,
+        ammo: 4,
+        maxammo: 4,
+        manause: 1,
+        cool: 1,
+        coolleft: 1,
+        desc: "NINJAMITY",
+        type: "Attack",
+        img: "ninja.png",
+    },
+    oblivion: {
+        name: "oblivion",
+        formal: "The Oblivion",
+        atk: 200,
+        hp: 70,
+        ammo: 1,
+        maxammo: 1,
+        manause: 3,
+        cool: 3,
+        coolleft: 3,
+        desc: "OBLIVIONATED",
+        type: "Attack",
+        obtainable: false,
+        img: "oblivion.png",
+    },
+    bus: {
+        name: "bus",
+        formal: "Transporation Bus",
+        hp: 50,
+        manause: 3,
+        ammo: 1,
+        maxammo: 1,
+        coolleft: 0,
+        cool: 3,
+        desc: '"WE RIDE THE BUS, WE RIDE THE BUS, WE RIDE THE BUS!"',
+        type: "Support",
+        img: "bus.png",
+    },
+    clonebox: {
+        name: "clonebox",
+        formal: "Clone Box",
+        hp: 40,
+        manause: 2,
+        ammo: 1,
+        maxammo: 1,
+        coolleft: 0,
+        cool: 2,
+        desc: "CLONE BOXIHEMENTLY",
+        type: "Support",
+        img: "clonebox.png",
+    },
+    drawback: {
+        name: "drawback",
+        formal: "Drawback",
+        hp: 10,
+        manause: 2,
+        ammo: 1,
+        maxammo: 1,
+        coolleft: 0,
+        cool: 100,
+        desc: "DRAWBACKIMIJIMI",
+        type: "Support",
+        img: "drawback.png",
     },
 }
 var p1 = Game.p1;
@@ -358,6 +426,36 @@ var template = {
     health: 300,
     mana: 10,
 }
+var openBtn = document.querySelector(".open-modal-btn");
+var modal = document.querySelector(".modal-overlay");
+var closeBtn = document.querySelector(".close-modal-btn");
+var modalContent = byId("modal-content");
+modal.classList.add("hide");
+for (let i = 0; i < Object.keys(cards).length;i++) {
+    let para = document.createElement("p");
+    para.innerHTML = cards[Object.keys(cards)[i]].formal+":<br><span class='desc'>"+cards[Object.keys(cards)[i]].desc+"</span><br>";
+    modalContent.appendChild(para);
+    let img = document.createElement("img");
+    img.src = "img/cards/"+cards[Object.keys(cards)[i]].img;
+    console.log(img.src);
+    img.width = "140";
+    img.height = "160";
+    modalContent.appendChild(img);
+}
+function openModal() {
+    modal.classList.remove("hide");
+}
+ 
+function closeModal(e, clickedOutside) {
+    if (clickedOutside) {
+        if (e.target.classList.contains("modal-overlay"))
+            modal.classList.add("hide");
+    } else modal.classList.add("hide");
+}
+ 
+openBtn.addEventListener("click", openModal);
+modal.addEventListener("click", (e) => closeModal(e, true));
+closeBtn.addEventListener("click", closeModal);
 function randKey(obj) {
     var keys = Object.keys(obj);
     return obj[keys[ keys.length * Math.random() << 0]];
@@ -368,11 +466,21 @@ function randNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function assign(object, source) {
-    Object.keys(source).forEach(function(key) {
-        object[key] = source[key];
-    });
+    console.log(object);
+    if (typeof source == "object" && source) {
+        Object.keys(source).forEach(function(key) {
+            console.log(key,object[key],source[key]);
+            object[key] = source[key];
+        });
+    } else {
+        return false;
+    }
+    
 }
 function drawCard(player,specific = false,choice = null,otherargs = null) {
+    if (Object.keys(Game[player].inventory).length >= 10) {
+        return "Too many cards!";
+    }
     let chosenkey = randKey(cards);
     if (specific == true) {
         chosenkey = cards[choice];
@@ -530,9 +638,13 @@ function update() {
         if (curcard != null && curcard != undefined) {
             if (curcard.hp <= 0 && id.includes("c")) {
                 delete p1.inventory[Object.keys(Game.p1.inventory)[index]];
+                update();
+                return false;
             }
             if (curcard.hp <= 0 && id.includes("o")) {
                 delete p2.inventory[Object.keys(Game.p2.inventory)[index]];
+                update();
+                return false; 
             }
             card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | ";
             if (Object.hasOwn(curcard,"atk")) {
@@ -579,6 +691,9 @@ function update() {
             if (curcard.img != "") {
                 card.style.backgroundImage = "url('img/cards/"+curcard.img+"')";
                 card.style.backgroundSize = "140px 160px";
+                if (curcard.name == "oblivion" && curcard.manause == 0.5 && curcard.cool == 1) {
+                    card.style.backgroundImage = "url('img/cards/enragedoblivion.png')";
+                }
             } else {
                 card.style.backgroundImage = null;
             }
@@ -651,7 +766,17 @@ for (let i = 0; i < 3; i++) {
 function firstOpp(player) {
     let plr = Game[player];
     if (Object.keys(plr.inventory).length > 0) {
-        return Object.keys(plr.inventory)[0];
+        let chosen;
+        for (let i = 0; i < Object.keys(plr.inventory).length; i++) {
+            if (plr.inventory[Object.keys(plr.inventory)[i]].effects.some(str => str.includes("Camouflaged")) == false) {
+                chosen = Object.keys(plr.inventory)[i];
+                break;
+            }
+        }
+        if (chosen == null) {
+            return "Opp";
+        }
+        return chosen;
     } else {
         return "Opp";
     }
@@ -707,14 +832,24 @@ function turnover(player) {
         if (currentmode == "Cataclysm" && player == "p1") {
             zecard.hp -= 20;
         }
-        for (let i = 0; i < zecard.effects.length;i++) {
-            let effect = zecard.effects[i];
+        for (let j = 0; j < zecard.effects.length;j++) {
+            let effect = zecard.effects[j];
             let args = formateffect("Attributes",effect);
-            
+            args[0] = Number(args[0]);
+            args[1] = Number(args[1]);
             let flatfx = formateffect("FlatEffect",effect);
             // [0] == scale; [1] == timeleft
             if (flatfx == "Burning") {
-                zecard.hp -= Number(args[0])*5;
+                zecard.hp -= Number(args[0])*8;
+            }
+            if (flatfx == "Frozen") {
+                zecard.hp -= Number(args[0])*15;
+                if (Object.hasOwn(zecard,"atk")) {
+                    zecard.atk -= 10;
+                    if (zecard.atk < 5) {
+                        zecard.atk = 5;
+                    }
+                }
             }
             if (flatfx == "Fear") {
                 zecard.coolleft += 1;
@@ -728,9 +863,15 @@ function turnover(player) {
             if (args[1] > 1) {
                 args[1] -= 1;
             }
-            zecard.effects[i] = flatfx+"{"+args.toString()+"}";
+            zecard.effects[j] = flatfx+"{"+args.toString()+"}";
             if (args[1] == 1) {
-                zecard.effects.splice(i,1);
+                if (flatfx == "Death") {
+                    delete plr.inventory[Object.keys(plr.inventory)[i]];
+                    continue;
+                }
+                zecard.effects.splice(j,1);
+                
+                
             }
         }
         if (zecard.type == "Attack") {
@@ -742,6 +883,10 @@ function turnover(player) {
             zecard.atk += 25;
         }
     }
+}
+function unborder(id) {
+    document.getElementById(id).style.border = "1px solid black";
+    document.getElementById(id).style.backgroundColor = null;
 }
 function playerTurn() {
     turnover("p2");
@@ -772,7 +917,18 @@ function oppAttack() {
         for (let z = 0; z < Object.keys(p2.inventory).length; z++) {
             if (chosencard == p2.inventory[Object.keys(p2.inventory)[z]]) {
                 index = z;
-                done = true;
+                if (chosencard.name == "Drawback") {
+                    let chance = randNum(1,4);
+                    if (chance == 4) {
+                        done = true;
+                    }
+                    if (Object.keys(p2.inventory).length < 3) {
+                        done = false;
+                    }
+                } else {
+                    done = true;
+                }
+                
             }
         }
        
@@ -860,6 +1016,12 @@ function useCard(element = null,opp = null,index = null) {
     if (element != null) {
         id = element.getAttribute("id");
         index = Number(id.replace("c",""))-1;
+    } else {
+        if (index != null) {
+            element = document.getElementById("o"+(index+1));
+            id = element.getAttribute("id");
+        }
+        
     }
     if (opp == true) {
         opponent = p1;
@@ -876,10 +1038,14 @@ function useCard(element = null,opp = null,index = null) {
         return false;
     } else {
         let card = user.inventory[Object.keys(user.inventory)[index]];
-        if (card.effects.some(str => str.includes("Stunned"))) {
+        if (card.effects.some(str => str.includes("Stunned")) || card.effects.some(str => str.includes("Frozen"))) {
             return false;
         }
         if (card.coolleft == 0 && user.mana >= card.manause) {
+            if (element != null) {
+                element.style.border = "3px solid maroon";
+                window.setTimeout(unborder,500,id);
+            }
             if (card.type == "Attack") {
                 user.mana -= card.manause;
                 let attacked = firstOpp(stropp);
@@ -893,6 +1059,8 @@ function useCard(element = null,opp = null,index = null) {
                         let sound = new Audio('sounds/sword.mp3');
                         sound.volume = 0.4;
                         sound.play();
+                        
+                        
                     }
                     
                     
@@ -905,8 +1073,8 @@ function useCard(element = null,opp = null,index = null) {
                     }
                     if (card.name == "weakener") {
                         let chosen;
-                        for (let i = 0; i < Object.keys(user.inventory).length; i++) {
-                            let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
+                        for (let i = 0; i < Object.keys(opponent.inventory).length; i++) {
+                            let tempchosen = opponent.inventory[Object.keys(opponent.inventory)[i]];
                             if (tempchosen.type == "Attack") {
                                 chosen = tempchosen;
                                 break;
@@ -915,12 +1083,27 @@ function useCard(element = null,opp = null,index = null) {
                         if (chosen == null || chosen.type != "Attack") {
                             opponent.health -= 30;
                         } else {
-                            chosen.atk -= 10;
+                            chosen.atk -= 15;
                             if (chosen.atk < 5) {
                                 chosen.atk = 5;
                             }
                         }
                         
+                    }
+                    if (card.name == "oblivion" && index != null && index == 0) {
+                        opponent.inventory[attacked].hp += card.atk;
+                        user.mana += card.manause;
+                        card.ammo += 1;
+                    }
+                    if (card.name == "oblivion" && index != 0 && zeattacked.hp - card.atk <= 0) {
+                        card.cool -= 1;
+                        card.manause -= 0.5
+                        if (card.cool < 1) {
+                            card.cool = 1;
+                        }
+                        if (card.manause < 0.5) {
+                            card.manause = 0.5;
+                        }
                     }
                     if (card.name == "flamethrower") {
                         let substr = "Burning";
@@ -937,24 +1120,99 @@ function useCard(element = null,opp = null,index = null) {
                         }
                         
                     }
+                    if (card.name == "ninja") {
+                        if (card.effects.some(str => str.includes("Camouflaged")) == false) {
+                            card.effects.push("Camouflaged{1,1}");
+                        }
+                    }
                     if (card.name == "juggernaut" || card.name == "sniper") {
                         let substr = "Stunned";
                         if (zeattacked.effects.some(str => str.includes(substr)) == false) {
                             zeattacked.effects.push("Stunned{1,1}");
                         }
                     }
-                    if (card.name == "jester") {
-                        let substr = "Confused";
-                        if (zeattacked.effects.some(str => str.includes(substr)) == false) {
-                            zeattacked.effects.push("Confused{1,2}");
+                    if (card.name == "reaper") {
+                        let substr = "Death";
+                        let mosthp = 0;
+                        let chosen;
+                        let tries = 0;
+                        // rare error found here, reason stil unknown
+                        do {
+                            mosthp = 0;
+                            chosen = null;
+                            for (let i = 0; i < Object.keys(opponent.inventory).length; i++) {
+                                let tempchosen = opponent.inventory[Object.keys(opponent.inventory)[i]];
+                                if (tempchosen.hp > mosthp && tempchosen.effects.some(str => str.includes(substr)) == false) {
+                                    chosen = tempchosen;
+                                    mosthp = chosen.hp;
+                                    console.log("YOO");
+                                }
+                                console.log(chosen,tempchosen,mosthp,i);
+                            }
+                            tries++;
+                            console.log(chosen,mosthp);
+                        } while (tries < 50 && chosen.effects.some(str => str.includes(substr)) == true)
+                        if (chosen == null) {
+                           
+                        } else {
+                            if (chosen.effects.some(str => str.includes(substr)) == false) {
+                                chosen.effects.push("Death{1,4}");
+                            }
                         }
                     }
-                    if (card.name == "circuitnode") {
+                    if (card.name == "froster") {
+                        let substr = "Frozen";
+                        let mostatk = 0;
+                        let chosen;
+                        let tries = 0;
+                        do {
+                            mostatk = 0;
+                            chosen = null;
+                            for (let i = 0; i < Object.keys(opponent.inventory).length; i++) {
+                                let tempchosen = opponent.inventory[Object.keys(opponent.inventory)[i]];
+                                if (Object.hasOwn(tempchosen,"atk")) {
+                                    if (tempchosen.atk > mostatk && tempchosen.coolleft < 2 && tempchosen.effects.some(str => str.includes(substr)) == false) {
+                                        chosen = tempchosen;
+                                        mostatk = chosen.atk;
+                                    }
+                                }
+                                
+                            }
+                            tries++;
+                        } while (tries < 50 && chosen.effects.some(str => str.includes(substr)) == true)
+                        if (chosen == null) {
+                           
+                        } else {
+                            if (chosen.effects.some(str => str.includes(substr)) == false) {
+                                chosen.effects.push("Frozen{1,3}");
+                            }
+                        }
+                    }
+                    if (card.name == "jester") {
+                        let substr = "Confused";
+                        let chosen;
+                        for (let i = 0; i < Object.keys(opponent.inventory).length; i++) {
+                            let tempchosen = opponent.inventory[Object.keys(opponent.inventory)[i]];
+                            if (tempchosen.type == "Attack" && tempchosen.effects.some(str => str.includes(substr)) == false) {
+                                chosen = tempchosen;
+                                break;
+                            }
+                        }
+                        if (chosen == null || chosen.type != "Attack") {
+                           
+                        } else {
+                            if (chosen.effects.some(str => str.includes(substr)) == false) {
+                                chosen.effects.push("Confused{1,2}");
+                            }
+                        }
+                        
+                    }
+                    if (card.name == "cultist") {
                         let add = 0;
                         let chosen;
                         for (let i = 0; i < Object.keys(user.inventory).length; i++) {
                             let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
-                            if (tempchosen.name == "circuitnode") {
+                            if (tempchosen.name == "cultist") {
                                 add += 30;
                             }
                         }
@@ -994,6 +1252,9 @@ function useCard(element = null,opp = null,index = null) {
             }
             if (card.type == "Healing") {
                 user.mana -= card.manause;
+                let sound = new Audio('sounds/heal.mp3');
+                sound.volume = 0.4;
+                sound.play();
                 let chosen;
                 for (let i = 0; i < Object.keys(user.inventory).length; i++) {
                     let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
@@ -1017,6 +1278,7 @@ function useCard(element = null,opp = null,index = null) {
                 } else {
                     zechosen.hp += card.heal;
                 }
+                
                 if (card.uses == -1) {
                     card.tempuses -= 1;
                     if (card.tempuses <= 0) {
@@ -1031,6 +1293,9 @@ function useCard(element = null,opp = null,index = null) {
                 }
             }
             if (card.type == "Support") {
+                let sound = new Audio('sounds/item.mp3');
+                sound.volume = 0.4;
+                sound.play();
                 if (card.name == "supplycrate") {
                     let chosen;
                     for (let i = 0; i < Object.keys(user.inventory).length; i++) {
@@ -1108,12 +1373,54 @@ function useCard(element = null,opp = null,index = null) {
                         chosen = opponent.inventory[chosen];
                         if (chosen.effects.some(str => str.includes(substr)) == false) {
                             chosen.effects.push("Fear{1,1}");
+                            chosen.coolleft += 1;
                         }
                     }
                     if (card.ammo <= 0) {
                         card.coolleft = card.cool;
                         card.ammo = card.maxammo;
                     }
+                }
+                if (card.name == "clonebox") {
+                    if (index != null && index == 0) {
+                        drawCard(strmain,true,"oblivion")
+                    } else {
+                        drawCard(strmain,true,Object.keys(user.inventory)[0]);
+                    }
+                    
+                    card.ammo -= 1;
+                    if (card.ammo <= 0) {
+                        card.coolleft = card.cool;
+                        card.ammo = card.maxammo;
+                    }
+                }
+                if (card.name == "bus") {
+                    let card1 = user.inventory[Object.keys(user.inventory)[0]];
+                    let card2 = user.inventory[Object.keys(user.inventory)[Object.keys(user.inventory).length-1]];
+                    user.inventory[Object.keys(user.inventory)[0]] = card2;
+                    user.inventory[Object.keys(user.inventory)[Object.keys(user.inventory).length-1]] = card1;
+                    
+                    card.ammo -= 1;
+                    if (card.ammo <= 0) {
+                        card.coolleft = card.cool;
+                        card.ammo = card.maxammo;
+                    }
+                }
+                if (card.name == "drawback") {
+                    let tempmana = 0;
+                    let temphp = 0;
+                    for (let i = 0; i < Object.keys(user.inventory).length; i++) {
+                        let tempcard = user.inventory[Object.keys(user.inventory)[i]];
+                        tempmana += tempcard.hp/13;
+                        temphp += tempcard.hp/3.5;
+                    }
+                    temphp = Math.round(temphp);
+                    tempmana = Math.round(tempmana);
+                    user.mana += tempmana;
+                    user.health += temphp;
+                    user.inventory = {};
+                    update();
+                    return;
                 }
                 user.mana -= card.manause;
             }
