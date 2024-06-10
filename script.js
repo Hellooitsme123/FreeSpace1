@@ -448,6 +448,64 @@ var cards = {
         type: "Support",
         img: "drawback.png",
     },
+    bank: {
+        name: "bank",
+        formal: "Mana Bank",
+        hp: 50,
+        manause:0,
+        ammo: 1,
+        maxammo: 1,
+        storedmana: 0,
+        coolleft: 0,
+        cool: 1,
+        desc:"Slowly stores mana. Use to destroy this card and gain all stored mana.",
+        funnyname: "BANKOBULATOR",
+        type: "Support",
+        img: "bank.png",
+    },
+    bandit: {
+        name: "bandit",
+        formal: "Mountain Bandit",
+        atk: 50,
+        hp: 40,
+        ammo: 1,
+        maxammo: 1,
+        manause: 2,
+        cool: 1,
+        coolleft: 1,
+        desc:"A traveler that goes from hill to hill, searching for someone to plunder.",
+        funnyname: "BANDITODOBI",
+        type: "Attack",
+        img: "bandit.png",
+    },
+    armageddon: {
+        name: "armageddon",
+        formal: "Armageddon",
+        hp: 50,
+        manause:4,
+        ammo: 1,
+        maxammo: 1,
+        coolleft: 0,
+        cool: 1,
+        desc:"The final day has come..",
+        funnyname: "ARMAGEDDONCI",
+        type: "Support",
+        img: "armageddon.png",
+    },
+    ritual: {
+        name: "ritual",
+        formal: "Dark Ritual",
+        hp: 30,
+        manause:3,
+        ammo: 1,
+        maxammo: 1,
+        coolleft: 0,
+        cool: 1,
+        desc:"The cloaked shadows gather around the altar, and they begin..",
+        funnyname: "RITUALIMITY",
+        type: "Action",
+        img: "ritual.png",
+    },
 }
 
 var p1 = Game.p1;
@@ -683,8 +741,13 @@ function update() {
             if (Object.hasOwn(curcard,"heal")) {
                 card.innerHTML += curcard.heal+" HEAL | ";
             }
-            if (Object.hasOwn(curcard,"coolleft") && Object.hasOwn(curcard,"uses") == false) {
-                card.innerHTML += curcard.coolleft+" CD | ";
+            if (Object.hasOwn(curcard,"coolleft")) {
+                if (Object.hasOwn(curcard,"uses") && curcard.uses != -1) {
+
+                } else {
+                    card.innerHTML += curcard.coolleft+" CD | ";
+                }
+                
             }
             if (Object.hasOwn(curcard,"ammo")) {
                 card.innerHTML += curcard.ammo+" AMMO | ";
@@ -815,6 +878,7 @@ function turnover(player) {
     // argument 'player' means the player that just ended their turn
     turns++;
     let curdeath;
+    console.log("YES");
     if (turns % 20 == 0) {
         if (deathmode != "") {
             curdeath = deathmode.replace("[DEATH MODE ","");
@@ -868,6 +932,7 @@ function turnover(player) {
             args[0] = Number(args[0]);
             args[1] = Number(args[1]);
             let flatfx = formateffect("FlatEffect",effect);
+            console.log(effect);
             // [0] == scale; [1] == timeleft
             if (flatfx == "Burning") {
                 zecard.hp -= Number(args[0])*8;
@@ -890,10 +955,7 @@ function turnover(player) {
             if (args[0] > 1) {
                 args[0] -= 1;
             }
-            if (args[1] > 1) {
-                args[1] -= 1;
-            }
-            zecard.effects[j] = flatfx+"{"+args.toString()+"}";
+            
             if (args[1] == 1) {
                 if (flatfx == "Death") {
                     delete plr.inventory[Object.keys(plr.inventory)[i]];
@@ -903,6 +965,10 @@ function turnover(player) {
                 
                 
             }
+            if (args[1] > 1) {
+                args[1] -= 1;
+            }
+            zecard.effects[j] = flatfx+"{"+args.toString()+"}";
         }
         if (zecard.type == "Attack") {
             if (zecard.ammo < zecard.maxammo) {
@@ -911,6 +977,9 @@ function turnover(player) {
         }
         if (zecard.name == "charger" && zecard.atk < 80) {
             zecard.atk += 25;
+        }
+        if (zecard.name == "bank") {
+            zecard.storedmana += 1.5;
         }
     }
 }
@@ -1077,12 +1146,13 @@ function useCard(element = null,opp = null,index = null) {
                 window.setTimeout(unborder,500,id);
             }
             if (card.type == "Attack") {
-                user.mana -= card.manause;
+                
                 let attacked = firstOpp(stropp);
                 if (attacked == "Opp") {
                     opponent.health -= card.atk;
                 } else {
                     let zeattacked = opponent.inventory[attacked];
+                    console.log(zeattacked);
                     if (card.effects.some(str => str.includes("Confused")) == true) {
                         zeattacked.hp += card.atk*2;
                     } else {
@@ -1093,7 +1163,16 @@ function useCard(element = null,opp = null,index = null) {
                         
                     }
                     
-                    
+                    if (card.name == "bandit") {
+                        let tempchance = randNum(1,3);
+                        if (tempchance == 3) {
+                            let managain = Math.ceil(Math.log(zeattacked.hp) / Math.log(2.2));
+                            if (managain > 6) {
+                                managain = 6;
+                            }
+                            user.mana += managain;
+                        }
+                    }
                     opponent.inventory[attacked].hp -= card.atk;
                     if (card.name == "solarprism") {
                         opponent.health -= card.atk;
@@ -1181,12 +1260,12 @@ function useCard(element = null,opp = null,index = null) {
                             }
                             tries++;
                             console.log(chosen,mosthp);
-                        } while (tries < 50 && chosen.effects.some(str => str.includes(substr)) == true)
+                        } while (tries < 50)
                         if (chosen == null) {
                            
                         } else {
                             if (chosen.effects.some(str => str.includes(substr)) == false) {
-                                chosen.effects.push("Death{1,4}");
+                                chosen.effects.push("Death{1,3}");
                             }
                         }
                     }
@@ -1209,12 +1288,13 @@ function useCard(element = null,opp = null,index = null) {
                                 
                             }
                             tries++;
-                        } while (tries < 50 && chosen.effects.some(str => str.includes(substr)) == true)
+                            
+                        } while (tries < 50)
                         if (chosen == null) {
                            
                         } else {
                             if (chosen.effects.some(str => str.includes(substr)) == false) {
-                                chosen.effects.push("Frozen{1,3}");
+                                chosen.effects.push("Frozen{1,2}");
                             }
                         }
                     }
@@ -1281,7 +1361,7 @@ function useCard(element = null,opp = null,index = null) {
                 }
             }
             if (card.type == "Healing") {
-                user.mana -= card.manause;
+                
                 let sound = new Audio('sounds/heal.mp3');
                 sound.volume = 0.4;
                 sound.play();
@@ -1452,8 +1532,43 @@ function useCard(element = null,opp = null,index = null) {
                     update();
                     return;
                 }
-                user.mana -= card.manause;
+                if (card.name == "bank") {
+                    user.mana += card.storedmana;
+                    delete user.inventory[Object.keys(user.inventory)[index]];
+                }
+                if (card.name == "armageddon") {
+                    console.log("sigma");
+                    user.mana += 12;
+                    opponent.mana += 12;
+                    user.health -= 50;
+                    opponent.health -= 50;
+                    if (user.health <= 1) {
+                        user.health = 1;
+                    }
+                    if (opponent.health <= 1) {
+                        opponent.health = 1;
+                    }
+                    delete user.inventory[Object.keys(user.inventory)[index]];
+                    return;
+                }
+                
             }
+            if (card.type == "Action") {
+                if (card.name == "ritual") {
+                    drawCard(strmain,true,"cultist");
+                    drawCard(strmain,true,"cultist");
+                    drawCard(strmain,true,"cultist");
+                    delete user.inventory[Object.keys(user.inventory)[index]];
+                    let loss = 0;
+                    if (user.health > 100) {
+                        loss = user.health/2;
+                    } else {
+                        loss = 50;
+                    }
+                    user.health -= loss;
+                }
+            }
+            user.mana -= card.manause;
         }
     }
     update();
@@ -1515,12 +1630,7 @@ drawbtn.addEventListener('click',function(){
     
 });
 modebtn.addEventListener('click',function() {
-    if (currentmode == "Easy") {
-        currentmode = "Normal";
-        p1.health = 300;
-        p2.health = 300;
-        modetext.innerHTML = "Current Mode: Normal"
-    }
+    let prevmode = currentmode;
     if (currentmode == "Cataclysm") {
         currentmode = "Easy";
         p1.health = 500;
@@ -1544,6 +1654,12 @@ modebtn.addEventListener('click',function() {
         p1.health = 200;
         p2.health = 350;
         modetext.innerHTML = "Current Mode: Hard";
+    }
+    if (currentmode == "Easy" && prevmode != "Cataclysm") {
+        currentmode = "Normal";
+        p1.health = 300;
+        p2.health = 300;
+        modetext.innerHTML = "Current Mode: Normal"
     }
     update();
 });
