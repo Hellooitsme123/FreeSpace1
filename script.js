@@ -11,6 +11,8 @@ var currentmode = "Normal";
 var whichturn = byId("whichturn");
 var drawbtn = byId("draw");
 var turns = 0;
+var customselect = byId("customoptions");
+var customtype = "";
 var deathmode = "";
 var Game = {
     turn: 1,
@@ -506,6 +508,21 @@ var cards = {
         type: "Action",
         img: "ritual.png",
     },
+    teslacoil: {
+        name: "teslacoil",
+        formal: "Tesla Coil",
+        atk: 50,
+        hp: 40,
+        ammo: 2,
+        maxammo: 2,
+        manause: 2.5,
+        cool: 2,
+        coolleft: 2,
+        desc:"ZAP! ZAP!! Deal damage to every enemy card, not just the first one.",
+        funnyname: "TESLA COILONOSCOPY",
+        type: "Attack",
+        img: "teslacoil.png",
+    },
 }
 
 var p1 = Game.p1;
@@ -521,7 +538,15 @@ var modalContent = byId("modal-content");
 modal.classList.add("hide");
 for (let i = 0; i < Object.keys(cards).length;i++) {
     let para = document.createElement("p");
-    para.innerHTML = cards[Object.keys(cards)[i]].formal+":<br><span class='desc'>"+cards[Object.keys(cards)[i]].desc+"</span><br>";
+    para.innerHTML = "<h4>"+cards[Object.keys(cards)[i]].formal+":</h4><span class='desc'>"+cards[Object.keys(cards)[i]].desc+"</span><h5>Attributes</h5>";
+    Object.keys(cards[Object.keys(cards)[i]]).forEach(function (key) {
+        let val = cards[Object.keys(cards)[i]][key];
+        if (key != "funnyname" && key != "desc" && key != "img") {
+            para.innerHTML += key+": "+val+"<br>";
+        }
+        // use val
+    });
+    
     modalContent.appendChild(para);
     let img = document.createElement("img");
     img.src = "img/cards/"+cards[Object.keys(cards)[i]].img;
@@ -758,6 +783,9 @@ function update() {
             if (Object.hasOwn(curcard,"uses") && Object.hasOwn(curcard,"tempuses") == false) {
                 card.innerHTML += curcard.uses+" USES | ";
             }
+            if (Object.hasOwn(curcard,"storedmana")) {
+                card.innerHTML += curcard.storedmana+" STORED MANA | ";
+            }
             if (Object.hasOwn(curcard,"manause")) {
                 card.innerHTML += curcard.manause+" MU";
             }
@@ -923,7 +951,7 @@ function turnover(player) {
             zecard.coolleft -= 1;
             
         }
-        if (currentmode == "Cataclysm" && player == "p1") {
+        if ((currentmode == "Cataclysm" || (currentmode == "Custom" && customtype == "decay")) && player == "p1") {
             zecard.hp -= 20;
         }
         for (let j = 0; j < zecard.effects.length;j++) {
@@ -936,6 +964,14 @@ function turnover(player) {
             // [0] == scale; [1] == timeleft
             if (flatfx == "Burning") {
                 zecard.hp -= Number(args[0])*8;
+            }
+            if (flatfx == "Shock") {
+                zecard.hp *= 0.8;
+                zecard.hp = Math.round(zecard.hp);
+                if (Object.hasOwn(zecard,"atk")) {
+                    zecard.atk *= 1.2;
+                    zecard.atk = Math.round(zecard.atk);
+                }
             }
             if (flatfx == "Frozen") {
                 zecard.hp -= Number(args[0])*15;
@@ -962,7 +998,7 @@ function turnover(player) {
                     continue;
                 }
                 zecard.effects.splice(j,1);
-                
+                continue;
                 
             }
             if (args[1] > 1) {
@@ -1058,6 +1094,13 @@ function oppTurn() {
     if (currentmode == "Insane") {
         p1.mana -= 2;
     }
+    if (currentmode == "Custom" && customtype == "interest") {
+        p1.mana -= 3;
+        p1.mana *= 1.2;
+        p1.health *= 1.2;
+        p1.mana = Math.ceil(p1.mana);
+        p1.health = Math.ceil(p1.health);
+    }
 
     turn = 2;
     let tries = 0;
@@ -1137,10 +1180,12 @@ function useCard(element = null,opp = null,index = null) {
         return false;
     } else {
         let card = user.inventory[Object.keys(user.inventory)[index]];
+        console.log(card.effects);
         if (card.effects.some(str => str.includes("Stunned")) || card.effects.some(str => str.includes("Frozen"))) {
             return false;
         }
         if (card.coolleft == 0 && user.mana >= card.manause) {
+            /// WHEN APPLYING EFFECTS: TO ALLY, DO TURN+1 | TO ENEMY, DO TURN
             if (element != null) {
                 element.style.border = "3px solid maroon";
                 window.setTimeout(unborder,500,id);
@@ -1150,6 +1195,17 @@ function useCard(element = null,opp = null,index = null) {
                 let attacked = firstOpp(stropp);
                 if (attacked == "Opp") {
                     opponent.health -= card.atk;
+                    if (card.name == "cultist") {
+                        let add = 0;
+                        let chosen;
+                        for (let i = 0; i < Object.keys(user.inventory).length; i++) {
+                            let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
+                            if (tempchosen.name == "cultist") {
+                                add += 30;
+                            }
+                        }
+                        opponent.health -= add;
+                    }
                 } else {
                     let zeattacked = opponent.inventory[attacked];
                     console.log(zeattacked);
@@ -1164,13 +1220,14 @@ function useCard(element = null,opp = null,index = null) {
                     }
                     
                     if (card.name == "bandit") {
-                        let tempchance = randNum(1,3);
-                        if (tempchance == 3) {
-                            let managain = Math.ceil(Math.log(zeattacked.hp) / Math.log(2.2));
-                            if (managain > 6) {
-                                managain = 6;
+                        let tempchance = randNum(1,2);
+                        if (tempchance == 2) {
+                            let managain = Math.ceil(opponent.mana*(randNum(20,80)/100));
+                            if (managain < 3) {
+                                managain = 3;
                             }
                             user.mana += managain;
+                            opponent.mana -= managain;
                         }
                     }
                     opponent.inventory[attacked].hp -= card.atk;
@@ -1195,6 +1252,25 @@ function useCard(element = null,opp = null,index = null) {
                             chosen.atk -= 15;
                             if (chosen.atk < 5) {
                                 chosen.atk = 5;
+                            }
+                        }
+                        
+                    }
+                    if (card.name == "teslacoil") {
+                        for (let i = 0; i < Object.keys(opponent.inventory).length; i++) {
+                            let tempchosen = opponent.inventory[Object.keys(opponent.inventory)[i]];
+                            tempchosen.hp -= Math.ceil(card.atk/7);
+                            if (tempchosen.effects.some(str => str.includes("Shock")) == true) {
+                                let zeval = tempchosen.effects.filter(str => str.includes("Shock"))[0];
+                                let index = tempchosen.effects.indexOf(zeval);
+                                let args = formateffect("Attributes",zeval);
+                                args[0] = Number(args[0]);
+                                args[0] += 1;
+                                args[1] += 1;
+                                tempchosen.effects[index] = "Shock{"+args[0]+","+args[1]+"}";
+                            }
+                            if (tempchosen.effects.some(str => str.includes("Shock")) == false) {
+                                tempchosen.effects.push("Shock{1,1}");
                             }
                         }
                         
@@ -1326,6 +1402,7 @@ function useCard(element = null,opp = null,index = null) {
                                 add += 30;
                             }
                         }
+                        console.log(add);
                         zeattacked.hp -= add;
                     }
                     if (opponent.inventory[attacked].hp <= 0) {
@@ -1345,6 +1422,9 @@ function useCard(element = null,opp = null,index = null) {
                         }
                         if (zeattacked.effects.some(str => str.includes("Guarded")) == false) {
                             delete opponent.inventory[attacked];
+                            if (currentmode == "Custom" && customtype == "flagship" && strmain == "p2") {
+                                opponent.health = -100;
+                            }
                         } else {
                             let zeval = zeattacked.effects.filter(str => str.includes("Guarded"))[0];
                             let index = zeattacked.effects.indexOf(zeval);
@@ -1399,6 +1479,7 @@ function useCard(element = null,opp = null,index = null) {
                     card.uses -= 1;
                     if (card.uses <= 0) {
                         delete user.inventory[Object.keys(user.inventory)[index]];
+                        
                     }
                 }
             }
@@ -1418,7 +1499,11 @@ function useCard(element = null,opp = null,index = null) {
                     if (chosen == null || chosen.type != "Attack") {
                         return false;
                     }
-                    chosen.ammo += Math.round((100-chosen.atk)/15);
+                    let gain = Math.round((100-chosen.atk)/15);
+                    if (gain < 2) {
+                        gain = 2;
+                    }
+                    chosen.ammo += gain;
                     delete user.inventory[Object.keys(user.inventory)[index]];
                 }
                 if (card.name == "atkpotion") {
@@ -1507,8 +1592,19 @@ function useCard(element = null,opp = null,index = null) {
                 if (card.name == "bus") {
                     let card1 = user.inventory[Object.keys(user.inventory)[0]];
                     let card2 = user.inventory[Object.keys(user.inventory)[Object.keys(user.inventory).length-1]];
-                    user.inventory[Object.keys(user.inventory)[0]] = card2;
-                    user.inventory[Object.keys(user.inventory)[Object.keys(user.inventory).length-1]] = card1;
+                    let temp1 = {};
+                    let temp2 = {};
+                    temp1 = Object.assign(temp1,card1);
+                    temp2 = Object.assign(temp2,card2);
+                    let newobj = {};
+                    Object.defineProperty(newobj,Object.keys(user.inventory)[Object.keys(user.inventory).length-1],Object.getOwnPropertyDescriptor(user.inventory,Object.keys(user.inventory)[Object.keys(user.inventory).length-1]));
+                    Object.keys(user.inventory).forEach(function(key,index) {
+                        if (index != Object.keys(user.inventory).length-1 && index != 0) {
+                            Object.defineProperty(newobj,key,Object.getOwnPropertyDescriptor(user.inventory,key));
+                        }
+                    });
+                    Object.defineProperty(newobj,Object.keys(user.inventory)[0],Object.getOwnPropertyDescriptor(user.inventory,Object.keys(user.inventory)[0]));
+                    user.inventory = newobj;
                     
                     card.ammo -= 1;
                     if (card.ammo <= 0) {
@@ -1537,7 +1633,6 @@ function useCard(element = null,opp = null,index = null) {
                     delete user.inventory[Object.keys(user.inventory)[index]];
                 }
                 if (card.name == "armageddon") {
-                    console.log("sigma");
                     user.mana += 12;
                     opponent.mana += 12;
                     user.health -= 50;
@@ -1548,8 +1643,7 @@ function useCard(element = null,opp = null,index = null) {
                     if (opponent.health <= 1) {
                         opponent.health = 1;
                     }
-                    delete user.inventory[Object.keys(user.inventory)[index]];
-                    return;
+                    delete user.inventory[Object.keys(user.inventory)[index]];                    
                 }
                 
             }
@@ -1624,42 +1718,66 @@ turnbtn.addEventListener('click',function(){
 drawbtn.addEventListener('click',function(){
     if (p1.mana >= 3 && turn == 1 && Object.keys(p1.inventory).length < 10) {
         p1.mana -= 3;
-        drawCard("p1");
+        if (currentmode == "Custom" && customtype == "industrial") {
+            drawCard("p1",true,"factory");
+        } else {
+            drawCard("p1");
+        }
+        
         update();
     }
     
 });
 modebtn.addEventListener('click',function() {
     let prevmode = currentmode;
-    if (currentmode == "Cataclysm") {
+    let order = ["Easy","Normal","Hard","Insane","Cataclysm","Custom"];
+    let index = order.indexOf(currentmode);
+    let setto;
+    if (index+1 > order.length-1) {
+        setto = order[0];
+    } else {
+        setto = order[index+1];
+    }
+    if (setto == "Easy") {
         currentmode = "Easy";
         p1.health = 500;
         p2.health = 250;
         modetext.innerHTML = "Current Mode: Easy";
     }
-    if (currentmode == "Insane") {
-        currentmode = "Cataclysm";
-        p1.health = 70;
-        p2.health = 650;
-        modetext.innerHTML = "Current Mode: Cataclysm";
+    if (setto == "Normal") {
+        currentmode = "Normal";
+        p1.health = 300;
+        p2.health = 300;
+        modetext.innerHTML = "Current Mode: Normal";
     }
-    if (currentmode == "Hard") {
-        currentmode = "Insane";
-        p1.health = 125;
-        p2.health = 500;
-        modetext.innerHTML = "Current Mode: Insane";
-    }
-    if (currentmode == "Normal") {
+    if (setto == "Hard") {
         currentmode = "Hard";
         p1.health = 200;
         p2.health = 350;
         modetext.innerHTML = "Current Mode: Hard";
     }
-    if (currentmode == "Easy" && prevmode != "Cataclysm") {
-        currentmode = "Normal";
-        p1.health = 300;
-        p2.health = 300;
-        modetext.innerHTML = "Current Mode: Normal"
+    if (setto == "Insane") {
+        currentmode = "Insane";
+        p1.health = 125;
+        p2.health = 500;
+        modetext.innerHTML = "Current Mode: Insane";
+    }
+    if (setto == "Cataclysm") {
+        currentmode = "Cataclysm";
+        p1.health = 70;
+        p2.health = 650;
+        modetext.innerHTML = "Current Mode: Cataclysm";
+    }
+    if (setto == "Custom") {
+        currentmode = "Custom";
+        customselect.style.display = "block";
+        modetext.innerHTML = "Current Mode: Custom";
+    } else {
+        customselect.style.display = "none";
     }
     update();
+});
+customselect.addEventListener("change",function() {
+    let value = customselect.value;
+    customtype = value;
 });

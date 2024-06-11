@@ -18,7 +18,17 @@
     <p id="p2">Player 2: 500 health</p>
     
     <h4 id="whichturn">YOUR TURN</h4>
-    <p id="curmode">Current Mode: Normal</p>
+    <div>
+        <p id="curmode">Current Mode: Normal</p>
+        <select id="customoptions" class="hide">
+            <option value="">No Challenge</option>
+            <option value="industrial">Industrial Revolution</option>
+            <option value="flagship">Carrier Flagship</option>
+            <option value="decay">Decay</option>
+            <option value="interest">Interest</option>
+        </select>
+    </div>
+   
     <button type="button" id="mode">Change Mode</button>
     <h3>Your Cards</h3>
     <button type="button" id="draw">Draw Card</button>
@@ -66,38 +76,29 @@
                     Close
                 </button>
             </div>
-            <h1>Update v0.1.3</h1>
+            <h1>Update v0.1.3a</h1>
             <div class="modal-content" id="modal-content">
-                <h3>Added 11 new cards:</h3>
+                <h3>Added 1 new card:</h3>
                 <ul>
-                    <li>Reaper, which applies 'Death' effect. This effect kills affected card after 3 turns.</li>
-                    <li>Froster, which applies 'Frozen' effect. Affected card cannot play and will slowly lose healh and attack.</li>
-                    <li>Ninja, which has a camouflage effect when attacking. This makes cards unable to see it.</li>
-                    <li>Transportation Bus, which swaps the first and last card.</li>
-                    <li>Clone Box, which clones the first card.</li>
-                    <li>Oblivion, which appears if the clone box is the first card. Very useful.</li>
-                    <li>Drawback, which deletes all of your cards but heals you and gives you mana based on their total health. (Mana = Total/13, Health = Total/3.5)</li>
-                    <li>Armageddon, which gives both players 12 mana and makes them take 50 damage. Acts as a mini-death mode, or a last resort to low mana lock.</li>
-                    <li>Mana Bank, which gains 1.5 mana every turn, giving all the mana away when it is used.</li>
-                    <li>Dark Ritual, which removes half of your health (minimum 50) and 3 mana for 3 cultists (which gain +30 dmg/cultist)</li>
-                    <li>Bandit, which has a 1/3 chance of stealing mana equivalent to the logarithm of the first opponent's health with a base of 2.2 (aka 3-6)</li>
+                    <li>Tesla Coil, which does 50 damage and then 1/7 of the damage to all other cards. It also applies the Shock effect to all cards, which multiplies their health by 0.8, but multiplies their attack by 1.2</li>
                 </ul><br>
                 <h3>Other Additions:</h3>
                 <ul>
-                    <li>This Changelog.</li>
-                    <li>Card descriptions (please help)</li>
-                    <li>Updated a few card images.</li>
+                    <li>Added some more card art</li>
+                    <li>Introduction of Action cards (changed cards like Armageddon to action cards)</li>
+                    <li>Bandit now steals instead of generates mana.</li>
+                    <li>Custom Mode: Adds fun modifiers like Industrial Revolution (only get factories) or decay, where all of your codes slowly lose health.</li>
                 </ul><br>
                 <h3>Balance Changes:</h3>
                 <ul>
-                    <li>Circuit Node (now Cultist) starts with higher atk, making it more useful if there are no duplicates nearby.</li>
-                    <li>Heal Orb gained more healing power and less base health.</li>
-                    <li>Juggernaut mana use reduced to 2 from 3.</li>
+                    <li>Armageddon now costs mana</li>
+                    <li>Bandit now has a 1/2 chance of gaining mana and steals 20-80% of the opponent's mana.</li>
                 </ul>
                 <h3>Bug Fixes:</h3>
                 <ul>
-                    <li>Effects will now last longer, as previously they ran out at 2 life instead of 1 life. (Fixes camouflage)</li>
-                    <li>[PLANNED]: Fix Transportation Bus. As of current it does a weird thing with the objects.</li>
+                    <li>Transportation Bus has been fixed</li>
+                    <li>Armageddon will update after use</li>
+                    <li>Supply Crate will now have a minimum of 2 ammo gain.</li>
                 </ul>
                 <h3>Cards as of current: </h3>
             </div>
