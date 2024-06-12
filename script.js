@@ -42,7 +42,7 @@ var cards = {
         desc:"A simple soldier with a spear, dealing high damage with quick movements.",
         funnyname: "SPEARMANITY",
         type: "Attack",
-        img: "",
+        img: "spearman.png",
     },
     wizard: {
         name: "wizard",
@@ -57,7 +57,7 @@ var cards = {
         desc:"An apprentice in magic, shooting deadly arcane blasts while using low mana.",
         funnyname: "WIZARDY",
         type: "Attack",
-        img: "",
+        img: "wizard.png",
     },
     turret: {
         name: "turret",
@@ -72,7 +72,7 @@ var cards = {
         desc:"A turret that deals lethal bursts of damage, assuring that no cards get destroyed.",
         funnyname: "TURRETATION",
         type: "Attack",
-        img: "",
+        img: "turret.png",
     },
     sniper: {
         name: "sniper",
@@ -87,7 +87,7 @@ var cards = {
         desc:"Precise shots that can take down the biggest, at a cost of time and mana.",
         funnyname: "SNIPERICIOUS",
         type: "Attack",
-        img: "",
+        img: "sniper.png",
     },
     soulkeeper: {
         name: "soulkeeper",
@@ -525,8 +525,14 @@ var cards = {
     },
 }
 
+var aimode = 1;
+var modetick = 0;
 var p1 = Game.p1;
 var p2 = Game.p2;
+var opptries = 0;
+var oppturndone = false;
+var blockoppturn = false;
+var blockturnover = false;
 var template = {
     health: 300,
     mana: 10,
@@ -536,13 +542,17 @@ var modal = document.querySelector(".modal-overlay");
 var closeBtn = document.querySelector(".close-modal-btn");
 var modalContent = byId("modal-content");
 modal.classList.add("hide");
+var keynames = ["name","formal","atk","hp","manause","ammo","maxammo","cool","coolleft","type","heal","uses","tempuses","obtainable","storedmana"];
+var keyformal = ["Name","Formal Name","Attack","Health","Mana Use","Ammo","Maximum Default Ammo","Cooldown","Starting Cooldown","Card Type","Heal","Uses","Obtainable By Drawing Cards","Stored Mana"];
 for (let i = 0; i < Object.keys(cards).length;i++) {
     let para = document.createElement("p");
-    para.innerHTML = "<h4>"+cards[Object.keys(cards)[i]].formal+":</h4><span class='desc'>"+cards[Object.keys(cards)[i]].desc+"</span><h5>Attributes</h5>";
+    para.innerHTML = "<h3>"+cards[Object.keys(cards)[i]].formal+":</h3><p>"+cards[Object.keys(cards)[i]].desc+"</p><h4>Attributes</h4>";
     Object.keys(cards[Object.keys(cards)[i]]).forEach(function (key) {
         let val = cards[Object.keys(cards)[i]][key];
+        let keyindex = keynames.indexOf(key);
+        let formalkeyname = keyformal[keyindex];
         if (key != "funnyname" && key != "desc" && key != "img") {
-            para.innerHTML += key+": "+val+"<br>";
+            para.innerHTML += formalkeyname+": "+val+"<br>";
         }
         // use val
     });
@@ -550,7 +560,9 @@ for (let i = 0; i < Object.keys(cards).length;i++) {
     modalContent.appendChild(para);
     let img = document.createElement("img");
     img.src = "img/cards/"+cards[Object.keys(cards)[i]].img;
-    console.log(img.src);
+    if (cards[Object.keys(cards)[i]].img == null || cards[Object.keys(cards)[i]].img == "") {
+        img.src = "img/cards/nocard.png";
+    }
     img.width = "140";
     img.height = "160";
     modalContent.appendChild(img);
@@ -579,10 +591,10 @@ function randNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function assign(object, source) {
-    console.log(object);
+    //console.log(object);
     if (typeof source == "object" && source) {
         Object.keys(source).forEach(function(key) {
-            console.log(key,object[key],source[key]);
+            //console.log(key,object[key],source[key]);
             object[key] = source[key];
         });
     } else {
@@ -719,7 +731,7 @@ function formateffect(type,effect) {
 function update() {
     gametitle.innerHTML = "GAME O' CARDS "+deathmode;
     p1txt.innerHTML = "Player 1: "+p1.health+" Health | "+p1.mana+" Mana";
-    p2txt.innerHTML = "Player 2: "+p2.health+" Health | "+p2.mana+" Mana";
+    p2txt.innerHTML = "Player 2: "+p2.health+" Health | "+p2.mana+" Mana | AI MODE "+aimode+" (for testing)";
     if (turn == 1) {
         whichturn.innerHTML = "YOUR TURN";
     } else {
@@ -809,15 +821,43 @@ function update() {
                 background-image:url("img/cards/solarprism.png");
                 background-size: 140px 160px;
             }*/
+            let tempimg;
             if (curcard.img != "") {
-                card.style.backgroundImage = "url('img/cards/"+curcard.img+"')";
+                tempimg = "url(img/cards/"+curcard.img+")";  
                 card.style.backgroundSize = "140px 160px";
                 if (curcard.name == "oblivion" && curcard.manause == 0.5 && curcard.cool == 1) {
-                    card.style.backgroundImage = "url('img/cards/enragedoblivion.png')";
+                    tempimg = "url('img/cards/enragedoblivion.png')";
                 }
+                
             } else {
-                card.style.backgroundImage = null;
+                tempimg = "url()";
+                card.style.backgroundSize = "140px 160px";
             }
+            if (curcard.effects.some(str => str.includes("Camouflaged")) == true) {
+                tempimg += ", url(img/foils/camofoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Frozen")) == true) {
+                tempimg += ", url(img/foils/frostfoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Confused")) == true) {
+                tempimg += ", url(img/foils/confusedfoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Burning")) == true) {
+                tempimg += ", url(img/foils/burningfoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Stunned")) == true) {
+                tempimg += ", url(img/foils/stunnedfoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Guarded")) == true) {
+                tempimg += ", url(img/foils/guardedfoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Shock")) == true) {
+                tempimg += ", url(img/foils/shockfoil.png)";
+            }
+            card.style.backgroundSize = "140px 160px";
+            card.style.backgroundImage = tempimg;
+            
+            
             /*
             if (curcard.type == "Attack") {
                 card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.atk+" ATK | "+curcard.coolleft+" CD<br>"+curcard.ammo+" AMMO | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
@@ -1023,23 +1063,39 @@ function unborder(id) {
     document.getElementById(id).style.border = "1px solid black";
     document.getElementById(id).style.backgroundColor = null;
 }
+function unblockOpp() {
+    blockoppturn = false;
+    blockturnover = false;
+}
 function playerTurn() {
-    turnover("p2");
-    p2.mana += 5;
-    if (currentmode == "Easy") {
-        p2.mana -= 1;
-    }
-    if (currentmode == "Hard") {
-        p2.mana += 3;
-    }
-    if (currentmode == "Insane") {
+    let prevturn = turn;
+    if (prevturn == 2) {
+        turn = 1;
+        oppturndone = false;
+        blockoppturn = true;
+        blockturnover = true;
+        window.setTimeout(unblockOpp,2000);
+        turnover("p2");
+        if (prevturn == 2) {
+
+        }
         p2.mana += 5;
+        if (currentmode == "Easy") {
+            p2.mana -= 1;
+        }
+        if (currentmode == "Hard") {
+            p2.mana += 3;
+        }
+        if (currentmode == "Insane") {
+            p2.mana += 5;
+        }
+        if (currentmode == "Cataclysm") {
+            p2.mana += 7;
+        }
+        console.log(p2.mana);
+        update();
     }
-    if (currentmode == "Cataclysm") {
-        p2.mana += 7;
-    }
-    turn = 1;
-    update();
+    
 }
 function oppAttack() {
     let tries = 0;
@@ -1069,16 +1125,149 @@ function oppAttack() {
        
         tries++;
     } while (p2.mana > 0 && tries < 200 && done == false);
+    console.log(chosencard);
+    if (chosencard == null) {
+        return false;
+    }
     useCard(null,true,index);
+    return chosencard.manause;
 }
 function oppDraw() {
     if (Object.keys(p2.inventory).length < 10) {
         drawCard("p2");
         p2.mana -= 3;
         if (randNum(0,1) == 1) {
-            oppAttack();
+            window.setTimeout(oppAttack,350);
         }   
+        return true;
+    } else {
+        let feeling1 = randNum(1,3);
+        if (feeling1 >1 && p2.mana > 7)  {
+            aimode = 3;
+        } else {
+            aimode = 2;
+        }
+        console.log("YOOO");
+        return false;
     }
+    
+}
+function oppChoice(start) {
+    console.log(oppturndone,opptries);
+    if (blockoppturn == true) {
+        return false;
+    }
+    if (opptries > 30) {
+        oppturndone = true;
+    }
+    if (oppturndone == true && turn != 1) {
+        window.setTimeout(playerTurn,400);
+    }
+    if (start == true) {
+        opptries = 0;
+    }
+    // var aimodes = 1,2,3 | 1: default, spend random amounts, select random cards | 2: save up, when many cards are on board, save up for more | 3: siege, attack with all force | 4: stock up, draw more cards
+    // FLOWMAP: start->4->2->3->repeat
+    let prevmode = aimode;
+    if (Object.keys(p1.inventory).length-Object.keys(p2.inventory).length < -6 && p2.mana > 8) {
+        aimode = 3;
+    } else {
+        if (Object.keys(p2.inventory).length < 8 && randNum(1,5) != 1) {
+            aimode = 4;
+        } else if (Object.keys(p2.inventory).length > 6 && p2.mana > 8) {
+            aimode = 3;
+        } else if (p2.mana < 9 && Object.keys(p2.inventory).length > 6) {
+            aimode = 2;
+        } else {
+            aimode = 1;
+        }
+    }
+    
+    if (prevmode != aimode) {
+        modetick = 0;
+    } else {
+        
+    }
+    let choice = 0; // choice means how much mana is the limit. for example, if choice is 3, use cards until mana is 3.
+    if (aimode == 1 || aimode == 4) {
+        if (p2.mana > 8) {
+            choice = randNum(0,p2.mana/3.5);
+        } else {
+            choice = randNum(0,3);
+        }
+        
+    }
+    if (aimode == 2) {
+        choice = 8;
+    }
+    if (aimode == 3) {
+        choice = randNum(0,3);
+    }
+    if (choice < 2) {
+        choice = 2;
+    }
+    modetick++;
+    console.log(choice);
+    if (p2.mana > choice) {
+        opptries++;
+        let result;
+        let time;
+        if (aimode == 1) {
+            if (Object.keys(p2.inventory).length < 2) {
+                result = oppDraw();
+                choice -= 1;
+            } else {
+                let feeling1 = randNum(1,3);
+                if (feeling1 >= 2 && Object.keys(p2.inventory).length > 0) {
+                    result = oppAttack();
+                } else {
+                    result = oppDraw();
+                }
+            }
+        }
+        if (aimode == 2) {
+            let feeling1 = randNum(1,5);
+            if (feeling1 <= 2) {
+                let feeling2 = randNum(1,3);
+                if (Object.keys(p2.inventory).length < 2 || feeling2 == 1) {
+                    result = oppDraw();
+                    choice -= 1;
+                } else {
+                    result = oppAttack();
+                }
+            }
+        }
+        if (aimode == 3) {
+            // SIEGE
+            let feeling1 = randNum(1,4);
+            if (feeling1 > 1) {
+                result = oppAttack();
+            } else {
+                result = oppDraw();
+            }
+        }
+        if (aimode == 4) {
+            // STOCK UP
+            let feeling1 = randNum(1,4);
+            if (feeling1 > 1) {
+                result = oppDraw();
+            } else {
+                result = oppAttack();
+            }
+        }
+        console.log(result);
+        if (result == false) {
+            time = 0;
+        } else {
+            time = 350;
+        }
+        window.setTimeout(oppChoice,350,false);
+    } else {
+        console.log("yeah");
+        oppturndone = true;
+        window.setTimeout(oppChoice,350,false);
+    }
+    
     
 }
 function oppTurn() {
@@ -1103,24 +1292,9 @@ function oppTurn() {
     }
 
     turn = 2;
-    let tries = 0;
-    let choice = randNum(0,p2.mana/2);
-    update();
-    do {
-        let feeling1 = randNum(0,5);
-        if (Object.keys(p2.inventory).length < 2) {
-            oppDraw();
-            choice -= 1;
-        } else {
-            if (feeling1 >= 2 && Object.keys(p2.inventory).length > 0) {
-                oppAttack();
-            } else {
-                oppDraw();
-            }
-        }
-        tries++;
-    } while (p2.mana > choice && tries < 200);
-    window.setTimeout(playerTurn,2000);
+    update(true);
+    oppChoice(true);
+    
 }
     
     
@@ -1330,12 +1504,9 @@ function useCard(element = null,opp = null,index = null) {
                                 if (tempchosen.hp > mosthp && tempchosen.effects.some(str => str.includes(substr)) == false) {
                                     chosen = tempchosen;
                                     mosthp = chosen.hp;
-                                    console.log("YOO");
                                 }
-                                console.log(chosen,tempchosen,mosthp,i);
                             }
                             tries++;
-                            console.log(chosen,mosthp);
                         } while (tries < 50)
                         if (chosen == null) {
                            
@@ -1629,8 +1800,11 @@ function useCard(element = null,opp = null,index = null) {
                     return;
                 }
                 if (card.name == "bank") {
-                    user.mana += card.storedmana;
-                    delete user.inventory[Object.keys(user.inventory)[index]];
+                    if (card.storedmana > 0) {
+                        user.mana += card.storedmana;
+                        delete user.inventory[Object.keys(user.inventory)[index]];
+                    }
+                    
                 }
                 if (card.name == "armageddon") {
                     user.mana += 12;
@@ -1699,7 +1873,10 @@ start();
 }*/
 Array.from(document.getElementsByClassName("card")).forEach(function(element) {
     element.addEventListener('click', function() {
-        useCard(element);
+        if (turn == 1) {
+            useCard(element);
+        }
+        
     });
     /*element.addEventListener('mouseover', function() {
         hideStat(element,true);
@@ -1709,7 +1886,7 @@ Array.from(document.getElementsByClassName("card")).forEach(function(element) {
     });*/
 });
 turnbtn.addEventListener('click',function(){
-    if (turn == 1) {
+    if (turn == 1 && blockturnover == false) {
         oppTurn();
     }
     
