@@ -39,8 +39,10 @@ hr {
 }
  
 .modal-wrapper {
-    width: 600px;
-    height: 500px;
+    /*width: 600px;
+    height: 500px;*/
+    height: 90%;
+    width: 90%;
     background: ghostwhite;
     position: fixed;
     top: 50%;
@@ -50,9 +52,9 @@ hr {
     word-wrap:break-word;
 }
  
-.open-modal-btn-wrapper {
-    /*yes*/
-}
+/*.open-modal-btn-wrapper {
+    yes
+}*/
  
 .close-modal-btn,
 .open-modal-btn {
@@ -74,8 +76,10 @@ hr {
  
 .modal-content {
     margin: 20px auto;
-    height: 480px;
-    width: 570px;
+    /*height: 480px;
+    width: 570px;*/
+    height: 90%;
+    width: 90%;
 }
  
 .hide {

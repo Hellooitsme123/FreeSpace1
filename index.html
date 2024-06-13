@@ -31,7 +31,12 @@
    
     <button type="button" id="mode">Change Mode</button>
     <h3>Your Cards</h3>
-    <button type="button" id="draw">Draw Card</button>
+    <div>
+        <button type="button" id="draw">Draw Card</button>&emsp;<button type="button" id="discard">Discard (1 left)</button>&emsp;<button type="button" id="endselect" class="hide">Clear Select</button>
+        <br><br>
+        <button type="button" id="togglecardmode">Toggle Card Mode (Current: Use)</button>
+    </div>
+    
     <table id="cards">
         <tr class="cardrow">
             <td id="c1" class="card"></td>
@@ -76,12 +81,12 @@
                     Close
                 </button>
             </div>
-            <h1>Update v0.1.4 - FOILS & AI UPDATE</h1>
+            <h1>Update v0.1.4a - SELECTION UPDATE</h1>
             <div class="modal-content" id="modal-content">
-                <h3>CARD FOILS!!</h3>
-                <p>Each effect now comes with its on foil, affecting the card's display. Try out cards like flamethrower, froster, and tesla coil to see the card foils in action.</p>
-                <h3>Improved AI</h3>
-                <p>Opponent now has 4 modes: 1 - random | 2 - save up | 3 - siege | 4 - restock<br>These modes will be used to make the AI more strategic. In the next update, prioritization and strategic use of cards (e.g. using low mana cards on low hp cards) for the AI. Please give feedback on the current AI programming!</p>
+                <h3>Card Modes!</h3>
+                <p>You can now enter two card modes: Use (use cards) & Select (select cards)<br>With the new card mode, select, new opportunities for cards will be available. Enemy cards can now be selected if you want to attack specific ones, specific ally cards can be healed, etc. </p>
+                <h3>Discarding</h3>
+                <p>Discarding has now been introduced. You get 1 discard each turn (maximum of 1) and you can discard a card by going into select mode, selecting a card, and clicking discard. You will get 1 mana back after discarding. Discarding is a new mechanic that will allow clearing up your hand if full, and also removing unnecessary cards for mana that can be used for other things.</p>
                 <h3>Added 0 new cards:</h3>
                 <ul>
                     <li>The null card, which doesn't exist.</li>
@@ -89,6 +94,8 @@
                 <h3>Other Additions:</h3>
                 <ul>
                     <li>Added some more card art<li>
+                    <li>Made a few more cards action cards (some were support, but shouldn't have been)</li>
+                    <li>The changelog now supports different screen sizes. Previously it had a set size, but its size is now responsive (90% of the viewport's size)</li>
                 </ul><br>
                 <h3>Balance Changes:</h3>
                 <ul>
@@ -96,8 +103,11 @@
                 </ul>
                 <h3>Bug Fixes:</h3>
                 <ul>
-                    <li>None</li>
+                    <li>AI Mode 3 will now continue once it starts. Previously it ended immediately after the opponent's mana went under 8. Now it will go until the enemy is destroyed.</li>
+                    <li>Clone box now works on cards with a numbered inventory id (e.g. when there are two of the same cards, one of their ids is numbered. previously, clone box would break if that were to happen)</li>
                 </ul>
+                <h3>Next Update?</h3>
+                <p>For next update, more foils are planned to be added, the final 2 card arts will be added, AI will also get special card targeting, sounds, and more is planned.</p>
                 <h3>Cards as of current: </h3>
             </div>
         </div>
