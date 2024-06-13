@@ -50,6 +50,7 @@ var cards = {
         funnyname: "SPEARMANITY",
         type: "Attack",
         img: "spearman.png",
+        sound: "sword.mp3",
     },
     wizard: {
         name: "wizard",
@@ -65,6 +66,7 @@ var cards = {
         funnyname: "WIZARDY",
         type: "Attack",
         img: "wizard.png",
+        sound:"spell1.mp3",
     },
     turret: {
         name: "turret",
@@ -80,6 +82,7 @@ var cards = {
         funnyname: "TURRETATION",
         type: "Attack",
         img: "turret.png",
+        sound: "shoot.mp3",
     },
     sniper: {
         name: "sniper",
@@ -95,6 +98,7 @@ var cards = {
         funnyname: "SNIPERICIOUS",
         type: "Attack",
         img: "sniper.png",
+        sound: "shoot.mp3",
     },
     soulkeeper: {
         name: "soulkeeper",
@@ -154,6 +158,7 @@ var cards = {
         funnyname: "JUGGERNAUTIOUS",
         type: "Attack",
         img: "juggernaut.png",
+        sound: "bash.mp3",
     },
     flamethrower: {
         name: "flamethrower",
@@ -169,6 +174,7 @@ var cards = {
         funnyname: "FLAMETHROWERY",
         type: "Attack",
         img: "flamethrower.png",
+        sound: "burn.mp3",
     },
     charger: {
         name: "charger",
@@ -199,6 +205,7 @@ var cards = {
         funnyname: "SOLAR PRISMISM",
         type: "Attack",
         img: "solarprism.png",
+        sound: "laser.mp3",
     },
     weakener: {
         name: "weakener",
@@ -214,6 +221,7 @@ var cards = {
         funnyname: "WEAKENERIUM",
         type: "Attack",
         img: "weakener.png",
+        sound: "curse1.mp3",
     },
     supplycrate: {
         name: "supplycrate",
@@ -368,6 +376,7 @@ var cards = {
         funnyname: "REAPERITIATE",
         type: "Attack",
         img: "reaper.png",
+        sound: "scythe.mp3"
     },
     froster: {
         name: "froster",
@@ -383,6 +392,7 @@ var cards = {
         funnyname: "FROSTERILICAL",
         type: "Attack",
         img: "froster.png",
+        sound: "freeze.mp3",
     },
     ninja: {
         name: "ninja",
@@ -454,7 +464,7 @@ var cards = {
         cool: 100,
         desc:"Everyone makes mistakes.",
         funnyname: "DRAWBACKIMIJIMI",
-        type: "Support",
+        type: "Action",
         img: "drawback.png",
     },
     bank: {
@@ -498,7 +508,7 @@ var cards = {
         cool: 1,
         desc:"The final day has come..",
         funnyname: "ARMAGEDDONCI",
-        type: "Support",
+        type: "Action",
         img: "armageddon.png",
     },
     ritual: {
@@ -549,8 +559,8 @@ var modal = document.querySelector(".modal-overlay");
 var closeBtn = document.querySelector(".close-modal-btn");
 var modalContent = byId("modal-content");
 modal.classList.add("hide");
-var keynames = ["name","formal","atk","hp","manause","ammo","maxammo","cool","coolleft","type","heal","uses","tempuses","obtainable","storedmana"];
-var keyformal = ["Name","Formal Name","Attack","Health","Mana Use","Ammo","Maximum Default Ammo","Cooldown","Starting Cooldown","Card Type","Heal","Uses","Obtainable By Drawing Cards","Stored Mana"];
+var keynames = ["name","formal","atk","hp","manause","ammo","maxammo","cool","coolleft","type","heal","uses","tempuses","obtainable","storedmana","sound"];
+var keyformal = ["Name","Formal Name","Attack","Health","Mana Use","Ammo","Maximum Default Ammo","Cooldown","Starting Cooldown","Card Type","Heal","Uses","Obtainable By Drawing Cards","Stored Mana","Sound"];
 for (let i = 0; i < Object.keys(cards).length;i++) {
     let para = document.createElement("p");
     para.innerHTML = "<h3>"+cards[Object.keys(cards)[i]].formal+":</h3><p>"+cards[Object.keys(cards)[i]].desc+"</p><h4>Attributes</h4>";
@@ -715,7 +725,7 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
             }
         }
     }
-    
+    update();
 } 
 
 Array.from(document.getElementsByClassName("card")).forEach(function(element) {
@@ -858,6 +868,12 @@ function update() {
             }
             if (curcard.effects.some(str => str.includes("Shock")) == true) {
                 tempimg += ", url(img/foils/shockfoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Fear")) == true) {
+                tempimg += ", url(img/foils/fearfoil.png)";
+            }
+            if (curcard.effects.some(str => str.includes("Death")) == true) {
+                tempimg += ", url(img/foils/deathfoil.png)";
             }
             card.style.backgroundSize = "140px 160px";
             card.style.backgroundImage = tempimg;
@@ -1432,7 +1448,13 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         zeattacked.hp += card.atk*2;
                     } else {
                         let sound = new Audio('sounds/sword.mp3');
+                        if (card.sound != undefined) {
+                            sound = new Audio('sounds/'+card.sound);
+                        }
                         sound.volume = 0.4;
+                        if (card.sound == "shoot.mp3") {
+                            sound.volume = 0.3;
+                        }
                         sound.play();
                         
                         
@@ -1839,6 +1861,31 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         card.ammo = card.maxammo;
                     }
                 }
+                
+                if (card.name == "bank") {
+                    if (card.storedmana > 0) {
+                        user.mana += card.storedmana;
+                        delete user.inventory[Object.keys(user.inventory)[index]];
+                    }
+                    
+                }
+                
+                
+            }
+            if (card.type == "Action") {
+                if (card.name == "ritual") {
+                    drawCard(strmain,true,"cultist");
+                    drawCard(strmain,true,"cultist");
+                    drawCard(strmain,true,"cultist");
+                    delete user.inventory[Object.keys(user.inventory)[index]];
+                    let loss = 0;
+                    if (user.health > 100) {
+                        loss = user.health/2;
+                    } else {
+                        loss = 50;
+                    }
+                    user.health -= loss;
+                }
                 if (card.name == "drawback") {
                     let tempmana = 0;
                     let temphp = 0;
@@ -1855,13 +1902,6 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                     update();
                     return;
                 }
-                if (card.name == "bank") {
-                    if (card.storedmana > 0) {
-                        user.mana += card.storedmana;
-                        delete user.inventory[Object.keys(user.inventory)[index]];
-                    }
-                    
-                }
                 if (card.name == "armageddon") {
                     user.mana += 12;
                     opponent.mana += 12;
@@ -1874,22 +1914,6 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         opponent.health = 1;
                     }
                     delete user.inventory[Object.keys(user.inventory)[index]];                    
-                }
-                
-            }
-            if (card.type == "Action") {
-                if (card.name == "ritual") {
-                    drawCard(strmain,true,"cultist");
-                    drawCard(strmain,true,"cultist");
-                    drawCard(strmain,true,"cultist");
-                    delete user.inventory[Object.keys(user.inventory)[index]];
-                    let loss = 0;
-                    if (user.health > 100) {
-                        loss = user.health/2;
-                    } else {
-                        loss = 50;
-                    }
-                    user.health -= loss;
                 }
             }
             user.mana -= card.manause;
