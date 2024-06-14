@@ -6,72 +6,105 @@
     <title>CARD BATTLES</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="/img/cards/froster.png">
+    <script src="node_modules/sql.js/dist/sql-wasm.js"></script>
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script type="module" src="/node_modules/fs-web/fs.min.js"></script>
+    <script type="module" src="/node_modules/buffer/index.js"></script>
+
 </head>
 <body>
-    <h1 id="gametitle">GAME O' CARDS</h1>
-    <div class="open-modal-btn-wrapper">
-        <button class="open-modal-btn">
-            Changelog
-        </button>
+    <div id="modes" class="hide">
+        <div id="easymode" class="modes">
+            <h2>Easy</h2>
+        </div>
+        <div id="normalmode" class="modes">
+            <h2>Normal</h2>
+        </div>
+        <div id="hardmode" class="modes">
+            <h2>Hard</h2>
+        </div>
+        <div id="cataclysmmode" class="modes">
+            <h2>Cataclysm</h2>
+        </div><!---
+        <div id="easymode">
+            <h2>Easy</h2>
+        </div>-->
     </div>
-    <p id="p1">Player 1: 500 health</p>
-    <p id="p2">Player 2: 500 health</p>
+    <div id="menu">
+        <div id="background">
+            <h1 id="gametitle">GAME O' CARDS</h1>
+            <div class="open-modal-btn-wrapper">
+                <button class="open-modal-btn">
+                    Changelog
+                </button>
+            </div>
+            <button id="play">
+                PLAY
+            </button>
+            
+        </div>
+    </div>
+    <div id="game" class="hide">
+        <p id="p1">Player 1: 500 health</p>
+        <p id="p2">Player 2: 500 health</p>
+        
+        <h4 id="whichturn">YOUR TURN</h4>
+        <div>
+            <p id="curmode">Current Mode: Normal</p>
+            <select id="customoptions" class="hide">
+                <option value="">No Challenge</option>
+                <option value="industrial">Industrial Revolution</option>
+                <option value="flagship">Carrier Flagship</option>
+                <option value="decay">Decay</option>
+                <option value="interest">Interest</option>
+            </select>
+        </div>
+       
+        <button type="button" id="mode">Change Mode</button>
+        <h3>Your Cards</h3>
+        <div>
+            <button type="button" id="draw">Draw Card</button>&emsp;<button type="button" id="discard">Discard (1 left)</button>&emsp;<button type="button" id="endselect" class="hide">Clear Select</button>
+            <br><br>
+            <button type="button" id="togglecardmode">Toggle Card Mode (Current: Use)</button>
+        </div>
+        
+        <table id="cards">
+            <tr class="cardrow">
+                <td id="c1" class="card"></td>
+                <td id="c2" class="card"></td>
+                <td id="c3" class="card"></td>
+                <td id="c4" class="card"></td>
+                <td id="c5" class="card"></td>
+            </tr>
+            <tr class="cardrow">
+                <td id="c6" class="card"></td>
+                <td id="c7" class="card"></td>
+                <td id="c8" class="card"></td>
+                <td id="c9" class="card"></td>
+                <td id="c10" class="card"></td>
+            </tr>
+        </table>
+        <h3>Opponent Cards</h3>
+        <table id="oppcards">
+            <tr class="cardrow">
+                <td id="o1" class="card"></td>
+                <td id="o2" class="card"></td>
+                <td id="o3" class="card"></td>
+                <td id="o4" class="card"></td>
+                <td id="o5" class="card"></td>
+            </tr>
+            <tr class="cardrow">
+                <td id="o6" class="card"></td>
+                <td id="o7" class="card"></td>
+                <td id="o8" class="card"></td>
+                <td id="o9" class="card"></td>
+                <td id="o10" class="card"></td>
+            </tr>
+        </table>
+        <p id="text"></p>
+        <button type="button" id="turn">End Turn</button>
+    </div>
     
-    <h4 id="whichturn">YOUR TURN</h4>
-    <div>
-        <p id="curmode">Current Mode: Normal</p>
-        <select id="customoptions" class="hide">
-            <option value="">No Challenge</option>
-            <option value="industrial">Industrial Revolution</option>
-            <option value="flagship">Carrier Flagship</option>
-            <option value="decay">Decay</option>
-            <option value="interest">Interest</option>
-        </select>
-    </div>
-   
-    <button type="button" id="mode">Change Mode</button>
-    <h3>Your Cards</h3>
-    <div>
-        <button type="button" id="draw">Draw Card</button>&emsp;<button type="button" id="discard">Discard (1 left)</button>&emsp;<button type="button" id="endselect" class="hide">Clear Select</button>
-        <br><br>
-        <button type="button" id="togglecardmode">Toggle Card Mode (Current: Use)</button>
-    </div>
-    
-    <table id="cards">
-        <tr class="cardrow">
-            <td id="c1" class="card"></td>
-            <td id="c2" class="card"></td>
-            <td id="c3" class="card"></td>
-            <td id="c4" class="card"></td>
-            <td id="c5" class="card"></td>
-        </tr>
-        <tr class="cardrow">
-            <td id="c6" class="card"></td>
-            <td id="c7" class="card"></td>
-            <td id="c8" class="card"></td>
-            <td id="c9" class="card"></td>
-            <td id="c10" class="card"></td>
-        </tr>
-    </table>
-    <h3>Opponent Cards</h3>
-    <table id="oppcards">
-        <tr class="cardrow">
-            <td id="o1" class="card"></td>
-            <td id="o2" class="card"></td>
-            <td id="o3" class="card"></td>
-            <td id="o4" class="card"></td>
-            <td id="o5" class="card"></td>
-        </tr>
-        <tr class="cardrow">
-            <td id="o6" class="card"></td>
-            <td id="o7" class="card"></td>
-            <td id="o8" class="card"></td>
-            <td id="o9" class="card"></td>
-            <td id="o10" class="card"></td>
-        </tr>
-    </table>
-    <p id="text"></p>
-    <button type="button" id="turn">End Turn</button>
     
  
     <div class="modal-overlay hide">

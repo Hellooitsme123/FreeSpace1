@@ -1,6 +1,7 @@
 function byId(id) {
     return document.getElementById(id);
 }
+
 var p1txt = byId("p1");
 var p2txt = byId("p2");
 var gametitle = byId("gametitle");
@@ -14,6 +15,11 @@ var discardbtn = byId("discard");
 var focused;
 var turns = 0;
 var unselectbtn = byId("endselect");
+// menu
+var playbtn = byId("play");
+var menuscreen = byId("menu");
+var backgroundscreen = byId("background");
+var modescreen = byId("modes");
 var cardmode = 1; // 1 == use, 2 == select;
 var togglecardmode = byId("togglecardmode");
 var customselect = byId("customoptions");
@@ -541,6 +547,7 @@ var cards = {
         img: "teslacoil.png",
     },
 }
+// GET SOUNDS
 
 var aimode = 1;
 var modetick = 0;
@@ -2105,4 +2112,8 @@ modebtn.addEventListener('click',function() {
 customselect.addEventListener("change",function() {
     let value = customselect.value;
     customtype = value;
+});
+playbtn.addEventListener("click",function() {
+    menuscreen.style.display = "none";
+    modescreen.style.display="flex";
 });
