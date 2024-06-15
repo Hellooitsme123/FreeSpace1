@@ -13,26 +13,85 @@
 
 </head>
 <body>
+    <div id="adventure" class="hide">
+        <div id="a1" class="asplit">
+            <div id="currentoverview">
+                <h2 id="curloc">Current Location: Home</h2>
+                <p id="curlocdesc">Start with 3 regular spearmen, 300 health, 5 mana gain, and no upgrades.</p>
+            </div>
+            <hr>
+            <div id="lore">
+                <p id="loretext"></p>
+            </div>
+            <div id="special" class="hide">
+                <h2 id="specialtitle">SPECIAL</h2>
+                <div id="sc1" class="specialcard" data-card="">
+                    
+                </div>
+                <div id="sc2" class="specialcard" data-card="">
+                    
+                </div>
+                <div id="sc2" class="specialcard" data-card="">
+                    
+                </div>
+                <!---
+                <div id="easymode">
+                    <h2>Easy</h2>
+                </div>-->
+            </div>
+            <hr>
+            <div id="proceedoverview">
+                <h2 id="proceed">Travel To Next Area: Road To Coda</h2>
+                <p id="proceeddesc"></p>
+                <button type="button" id="travel">Travel</button>
+            </div>
+        </div>
+        <div id="a2" class="asplit">
+            <h1 style="font-size:40px;">BACKPACK</h1>
+            <div id="plrstats">
+
+            </div>
+            <h3>Inventory</h3>
+            <div id="plrinventory">
+
+            </div>
+            <h3>Relics</h3>
+            <div id="plrelics">
+                
+            </div>
+        </div>
+        
+    </div>
     <div id="modes" class="hide">
         <div id="easymode" class="modes">
             <h2>Easy</h2>
+            <p>You have 2x more health, while enemies have 0.7x as much health. Your cards are also 50% better, and you gain 2x as much mana.</p>
         </div>
         <div id="normalmode" class="modes">
             <h2>Normal</h2>
+            <p>All stats are standard.</p>
         </div>
         <div id="hardmode" class="modes">
             <h2>Hard</h2>
+            <p>You have 2/3 of standard health, while enemies have 1/6 more health. You gain 20% less mana, and all cards have 80% of their original stats.</p>
         </div>
         <div id="cataclysmmode" class="modes">
             <h2>Cataclysm</h2>
+            <p>You have 1/5 of standard health, while enemies have 2x as much health. The enemy gains 140% more mana, and your card stats are decreased by 50%.</p>
         </div><!---
         <div id="easymode">
             <h2>Easy</h2>
         </div>-->
     </div>
+    <div id="startingmods" class="hide">
+        <div id="nephew" class="startmods">
+            <h2>Nephew</h2>
+            <p>Start with 3 regular spearmen, 300 health, 5 mana gain, and no upgrades.</p>
+        </div>
+    </div>
     <div id="menu">
         <div id="background">
-            <h1 id="gametitle">GAME O' CARDS</h1>
+            <h1 id="gametitle">QUEST FOR BEAN</h1>
             <div class="open-modal-btn-wrapper">
                 <button class="open-modal-btn">
                     Changelog
@@ -45,11 +104,12 @@
         </div>
     </div>
     <div id="game" class="hide">
+        <h2 id="battletitle">FIGHT AGAINST</h2>
         <p id="p1">Player 1: 500 health</p>
         <p id="p2">Player 2: 500 health</p>
         
         <h4 id="whichturn">YOUR TURN</h4>
-        <div>
+        <!--        <div>
             <p id="curmode">Current Mode: Normal</p>
             <select id="customoptions" class="hide">
                 <option value="">No Challenge</option>
@@ -60,7 +120,7 @@
             </select>
         </div>
        
-        <button type="button" id="mode">Change Mode</button>
+        <button type="button" id="mode">Change Mode</button>-->
         <h3>Your Cards</h3>
         <div>
             <button type="button" id="draw">Draw Card</button>&emsp;<button type="button" id="discard">Discard (1 left)</button>&emsp;<button type="button" id="endselect" class="hide">Clear Select</button>

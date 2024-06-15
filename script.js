@@ -5,6 +5,7 @@ function byId(id) {
 var p1txt = byId("p1");
 var p2txt = byId("p2");
 var gametitle = byId("gametitle");
+var battletitle = byId("battletitle");
 var turnbtn = byId("turn");
 var modebtn = byId("mode");
 var modetext = byId("curmode");
@@ -20,6 +21,112 @@ var playbtn = byId("play");
 var menuscreen = byId("menu");
 var backgroundscreen = byId("background");
 var modescreen = byId("modes");
+var startmodsscreen = byId("startingmods");
+var adventurescreen = byId("adventure");
+var gamescreen = byId("game");
+var sob = 1; // start or battle? 1 = start | 2 = battle
+// adventure screen vars
+var enemies = {
+    "andreas": {
+        name: "andreas",
+        formal: "Andreas",
+        managain: 4,
+        maxdiscards: 0,
+        // battle stats
+        health: 100,
+        mana: 6,
+        discards: 0,
+        inventory: {},
+        simpledeck: ["spearman","turret"],
+        deck: {},
+        mods: [],
+    },
+    "taverngroup": {
+        name: "taverngroup",
+        formal: "Tavern Regulars",
+        managain: 5,
+        maxdiscards: 1,
+        // battle stats
+        health: 100,
+        mana: 6,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["spearman","atkpotion","weakener","turret"],
+        deck: {},
+        mods: ["Damage{80}"],
+    }
+}
+var locations = {
+    "home": {
+        name: "home",
+        formal: "Home",
+        desc: "Your humble house. Where everything all starts.",
+        loretext: "A few days ago, UncleMan threatened to evict you, saying that you're a lazy couch potato that does nothing. Since becoming a homeless beggar is the last thing you want to do, you ask him for ways to stay in the house. Finally, he gives you a daunting task: Find the Bean Duplicator. A rare relic found only in the dangerous mountains, visible shaking begins. Starting with only 100 coda coins and 3 spearmen, you begin your journey to prevent yourself from getting evicted.",
+        proceedtext: "Start your journey by taking the road to Coda.",
+        nextloc: "roadtocoda",
+    },
+    "roadtocoda": {
+        name: "roadtocoda",
+        formal: "Road To Coda",
+        desc: "The long path to Coda, one of the biggest cities in the world. There, you'll be able to stock up on cards to continue your journey.",
+        loretext: "You start the trip to Coda, journeying along the path with your cards and some money. On the road, a man comes up to you, noticing your cards. He says name is Andreas, and he offers to give you powerful cards if you can beat him. However, if you lose, you have to give him all of your cards. It seems sketchy, but some better cards would be very useful.",
+        proceedtext: "Battle it out with Andreas for a chance of getting some special cards.",
+        proceedspecial: "fight|andreas",
+        nextloc: "fight",
+    },
+    "andreasvictory": {
+        name: "andreasvictory",
+        formal: "Road To Coda",
+        desc: "You win against Andreas, who enters a foul mood after losing. His want to scam you is clearly visible, but he reluctantly pulls out his card pack. You get to choose one of three cards: ",
+        loretext: "You start the trip to Coda, journeying along the path with your cards and some money. On the road, a man comes up to you, noticing your cards. He says name is Andreas, and he offers to give you powerful cards if you can beat him. It seems sketchy, but some better cards would be very useful.",
+        special: "gaincard",
+        proceedtext: "Get back up and make your way to the center of Owarp, where the trading hubs reside.",
+        nextloc: "owarpcenter",
+    },
+    "owarpcenter": {
+        name: "owarpcenter",
+        formal: "Center of Owarp",
+        desc: "Further down the road, the center of Owarp contains marketplaces and buildings, with tons of opportunities to increase your deck of cards and get special upgrades to aid yourself in battle.",
+        loretext: "After getting back up and continuing your journey, you reached the center of Owarp. Here, resides one of the biggest plazas in Boraps, so you decide that you must make the most of your time here. One of the stores in the plaza, known as Tallmart, contains a lot of useful cards. However, you don't have enough to buy them.",
+        proceedtext: "Enter the card battling tavern to earn cards and coda coins.",
+        nextloc: "tavern",
+    },
+    "tavern": {
+        name: "tavern",
+        formal: "Janjo's Tavern",
+        desc: "A tavern made by the one and only Janjo, allowing people to talk about cards and drink at the same time.",
+        loretext: "You enter the tavern, instantly getting greeted by a loud cacophony of chatter and glass clinking and card drawing. You find a group that is willing to battle with you, offering a prize of 50 coda coins if you win. However, if you lose, you'll have to pay 50 coda coins. Wouldn't it be nice to have some better cards?",
+        proceedtext: "Fight the group for a chance to earn some money.",
+        proceedspecial: "fight|taverngroup",
+        nextloc: "fight",
+    },"taverngroupvictory": {
+        name: "taverngroupvictory",
+        formal: "THE END",
+        desc: "You have beaten the demo. Good job!",
+        loretext: "You see a laid down 8 in front of you, with a condescending aura surrounding it. You have started the infinity loop.",
+        proceedtext: "This is your destiny..",
+        proceedspecial: "fight|taverngroup",
+        special: "gaincard",
+        nextloc: "fight",
+    },
+}
+// adventure screen
+var curoverview = byId("currentoverview");
+var curloctxt = byId("curloc");
+var curlocdesctxt = byId("curlocdesc");
+var curlocation = locations["home"];
+var loretxt = byId("loretext");
+var proceedtxt = byId("proceed");
+var proceeddesc = byId("proceeddesc");
+var travelbtn = byId("travel");
+var specialdiv = byId("special");
+var statsdiv = byId("plrstats");
+var inventorydiv = byId("plrinventory");
+var inventorytable;
+var speciallock = false;
+// new run vars
+var startmod;
+// CARD MODES
 var cardmode = 1; // 1 == use, 2 == select;
 var togglecardmode = byId("togglecardmode");
 var customselect = byId("customoptions");
@@ -28,16 +135,30 @@ var deathmode = "";
 var Game = {
     turn: 1,
     p1: {
+        managain: 5,
+        maxdiscards: 1,
+        coins: 20,
+        startingmana: 10,
+        // battlestats
         health: 300,
         mana: 10,
         discards: 1,
         inventory: {},
+        deck: {},
+        battledeck: {},
+        mods: [],
     },
     p2: {
+        managain: 5,
+        maxdiscards: 1,
+        // battlestats
         health: 300,
         mana: 10,
         discards: 1,
         inventory: {},
+        deck: {},
+        battledeck: {},
+        mods: [],
     },
 };
 var turn = Game.turn;
@@ -558,8 +679,13 @@ var oppturndone = false;
 var blockoppturn = false;
 var blockturnover = false;
 var template = {
+    formalname: "",
     health: 300,
     mana: 10,
+    discards: 1,
+    inventory: {},
+    deck: {},
+    battledeck: {},
 }
 var openBtn = document.querySelector(".open-modal-btn");
 var modal = document.querySelector(".modal-overlay");
@@ -623,116 +749,141 @@ function assign(object, source) {
     }
     
 }
+function setDisplay(element,value) {
+    element.style.display = value;
+}
+function fullSD(element,successor,t1,t2) {
+    element.style.opacity = 0;
+    successor.style.opacity = 1;
+    setDisplay(successor,t2);
+    window.setTimeout(setDisplay,200,element,t1);
+}
 function drawCard(player,specific = false,choice = null,otherargs = null) {
-    if (Object.keys(Game[player].inventory).length >= 10) {
+    let table = "inventory";
+    if (otherargs == null) {
+        
+    }
+    if (otherargs == "addToDeck") {
+        table = "deck";
+    } 
+    if (Object.keys(Game[player][table]).length >= 10) {
         return "Too many cards!";
     }
-    let chosenkey = randKey(cards);
+
+    let chosenkey;
+    chosenkey = randKey(Game[player].deck);
+    if (otherargs == "addToDeck") {
+        chosenkey = randKey(cards);
+        
+    }
     if (specific == true) {
         chosenkey = cards[choice];
     }
+    console.log(chosenkey,choice);
     let key = {};
     assign(key,chosenkey);
     key.effects = [];
-    if (key.obtainable == false && specific == false) {
+    if (key.obtainable == false && specific == false && otherargs == null) {
         drawCard(player);
         return false;
     }
-    if (Object.hasOwn(Game[player].inventory,key.name)) {
+    
+    if (Object.hasOwn(Game[player][table],key.name)) {
         let i2 = 0;
         do {
             i2++;
-        } while (i2 <1000 && Object.hasOwn(Game[player].inventory,key.name+i2));
+        } while (i2 <1000 && Object.hasOwn(Game[player][table],key.name+i2));
         
-        if (Object.hasOwn(Game[player].inventory,key.name+i2) == false) {
-            Game[player].inventory[key.name+i2] = key;
+        if (Object.hasOwn(Game[player][table],key.name+i2) == false) {
+            Game[player][table][key.name+i2] = key;
         }
     } else {
-        Game[player].inventory[key.name] = key;
+        Game[player][table][key.name] = key;
     }
+    let sound = new Audio('sounds/draw-card.mp3');
+    sound.volume = 0.4;
+    sound.play();
     if (otherargs == null) {
-        let sound = new Audio('sounds/draw-card.mp3');
-        sound.volume = 0.4;
-        sound.play();
+        if (key.name == "etherealguardian") {
+            let chosen;
+            for (let i = 0; i < Object.keys(Game[player].inventory).length; i++) {
+                let tempchosen = Game[player].inventory[Object.keys(Game[player].inventory)[i]];
+                if (tempchosen.effects.some(str => str.includes("Guarded")) == false) {
+                    chosen = tempchosen;
+                    break;
+                }
+            }
+            if (chosen == null) {
+            } else {
+                chosen.effects.push("Guarded{1,5}")
+            }
+        }
+        if (player == "p1") {
+            if (currentmode == "Easy") {
+                key.hp *= 1.5;
+                if (key.type == "Attack") {
+                    key.atk *= 1.5;
+                }
+                if (key.type == "Healing") {
+                    key.heal *= 1.5;
+                }
+            }
+            if (currentmode == "Hard") {
+                key.hp *= 0.8;
+                if (key.hp < 5) {
+                    key.hp = 5;
+                }
+                if (key.type == "Attack") {
+                    key.atk *= 0.8;
+                    if (key.atk < 5) {
+                        key.atk = 5;
+                    }
+                }
+                if (key.type == "Healing") {
+                    key.heal *= 0.8;
+                    if (key.heal < 5) {
+                        key.heal = 5;
+                    }
+                }
+            }
+            if (currentmode == "Insane") {
+                key.hp -= 35;
+                if (key.hp < 5) {
+                    key.hp = 5;
+                }
+                if (key.type == "Attack") {
+                    key.atk *= 0.6;
+                    if (key.atk < 5) {
+                        key.atk = 5;
+                    }
+                }
+                if (key.type == "Healing") {
+                    key.heal -= 20;
+                    if (key.heal < 5) {
+                        key.heal = 5;
+                    }
+                }
+            }
+            if (currentmode == "Cataclysm") {
+                key.hp *= 0.5;
+                if (key.hp < 5) {
+                    key.hp = 5;
+                }
+                if (key.type == "Attack") {
+                    key.atk *= 0.5;
+                    if (key.atk < 5) {
+                        key.atk = 5;
+                    }
+                }
+                if (key.type == "Healing") {
+                    key.heal = 0;
+                }
+            }
+        }
     }
     
-    if (key.name == "etherealguardian") {
-        let chosen;
-        for (let i = 0; i < Object.keys(Game[player].inventory).length; i++) {
-            let tempchosen = Game[player].inventory[Object.keys(Game[player].inventory)[i]];
-            if (tempchosen.effects.some(str => str.includes("Guarded")) == false) {
-                chosen = tempchosen;
-                break;
-            }
-        }
-        if (chosen == null) {
-        } else {
-            chosen.effects.push("Guarded{1,5}")
-        }
-    }
-    if (player == "p1") {
-        if (currentmode == "Easy") {
-            key.hp += 30;
-            if (key.type == "Attack") {
-                key.atk += 10;
-            }
-            if (key.type == "Healing") {
-                key.heal += 10;
-            }
-        }
-        if (currentmode == "Hard") {
-            key.hp -= 20;
-            if (key.hp < 5) {
-                key.hp = 5;
-            }
-            if (key.type == "Attack") {
-                key.atk *= 0.8;
-                if (key.atk < 5) {
-                    key.atk = 5;
-                }
-            }
-            if (key.type == "Healing") {
-                key.heal -= 10;
-                if (key.heal < 5) {
-                    key.heal = 5;
-                }
-            }
-        }
-        if (currentmode == "Insane") {
-            key.hp -= 35;
-            if (key.hp < 5) {
-                key.hp = 5;
-            }
-            if (key.type == "Attack") {
-                key.atk *= 0.6;
-                if (key.atk < 5) {
-                    key.atk = 5;
-                }
-            }
-            if (key.type == "Healing") {
-                key.heal -= 20;
-                if (key.heal < 5) {
-                    key.heal = 5;
-                }
-            }
-        }
-        if (currentmode == "Cataclysm") {
-            key.hp -= 50;
-            if (key.hp < 5) {
-                key.hp = 5;
-            }
-            if (key.type == "Attack") {
-                key.atk *= 0.7;
-                if (key.atk < 5) {
-                    key.atk = 5;
-                }
-            }
-            if (key.type == "Healing") {
-                key.heal = 0;
-            }
-        }
-    }
     update();
+    return Object.keys(Game[player][table])[Object.keys(Game[player][table]).length-1];
 } 
 
 Array.from(document.getElementsByClassName("card")).forEach(function(element) {
@@ -749,26 +900,31 @@ function formateffect(type,effect) {
         return args;
     }
 }
-function update() {
+function update(reset = null) {
     gametitle.innerHTML = "GAME O' CARDS "+deathmode;
-    p1txt.innerHTML = "Player 1: "+p1.health+" Health | "+p1.mana+" Mana";
-    p2txt.innerHTML = "Player 2: "+p2.health+" Health | "+p2.mana+" Mana | AI MODE "+aimode+" (for testing)";
+    p1txt.innerHTML = "You: "+p1.health+" Health | "+p1.mana+" Mana";
+    p2txt.innerHTML = p2.formal+": "+p2.health+" Health | "+p2.mana+" Mana | AI MODE "+aimode+" (for testing)";
     discardbtn.innerHTML = "Discard ("+p1.discards+" left)";
     if (turn == 1) {
         whichturn.innerHTML = "YOUR TURN";
     } else {
         whichturn.innerHTML = "OPP TURN";
     }
-    if (p1.health <= 0) {
-        gametitle.innerHTML = "YOU LOSE!!!!";
+    if (reset == null && adventurescreen.style.display == "none") {
+        if (p1.health <= 0) {
+            gametitle.innerHTML = "YOU LOSE!!!!";
+            endBattle(2);
+        }
+        if (p2.health <= 0) {
+            gametitle.innerHTML = "YOU WIN!!!!";
+            endBattle(1);
+        }
     }
-    if (p2.health <= 0) {
-        gametitle.innerHTML = "YOU WIN!!!!";
-    }
-    if (p1.health <= 0 || p2.health <= 0) {
+    
+    /*if (p1.health <= 0 || p2.health <= 0) {
         whichturn.innerHTML = "<a href='.'>PLAY AGAIN</a>";
         throw new Error('GAME ENDED');
-    }
+    }*/
     Array.from(document.getElementsByClassName("card")).forEach(function(element) {
         let card = element;
         let id = element.getAttribute("id");
@@ -908,14 +1064,45 @@ function update() {
     
     });
 }
-function start() {
+function resetBattleUI(){
+    p1.inventory = {};
+    p2.inventory = {};
+    update(true);
+}
+function startBattle(enemy) {
+    let zeopp = enemies[enemy];
+    battletitle.innerHTML = "Fight Against "+zeopp.formal;
+    p1.mana = p1.startingmana;
+    assign(p2,zeopp);
+    for (let i = 0; i<zeopp.simpledeck.length; i++) {
+        drawCard("p2",true,zeopp.simpledeck[i],"addToDeck");
+    }
     for (let i = 0; i < 3; i++) {
         drawCard("p1",false,null,"Start");
     }
     for (let j = 0; j < 3; j++) {
         drawCard("p2",false,null,"Start");
     }
+    gamescreen.style.display = "block";
     update();
+}
+function endBattle(outcome) {
+    // 1 == win | 2== lose
+    if (outcome == 1) {
+        curlocation = locations[p2.name+"victory"];
+        resetBattleUI();
+        fullSD(gamescreen,menuscreen,"none","block");
+        sob = 2;
+        //window.setTimeout(enterAdventureScreen,200);
+        gametitle.innerHTML = "Victory!";
+        playbtn.innerHTML = "CONTINUE";
+        openBtn.style.display = "none";
+    }
+    if (outcome == 2) {
+        gamescreen.style.display = "none";
+        menuscreen.style.display = "block";
+        gametitle.innerHTML = "You Lose..";
+    }
 }
 /*
 for (let i = 0; i < 3; i++) {
@@ -1014,6 +1201,7 @@ function turnover(player) {
         plr = p2;
     }
     plr.discards = 1;
+    plr.mana += plr.managain;
     for (let i = 0; i < Object.keys(plr.inventory).length; i++) {
         let zecard = plr.inventory[Object.keys(plr.inventory)[i]];
         if (zecard.coolleft != 0) {
@@ -1112,20 +1300,7 @@ function playerTurn() {
         if (prevturn == 2) {
 
         }
-        p2.mana += 5;
-        if (currentmode == "Easy") {
-            p2.mana -= 1;
-        }
-        if (currentmode == "Hard") {
-            p2.mana += 3;
-        }
-        if (currentmode == "Insane") {
-            p2.mana += 5;
-        }
-        if (currentmode == "Cataclysm") {
-            p2.mana += 7;
-        }
-        console.log(p2.mana);
+
         update();
     }
     
@@ -1306,16 +1481,6 @@ function oppChoice(start) {
 function oppTurn() {
     // states: spend, save, neutral
     turnover("p1");
-    p1.mana += 5;
-    if (currentmode == "Easy") {
-        p1.mana += 5;
-    }
-    if (currentmode == "Hard") {
-        p1.mana -= 1;
-    }
-    if (currentmode == "Insane") {
-        p1.mana -= 2;
-    }
     if (currentmode == "Custom" && customtype == "interest") {
         p1.mana -= 3;
         p1.mana *= 1.2;
@@ -1970,7 +2135,148 @@ function discard(player, index = null) {
     }
     
 }
-start();
+function setStartMod(mod) {
+    if (mod == "nephew") {
+        drawCard("p1",true,"spearman","addToDeck");
+        drawCard("p1",true,"spearman","addToDeck");
+        drawCard("p1",true,"spearman","addToDeck");
+    }
+}
+function enterAdventureScreen() {
+    console.log("yuh");
+    adventurescreen.style.display = "block";
+    curloctxt.innerHTML = "Current Location: "+curlocation.formal;
+    curlocdesctxt.innerHTML = curlocation.desc;
+    loretxt.innerHTML = curlocation.loretext;
+    if (Object.hasOwn(curlocation,"proceedspecial")) {
+        let splitarr1 = curlocation.proceedspecial.split("|");
+        let type = splitarr1[0];
+        let typearg = splitarr1[1];
+        console.log(type,typearg);
+        if (type == "fight") {
+            proceedtxt.innerHTML = "Begin Fight With "+enemies[typearg].formal;
+            travelbtn.innerHTML = "Begin Fight";
+        }
+    } else {
+        proceedtxt.innerHTML = "Travel To Next Location: "+locations[curlocation.nextloc].formal;
+        travelbtn.innerHTML = "Travel";
+    }
+    proceeddesc.innerHTML = curlocation.proceedtext;
+    if (Object.hasOwn(curlocation,"special")) {
+        let special = curlocation.special;
+        if (special == "gaincard") {
+            specialdiv.style.display = "block";
+            Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+                let card = randKey(cards);
+                element.innerHTML = `<h2>${card.formal}</h2>`;
+                element.setAttribute("data-card",card.name);
+                let text = `<p>${card.desc}<br>${card.hp} HP`;
+                if (Object.hasOwn(card, "atk")) {
+                    text +=` | ${card.atk} ATK`;
+                }
+                if (Object.hasOwn(card, "heal")) {
+                    text +=` | ${card.heal} HEAL`;
+                }
+                if (Object.hasOwn(card, "cool")) {
+                    text +=` | ${card.cool} COOLDOWN`;
+                }
+                text += "</p>";
+                console.log(text);
+                element.innerHTML += text;
+                console.log(element.innerHTML);
+            });
+        }
+    } else {
+        specialdiv.style.display = "none";
+    }
+    statsdiv.innerHTML = `
+    <p>
+        ${p1.health} Health | ${p1.coins} Coda Coins
+    </p>
+    <p>
+        ${p1.managain} Mana Gain | ${p1.maxdiscards} Discards
+    </p>
+    `;
+    updateAdventureScreen();
+    
+    
+}
+function updateAdventureScreen() {
+    statsdiv.innerHTML = `
+    <p>
+        ${p1.health} Health | ${p1.coins} Coda Coins
+    </p>
+    <p>
+        ${p1.managain} Mana Gain | ${p1.maxdiscards} Discards
+    </p>
+    `;
+    if (inventorytable != null) {
+        inventorytable.remove();
+    }
+    inventorytable = document.createElement('table');
+    inventorytable.id = "inventorytable";
+    inventorydiv.appendChild(inventorytable);
+    let remainder = Object.keys(p1.deck).length % 4;
+    let finaltr;
+    for (let j = 0; j < Math.ceil(Object.keys(p1.deck).length/4); j++) {
+        let zerow = document.createElement('tr');
+        if (j-Math.ceil(Object.keys(p1.deck).length/4) == 1) {
+            finaltr = zerow;
+        }
+        inventorytable.appendChild(zerow);
+        for (let i = 0; i < 4; i++) {
+            if ((j*4)+i > Object.keys(p1.deck).length-1) {
+                break;
+            }
+            let card = document.createElement('td');
+            let curcard = p1.deck[Object.keys(p1.deck)[(j*4)+i]];
+            
+            card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | ";
+            if (Object.hasOwn(curcard,"atk")) {
+                card.innerHTML += curcard.atk+" ATK | ";
+            }
+            if (Object.hasOwn(curcard,"heal")) {
+                card.innerHTML += curcard.heal+" HEAL | ";
+            }
+            if (Object.hasOwn(curcard,"coolleft")) {
+                if (Object.hasOwn(curcard,"uses") && curcard.uses != -1) {
+
+                } else {
+                    card.innerHTML += curcard.coolleft+" CD | ";
+                }
+                
+            }
+            if (Object.hasOwn(curcard,"ammo")) {
+                card.innerHTML += curcard.ammo+" AMMO | ";
+            }
+            if (Object.hasOwn(curcard,"tempuses")) {
+                card.innerHTML += curcard.tempuses+" AMMO | ";
+            }
+            if (Object.hasOwn(curcard,"uses") && Object.hasOwn(curcard,"tempuses") == false) {
+                card.innerHTML += curcard.uses+" USES | ";
+            }
+            if (Object.hasOwn(curcard,"storedmana")) {
+                card.innerHTML += curcard.storedmana+" STORED MANA | ";
+            }
+            if (Object.hasOwn(curcard,"manause")) {
+                card.innerHTML += curcard.manause+" MU";
+            }
+            card.innerHTML += "<br><hr><span class='desc'>"+curcard.desc+"</span>";
+            let tempimg;
+            if (curcard.img != "") {
+                tempimg = "url(img/cards/"+curcard.name+".png)";  
+                card.style.backgroundSize = "140px 160px";
+            } else {
+                tempimg = "url()";
+                card.style.backgroundSize = "140px 160px";
+            }
+            card.style.backgroundSize = "140px 160px";
+            card.style.backgroundImage = tempimg;
+            zerow.appendChild(card);
+        }
+    }
+    
+}
 /*function hideStat(element,show) {
     console.log("YES");
     let id = element.getAttribute("id");
@@ -2060,7 +2366,7 @@ unselectbtn.addEventListener('click',function() {
     }
     
 })
-modebtn.addEventListener('click',function() {
+/*modebtn.addEventListener('click',function() {
     let prevmode = currentmode;
     let order = ["Easy","Normal","Hard","Insane","Cataclysm","Custom"];
     let index = order.indexOf(currentmode);
@@ -2112,8 +2418,66 @@ modebtn.addEventListener('click',function() {
 customselect.addEventListener("change",function() {
     let value = customselect.value;
     customtype = value;
-});
+});*/
+
 playbtn.addEventListener("click",function() {
-    menuscreen.style.display = "none";
-    modescreen.style.display="flex";
+    console.log(sob, sob == 2);
+    if (sob == 2) {
+        console.log("UHHH");
+        fullSD(menuscreen,adventurescreen,"none","block");
+        window.setTimeout(enterAdventureScreen,200);
+    }
+    if (sob == 1) {
+        sob = 2;
+        fullSD(menuscreen,modescreen,"none","flex");
+    }
+    
+    
+});
+// startBattle("andreas");
+Array.from(document.getElementsByClassName("modes")).forEach(function(element) {
+    element.addEventListener('click', function() {
+        let id = element.getAttribute("id");
+        let cleaned = id.replace("mode","");
+        cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+        currentmode = cleaned;
+        fullSD(modescreen,startmodsscreen,"none","flex");
+    });
+});
+Array.from(document.getElementsByClassName("startmods")).forEach(function(element) {
+    element.addEventListener('click', function() {
+        let startmod = element.getAttribute("id");
+        setStartMod(startmod);
+        fullSD(startmodsscreen,adventurescreen,"none","block");
+        window.setTimeout(enterAdventureScreen,200);
+        document.body.style.overflowY = "scroll";
+        document.body.style.height = null;
+        document.body.style.width = null;
+    });
+});
+Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if (speciallock == false) {
+            let card = element.getAttribute("data-card");
+            drawCard("p1",true,card,"addToDeck");
+            updateAdventureScreen();
+            speciallock = true;
+            element.style.border = "5px solid black";
+        }
+        
+    });
+});
+travelbtn.addEventListener("click", function() {
+    if (travelbtn.innerHTML == "Begin Fight") {
+        startBattle(curlocation.proceedspecial.split("|")[1]);
+        fullSD(adventurescreen,gamescreen,"none","block");
+    }
+    if (travelbtn.innerHTML == "Travel") {
+        curlocation = locations[curlocation.nextloc];
+        enterAdventureScreen();
+    }
+    speciallock = false;
+    Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+        element.style.border = "2px solid black";
+    });
 });
