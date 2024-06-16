@@ -25,6 +25,7 @@ var startmodsscreen = byId("startingmods");
 var adventurescreen = byId("adventure");
 var gamescreen = byId("game");
 var sob = 1; // start or battle? 1 = start | 2 = battle
+var skipped = false;
 // adventure screen vars
 var enemies = {
     "andreas": {
@@ -47,13 +48,27 @@ var enemies = {
         managain: 5,
         maxdiscards: 1,
         // battle stats
-        health: 100,
+        health: 140,
         mana: 6,
         discards: 1,
         inventory: {},
         simpledeck: ["spearman","atkpotion","weakener","turret"],
         deck: {},
-        mods: ["Damage{80}"],
+        mods: [],
+    },
+    "janjo": {
+        name: "janjo",
+        formal: "Janjo, Tavern Owner",
+        managain: 7,
+        maxdiscards: 1,
+        // battle stats
+        health: 200,
+        mana: 8,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["flamethrower","healbubble","weakener","soulkeeper","etherealguardian"],
+        deck: {},
+        mods: ["FlameTouch{3,2}"],
     }
 }
 var locations = {
@@ -72,13 +87,16 @@ var locations = {
         loretext: "You start the trip to Coda, journeying along the path with your cards and some money. On the road, a man comes up to you, noticing your cards. He says name is Andreas, and he offers to give you powerful cards if you can beat him. However, if you lose, you have to give him all of your cards. It seems sketchy, but some better cards would be very useful.",
         proceedtext: "Battle it out with Andreas for a chance of getting some special cards.",
         proceedspecial: "fight|andreas",
-        nextloc: "fight",
+        nextloc: "andreasvictory",
+        skipallowed: true,
     },
     "andreasvictory": {
         name: "andreasvictory",
         formal: "Road To Coda",
-        desc: "You win against Andreas, who enters a foul mood after losing. His want to scam you is clearly visible, but he reluctantly pulls out his card pack. You get to choose one of three cards: ",
-        loretext: "You start the trip to Coda, journeying along the path with your cards and some money. On the road, a man comes up to you, noticing your cards. He says name is Andreas, and he offers to give you powerful cards if you can beat him. It seems sketchy, but some better cards would be very useful.",
+        desc: "Andreas defeated!",
+        altdesc: "Too good to be true!",
+        loretext: "You win against Andreas, who enters a foul mood after losing. His want to scam you is clearly visible, but he reluctantly pulls out his card pack. You get to choose one of three cards: ",
+        alttext: "'Powerful' cards? That doesn't seem right. What if he's hogging them all for himself, and if he somehow loses, he'll just give out one of his weaker cards? You decline the suspicious offer.",
         special: "gaincard",
         proceedtext: "Get back up and make your way to the center of Owarp, where the trading hubs reside.",
         nextloc: "owarpcenter",
@@ -98,9 +116,43 @@ var locations = {
         loretext: "You enter the tavern, instantly getting greeted by a loud cacophony of chatter and glass clinking and card drawing. You find a group that is willing to battle with you, offering a prize of 50 coda coins if you win. However, if you lose, you'll have to pay 50 coda coins. Wouldn't it be nice to have some better cards?",
         proceedtext: "Fight the group for a chance to earn some money.",
         proceedspecial: "fight|taverngroup",
-        nextloc: "fight",
-    },"taverngroupvictory": {
+        nextloc: "taverngroupvictory",
+        skipallowed: true,
+    },
+    "taverngroupvictory": {
         name: "taverngroupvictory",
+        formal: "Janjo's Tavern",
+        desc: "The taverngoers have been defeated!",
+        altdesc: "You decided to not fight the taverngoers.",
+        loretext: "You gained about 50 coins from your victory, despite having only a few cards. Word spread around the tavern about your skill, and before you could leave, you were confronted by the tavern owner, Janjo. He proposed a bet of 100 coda coins and a special upgraded card, saying that whoever lost has to pay the winner. It's risky, but the reward is much more than enough to get a few things at Tallmart. Do you accept the bet?",
+        alttext: "You decided to not fight the tavern group, intimidated by their cards. However, you soon stumble upon an even stronger opponent. The tavern owner himself. You talked with him, telling him about your card adventures. Eventually, he proposed a bet of 100 coda coins and a special upgraded card, saying that whoever lost has to pay the winner. He said it'll be a helpful reward for you, but you'll only get it if you're worthy enough. However, the prize money is undoubtedly handsome sum. Do you accept the bet?",
+        proceedtext: "Battle Janjo for a chance to get 100 coda coins.",
+        proceedspecial: "fight|janjo",
+        nextloc: "janjovictory",
+        skipallowed: true,
+    },
+    "janjovictory": {
+        name: "janjovictory",
+        formal: "Janjo's Tavern",
+        desc: "You won against Janjo!",
+        altdesc: "You decided to not take Janjo's proposal.",
+        loretext: "In a miraculous turn of events, you defeated the tavern owner himself! Chatter bursted throughout the building, but you dashed out before any other challengers could appear. Now, with the amount of coins you have, there's no doubt you'll be able to purchase a few aids for your adventure.",
+        alttext: "Too scared to take the deal, you decided that it'll be better to play it safe. You're worried about whether or not you'll have enough to purchase a sufficient amount of items for your journey, but you decide to go to Tallmart anyways.",
+        special: "gaincardupg",
+        proceedtext: "Go to Tallmart to buy upgrades for your journey.",
+        nextloc: "tallmart",
+    },
+    "tallmart": {
+        name: "tallmart",
+        formal: "Tallmart",
+        desc: "A tall store that contains a wide range of items to buy, from food to nukes to cards.",
+        loretext: "You step into the store, the faint, generic shopping music playing. Struggling to breathe the thick night air, tired from all of your traveling, you look at the aisles.",
+        proceedtext: "Leave the store and continue your trek along the road.",
+        special: "tallmart",
+        nextloc: "zeend",
+    },
+    "zeend": {
+        name: "zeend",
         formal: "THE END",
         desc: "You have beaten the demo. Good job!",
         loretext: "You see a laid down 8 in front of you, with a condescending aura surrounding it. You have started the infinity loop.",
@@ -120,10 +172,14 @@ var proceedtxt = byId("proceed");
 var proceeddesc = byId("proceeddesc");
 var travelbtn = byId("travel");
 var specialdiv = byId("special");
+var specialdiv2 = byId("special2");
 var statsdiv = byId("plrstats");
 var inventorydiv = byId("plrinventory");
 var inventorytable;
 var speciallock = false;
+var speciallock2 = false;
+var curspecial = null;
+var alttravelbtn = byId("alttravel");
 // new run vars
 var startmod;
 // CARD MODES
@@ -900,6 +956,13 @@ function formateffect(type,effect) {
         return args;
     }
 }
+function cleanseModifier(type,mod) {
+    if (type=="Norm") {
+        let newmod = mod.split("{")[1];
+        let nmp2 = newmod[1].replace("}","");
+        return [newmod[0],nmp2];
+    }
+}
 function update(reset = null) {
     gametitle.innerHTML = "GAME O' CARDS "+deathmode;
     p1txt.innerHTML = "You: "+p1.health+" Health | "+p1.mana+" Mana";
@@ -1097,11 +1160,23 @@ function endBattle(outcome) {
         gametitle.innerHTML = "Victory!";
         playbtn.innerHTML = "CONTINUE";
         openBtn.style.display = "none";
+        let enemy = enemies[p2.name];
+        p1.coins += Math.round((randNum(10,20)/10)*(enemy.health/15));
+        if (enemy.name == "taverngroup") {
+            p1.coins += 50;
+        }
+        if (enemy.name == "janjo") {
+            p1.coins += 100;
+        }
     }
     if (outcome == 2) {
-        gamescreen.style.display = "none";
-        menuscreen.style.display = "block";
+        resetBattleUI();
+        fullSD(gamescreen,menuscreen,"none","block");
+        sob = 2;
+        //window.setTimeout(enterAdventureScreen,200);
         gametitle.innerHTML = "You Lose..";
+        playbtn.innerHTML = "RESTART";
+        openBtn.style.display = "none";
     }
 }
 /*
@@ -1631,7 +1706,13 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         
                         
                     }
-                    
+                    if (user.mods.some(str => str.includes("FlameTouch"))) {
+                        let cm = cleanseModifier("Norm",user.mods.filter(str => str.includes("FlameTouch"))[0]);
+                        console.log(cm);
+                        if (zeattacked.effects.some(str => str.includes("Burning")) == false) {
+                            zeattacked.effects.push(`Burning{${cm[0]},${cm[1]}}`);
+                        }
+                    }
                     if (card.name == "bandit") {
                         let tempchance = randNum(1,2);
                         if (tempchance == 2) {
@@ -2139,7 +2220,6 @@ function setStartMod(mod) {
     if (mod == "nephew") {
         drawCard("p1",true,"spearman","addToDeck");
         drawCard("p1",true,"spearman","addToDeck");
-        drawCard("p1",true,"spearman","addToDeck");
     }
 }
 function enterAdventureScreen() {
@@ -2148,6 +2228,15 @@ function enterAdventureScreen() {
     curloctxt.innerHTML = "Current Location: "+curlocation.formal;
     curlocdesctxt.innerHTML = curlocation.desc;
     loretxt.innerHTML = curlocation.loretext;
+    if (Object.hasOwn(curlocation,"skipallowed")) {
+        alttravelbtn.style.display = "block";
+    } else {
+        alttravelbtn.style.display = "none";
+    }
+    if (skipped == true) {
+        curlocdesctxt.innerHTML = curlocation.altdesc;
+        loretxt.innerHTML = curlocation.alttext;
+    }
     if (Object.hasOwn(curlocation,"proceedspecial")) {
         let splitarr1 = curlocation.proceedspecial.split("|");
         let type = splitarr1[0];
@@ -2162,14 +2251,128 @@ function enterAdventureScreen() {
         travelbtn.innerHTML = "Travel";
     }
     proceeddesc.innerHTML = curlocation.proceedtext;
-    if (Object.hasOwn(curlocation,"special")) {
+    if (Object.hasOwn(curlocation,"special") && skipped == false) {
         let special = curlocation.special;
-        if (special == "gaincard") {
+        if (special.includes("gaincard") || special == "tallmart") {
             specialdiv.style.display = "block";
             Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+                if (element.getAttribute("id").includes("a")) {
+                    return;
+                }
                 let card = randKey(cards);
+                if (special.includes("gaincardupg") || special =="tallmart") {
+                    let chance = randNum(1,2);
+                    if (chance == 1) {
+                        let chance2 = randNum(1,10);
+                        if (chance2 > 0) {
+                            if (Object.hasOwn(card,"atk")) {
+                                card.atk *= randNum(10,20)/10;
+                                card.atk = Math.round(card.atk);
+                            }
+                            if (Object.hasOwn(card,"heal")) {
+                                card.heal *= randNum(10,20)/10;
+                                card.heal = Math.round(card.atk);
+                            }
+                        } 
+                        if (chance2 > 4) {
+                            let prevcool = card.cool;
+                            card.cool -= randNum(1,3);
+                            if (card.cool < 1 && prevcool != 0) {
+                                card.cool = 1;
+                            }
+                            card.hp *= randNum(10,20)/10;
+                            card.hp = Math.round(card.hp);
+                        }
+                        if (chance2 > 7) {
+                            let prevcool = card.manause;
+                            card.manause -= randNum(1,6)/2;
+                            if (card.manause < 1 && prevcool != 0) {
+                                card.manause = 1;
+                            }
+                        }
+                    }
+                };
                 element.innerHTML = `<h2>${card.formal}</h2>`;
                 element.setAttribute("data-card",card.name);
+                let text = `<p>${card.desc}<br><span style='font-size:13px;'>${card.hp} HP`;
+                if (Object.hasOwn(card, "atk")) {
+                    text +=` | ${card.atk} ATK`;
+                }
+                if (Object.hasOwn(card, "heal")) {
+                    text +=` | ${card.heal} HEAL`;
+                }
+                if (Object.hasOwn(card, "ammo")) {
+                    text +=` | ${card.ammo} AMMO`;
+                }
+                text += ` | ${card.manause} MU`;
+                if (Object.hasOwn(card, "cool")) {
+                    text +=` | ${card.cool} COOLDOWN`;
+                }
+                text += "</span></p>";
+                console.log(text);
+                element.innerHTML += text;
+                console.log(element.innerHTML);
+            });
+        }
+        if (special == "tallmart") {
+            specialdiv2.style.display = "block";
+            Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+                if (element.getAttribute("id").includes("a") == false) {
+                    return false;
+                }
+                let card = randKey(cards);
+                let chance = randNum(1,10);
+                if (chance >= 4) {
+                    let chance2 = randNum(1,10);
+                    if (chance2 > 0) {
+                        if (Object.hasOwn(card,"atk")) {
+                            card.atk *= randNum(10,20)/10;
+                            card.atk = Math.round(card.atk);
+                        }
+                        if (Object.hasOwn(card,"heal")) {
+                            card.heal *= randNum(10,20)/10;
+                            card.heal = Math.round(card.atk);
+                        }
+                    } 
+                    if (chance2 > 4) {
+                        let prevcool = card.cool;
+                        card.cool -= randNum(1,3);
+                        if (card.cool < 1 && prevcool != 0) {
+                            card.cool = 1;
+                        }
+                        card.hp *= randNum(10,20)/10;
+                        card.hp = Math.round(card.hp);
+                    }
+                    if (chance2 > 7) {
+                        let prevcool = card.manause;
+                        card.manause -= randNum(1,6)/2;
+                        if (card.manause < 1 && prevcool != 0) {
+                            card.manause = 1;
+                        }
+                    }
+                }
+                element.innerHTML = `<h2>${card.formal}</h2>`;
+                element.setAttribute("data-card",card.name);
+                let cost = Math.round(Math.log(card.hp)**1.3)*3;
+                console.log(cost);
+                if (Object.hasOwn(card,"atk")) {
+                    if (card.cool != 0 && card.manause != 0) {
+                        cost +=((card.atk/card.cool)*5)/(Math.log(card.manause*20)/1.8);
+                    } else {
+                        cost += card.atk*2;
+                    }
+                    console.log(cost);
+                }
+                if (Object.hasOwn(card,"heal")) {
+                    cost += (card.heal*5)/card.manause;
+                }
+                
+                if (card.type == "Support" || card.type == "Action") {
+                    cost *= Math.log((card.manause+2)*2);
+                }
+                cost = Math.round(cost);
+                element.setAttribute("data-cost",cost);
+                
                 let text = `<p>${card.desc}<br>${card.hp} HP`;
                 if (Object.hasOwn(card, "atk")) {
                     text +=` | ${card.atk} ATK`;
@@ -2177,18 +2380,24 @@ function enterAdventureScreen() {
                 if (Object.hasOwn(card, "heal")) {
                     text +=` | ${card.heal} HEAL`;
                 }
+                text += ` | ${card.manause} MU`;
                 if (Object.hasOwn(card, "cool")) {
                     text +=` | ${card.cool} COOLDOWN`;
                 }
+                text += ` | ${cost} COST`;
                 text += "</p>";
                 console.log(text);
                 element.innerHTML += text;
                 console.log(element.innerHTML);
             });
+        } else {
+            specialdiv2.style.display = "none";
         }
     } else {
         specialdiv.style.display = "none";
+        specialdiv2.style.display = "none";
     }
+   
     statsdiv.innerHTML = `
     <p>
         ${p1.health} Health | ${p1.coins} Coda Coins
@@ -2457,17 +2666,34 @@ Array.from(document.getElementsByClassName("startmods")).forEach(function(elemen
 });
 Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
     element.addEventListener('click', function() {
-        if (speciallock == false) {
+        if (speciallock == false && element.getAttribute("id").includes("a") == false) {
             let card = element.getAttribute("data-card");
             drawCard("p1",true,card,"addToDeck");
             updateAdventureScreen();
             speciallock = true;
-            element.style.border = "5px solid black";
+            element.style.border = "7px solid black";
+        }
+        if (element.getAttribute("id").includes("a") && element.style.border != "7px solid black") {
+            let card = element.getAttribute("data-card");
+            if (p1.coins >= Number(element.getAttribute("data-cost"))) {
+                p1.coins -= Number(element.getAttribute("data-cost"));
+            } else {
+                return false;
+            }
+            drawCard("p1",true,card,"addToDeck");
+            updateAdventureScreen();
+            element.style.border = "7px solid black";
         }
         
     });
 });
 travelbtn.addEventListener("click", function() {
+    skipped = false;
+    speciallock = false;
+    speciallock2 = false;
+    Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+        element.style.border = "2px solid black";
+    });
     if (travelbtn.innerHTML == "Begin Fight") {
         startBattle(curlocation.proceedspecial.split("|")[1]);
         fullSD(adventurescreen,gamescreen,"none","block");
@@ -2476,7 +2702,11 @@ travelbtn.addEventListener("click", function() {
         curlocation = locations[curlocation.nextloc];
         enterAdventureScreen();
     }
-    speciallock = false;
+});
+alttravelbtn.addEventListener("click", function() {
+    skipped = true;
+    curlocation = locations[curlocation.nextloc];
+    enterAdventureScreen();
     Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
         element.style.border = "2px solid black";
     });
