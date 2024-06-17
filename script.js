@@ -59,16 +59,16 @@ var enemies = {
     "janjo": {
         name: "janjo",
         formal: "Janjo, Tavern Owner",
-        managain: 7,
+        managain: 6,
         maxdiscards: 1,
         // battle stats
         health: 200,
-        mana: 8,
+        mana: 7,
         discards: 1,
         inventory: {},
         simpledeck: ["flamethrower","healbubble","weakener","soulkeeper","etherealguardian"],
         deck: {},
-        mods: ["FlameTouch{3,2}"],
+        mods: ["FlameTouch{3,2}","QuickUse{1}"],
     }
 }
 var locations = {
@@ -138,7 +138,7 @@ var locations = {
         altdesc: "You decided to not take Janjo's proposal.",
         loretext: "In a miraculous turn of events, you defeated the tavern owner himself! Chatter bursted throughout the building, but you dashed out before any other challengers could appear. Now, with the amount of coins you have, there's no doubt you'll be able to purchase a few aids for your adventure.",
         alttext: "Too scared to take the deal, you decided that it'll be better to play it safe. You're worried about whether or not you'll have enough to purchase a sufficient amount of items for your journey, but you decide to go to Tallmart anyways.",
-        special: "gaincardupg",
+        special: "gaincard",
         proceedtext: "Go to Tallmart to buy upgrades for your journey.",
         nextloc: "tallmart",
     },
@@ -148,7 +148,24 @@ var locations = {
         desc: "A tall store that contains a wide range of items to buy, from food to nukes to cards.",
         loretext: "You step into the store, the faint, generic shopping music playing. Struggling to breathe the thick night air, tired from all of your traveling, you look at the aisles.",
         proceedtext: "Leave the store and continue your trek along the road.",
-        special: "tallmart",
+        special: "store|buycard|buyrelic",
+        nextloc: "behindtallmart",
+    },
+    "behindtallmart": {
+        name: "behindtallmart",
+        formal: "Grimy Corner",
+        desc: "A dirty, forgotten corner inhabited by the one and only Greg.",
+        loretext: "Having a few scraps left over from the tavern that you forgot to throw away, you decided to go to the back of Tallmart after finishing your order. Expecting to see a normal dumpster, you jumped back in surprise after a man came out of a cardboard box. He said his name was Greg, and, after seeing your cards, he offered you a deal of a special relic if you gave him a card. It might be worth it.. Do you accept?<br>Click a card in your inventory to delete it.",
+        proceedtext: "Leave Greg's place and continue along the road.",
+        special: "destroycard",
+        nextloc: "roadtocoda3",
+    },
+    "roadtocoda3": {
+        name: "roadtocoda3",
+        formal: "Road To Coda",
+        desc: "A busy road taken by many, some with the intent of adventure, of success, of happiness.",
+        loretext: "After leaving the corner and going further throughout the city, you came to a club called 'Deric's Dance Club', dazzled by a blast of chromatic, flashing lights. When you opened the doors, the receptionist asked for your Dance Card. You immediately ran out, unsure of what to do. Fortunately, one just happened to be on the very bench you were about to sit down on. So, you went back in and gave him the receptionist the card, jumping up to the floating elevator before any further questioning would begin. ",
+        proceedtext: "skibidi sigjoasdighdpsaoi gdspa9o id ont have enought ime to finish this",
         nextloc: "zeend",
     },
     "zeend": {
@@ -176,9 +193,12 @@ var specialdiv2 = byId("special2");
 var statsdiv = byId("plrstats");
 var inventorydiv = byId("plrinventory");
 var inventorytable;
+var relicdiv = byId("plrrelics"); //
+var relictable;
 var speciallock = false;
 var speciallock2 = false;
-var curspecial = null;
+var curspecial1 = null;
+var curspecial2 = null;
 var alttravelbtn = byId("alttravel");
 // new run vars
 var startmod;
@@ -203,6 +223,7 @@ var Game = {
         deck: {},
         battledeck: {},
         mods: [],
+        relics: {},
     },
     p2: {
         managain: 5,
@@ -218,6 +239,29 @@ var Game = {
     },
 };
 var turn = Game.turn;
+var relics = {
+    // rarity 1 == common, 2 == uncommon, 3 == rare
+    emberring: {
+        name: "emberring",
+        formal: "Ember Ring",
+        desc: "A strange ring that gives all of the beholder's cards an enchanted flame touch.",
+        advdesc: "This ring gives flame touch, with a base value of 3,2. Flame touch makes it so all of your attacking cards give off a fire effect, with the values of the relic's values.",
+        rarity: 1,
+        attr: [3,2],
+        attrtype: "arrup",
+        img: "emberring.png",
+    },
+    grandfatheroak: {
+        name: "grandfatheroak",
+        formal: "Grandfather Oak",
+        desc: "A wise and majestic oak that has seen everything.",
+        advdesc: "Having lived for so long, this tree grants your cards a base +10% health.",
+        rarity: 2,
+        attr: 10,
+        attrtype: "int",
+        img: "grandfatheroak.png",
+    }
+}
 var cards = {
     spearman: {
         name: "spearman",
@@ -411,6 +455,7 @@ var cards = {
         formal: "Supply Crate",
         hp: 30,
         manause: 2,
+        cool: 0,
         coolleft: 0,
         desc:"Provides ammo for allies, assuring that they will eliminate their opponents.",
         funnyname: "SUPPLY CRATORIANITE",
@@ -860,6 +905,7 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
     sound.volume = 0.4;
     sound.play();
     if (otherargs == null) {
+        
         if (key.name == "etherealguardian") {
             let chosen;
             for (let i = 0; i < Object.keys(Game[player].inventory).length; i++) {
@@ -937,7 +983,29 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
             }
         }
     }
-    
+    if (Game[player].mods.some(str => str.includes("QuickUse"))) {
+        let str = Game[player].mods.filter(str => str.includes("QuickUse"))[0];
+        console.log(str);
+        str = str.replace("QuickUse{","");
+        str = Number(str.replace("}",""));
+        console.log(str);
+        if (key.cool != 0) {
+            key.cool -= str;
+            key.coolleft -= str;
+            if (key.coolleft < 0) {
+                key.coolleft = 0;
+                key.hp += 15;
+            }
+        }
+    }
+    if (Game[player].mods.some(str => str.includes("Tank"))) {
+        let str = Game[player].mods.filter(str => str.includes("Tank"))[0];
+        console.log(str);
+        str = str.replace("Tank{","");
+        str = Number(str.replace("}",""));
+        key.hp += key.hp*(str/100);
+        key.hp = Math.round(key.hp);
+    }
     update();
     return Object.keys(Game[player][table])[Object.keys(Game[player][table]).length-1];
 } 
@@ -1134,6 +1202,8 @@ function resetBattleUI(){
 }
 function startBattle(enemy) {
     let zeopp = enemies[enemy];
+    turns = 0;
+    p1.mods = [];
     battletitle.innerHTML = "Fight Against "+zeopp.formal;
     p1.mana = p1.startingmana;
     assign(p2,zeopp);
@@ -1147,6 +1217,17 @@ function startBattle(enemy) {
         drawCard("p2",false,null,"Start");
     }
     gamescreen.style.display = "block";
+    // RELICS
+    console.log(p1.relics);
+    if (Object.hasOwn(p1.relics,"emberring")) {
+        let relic = p1.relics["emberring"];
+        console.log(relic);
+        p1.mods.push("FlameTouch{"+relic.attr.toString()+"}");
+    }
+    if (Object.hasOwn(p1.relics,"grandfatheroak")) {
+        let relic = p1.relics["grandfatheroak"];
+        p1.mods.push("Tank{"+relic.attr+"}");
+    }
     update();
 }
 function endBattle(outcome) {
@@ -1167,6 +1248,9 @@ function endBattle(outcome) {
         }
         if (enemy.name == "janjo") {
             p1.coins += 100;
+            enemies.janjo.health *= 1.5;
+            enemies.janjo.managain *= 1.5;
+            enemies.janjo.mana *= 1.5;
         }
     }
     if (outcome == 2) {
@@ -1455,7 +1539,7 @@ function oppChoice(start) {
     if (Object.keys(p1.inventory).length-Object.keys(p2.inventory).length < -6 && p2.mana > 8) {
         aimode = 3;
     } else {
-        if (Object.keys(p2.inventory).length < 8 && randNum(1,5) != 1) {
+        if (Object.keys(p2.inventory).length<7 && p1.mana> 8) {
             aimode = 4;
         } else if (Object.keys(p2.inventory).length > 6 && (p2.mana > 8 && aimode != 3)) {
             aimode = 3;
@@ -1474,7 +1558,7 @@ function oppChoice(start) {
     let choice = 0; // choice means how much mana is the limit. for example, if choice is 3, use cards until mana is 3.
     if (aimode == 1 || aimode == 4) {
         if (p2.mana > 8) {
-            choice = randNum(0,p2.mana/3.5);
+            choice = 0;
         } else {
             choice = randNum(0,3);
         }
@@ -1534,6 +1618,9 @@ function oppChoice(start) {
             let feeling1 = randNum(1,4);
             if (feeling1 > 1) {
                 result = oppDraw();
+                if (randNum(1,2) == 1) {
+                    oppAttack();
+                }
             } else {
                 result = oppAttack();
             }
@@ -2253,7 +2340,16 @@ function enterAdventureScreen() {
     proceeddesc.innerHTML = curlocation.proceedtext;
     if (Object.hasOwn(curlocation,"special") && skipped == false) {
         let special = curlocation.special;
-        if (special.includes("gaincard") || special == "tallmart") {
+        if (curlocation.special.includes("|") == false) {
+            curspecial1 = curlocation.special;
+        } else {
+            let secondhalf = curlocation.special.split("|");
+            secondhalf.splice(0, 1);
+            curspecial1 = secondhalf[0];
+            curspecial2 = secondhalf[1];
+        }
+        console.log(special,curspecial1,curspecial2);
+        if (curspecial1 == "gaincard") {
             specialdiv.style.display = "block";
             Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
                 if (element.getAttribute("id").includes("a")) {
@@ -2262,16 +2358,16 @@ function enterAdventureScreen() {
                 let card = randKey(cards);
                 if (special.includes("gaincardupg") || special =="tallmart") {
                     let chance = randNum(1,2);
-                    if (chance == 1) {
+                    if (chance > 0) {
                         let chance2 = randNum(1,10);
                         if (chance2 > 0) {
                             if (Object.hasOwn(card,"atk")) {
-                                card.atk *= randNum(10,20)/10;
+                                card.atk *= randNum(7,20)/10;
                                 card.atk = Math.round(card.atk);
                             }
                             if (Object.hasOwn(card,"heal")) {
-                                card.heal *= randNum(10,20)/10;
-                                card.heal = Math.round(card.atk);
+                                card.heal *= randNum(7,20)/10;
+                                card.heal = Math.round(card.heal);
                             }
                         } 
                         if (chance2 > 4) {
@@ -2280,7 +2376,10 @@ function enterAdventureScreen() {
                             if (card.cool < 1 && prevcool != 0) {
                                 card.cool = 1;
                             }
-                            card.hp *= randNum(10,20)/10;
+                            if (card.cool < 0) {
+                                card.cool = 0;
+                            }
+                            card.hp *= randNum(7,20)/10;
                             card.hp = Math.round(card.hp);
                         }
                         if (chance2 > 7) {
@@ -2288,6 +2387,9 @@ function enterAdventureScreen() {
                             card.manause -= randNum(1,6)/2;
                             if (card.manause < 1 && prevcool != 0) {
                                 card.manause = 1;
+                            }
+                            if (card.manause < 0) {
+                                card.manause = 0;
                             }
                         }
                     }
@@ -2314,10 +2416,10 @@ function enterAdventureScreen() {
                 console.log(element.innerHTML);
             });
         }
-        if (special == "tallmart") {
-            specialdiv2.style.display = "block";
+        if (curspecial1 == "buycard") {
+            specialdiv.style.display = "block";
             Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
-                if (element.getAttribute("id").includes("a") == false) {
+                if (element.getAttribute("id").includes("a")) {
                     return false;
                 }
                 let card = randKey(cards);
@@ -2331,7 +2433,7 @@ function enterAdventureScreen() {
                         }
                         if (Object.hasOwn(card,"heal")) {
                             card.heal *= randNum(10,20)/10;
-                            card.heal = Math.round(card.atk);
+                            card.heal = Math.round(card.heal);
                         }
                     } 
                     if (chance2 > 4) {
@@ -2390,14 +2492,38 @@ function enterAdventureScreen() {
                 element.innerHTML += text;
                 console.log(element.innerHTML);
             });
-        } else {
-            specialdiv2.style.display = "none";
+        }
+        if (curspecial2 == "buyrelic") {
+            specialdiv2.style.display = "block";
+            Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+                if (element.getAttribute("id").includes("a") == false) {
+                    return false;
+                }
+                let relic = randKey(relics);
+                console.log(relic);
+                let chance = randNum(1,10);
+                element.innerHTML = `<h2>${relic.formal}</h2>`;
+                element.setAttribute("data-relic",relic.name);
+                let cost = 2;
+                cost *= (relic.rarity+1)**2;
+                cost *= 20;
+                cost = Math.round(Math.log(cost)*10);
+                element.setAttribute("data-cost",cost);
+                
+                let text = `<p>${relic.desc}<br>${relic.rarity} RARITY`;
+                text += ` | ${cost} COST`;
+                text += "</p>";
+                console.log(text);
+                element.innerHTML += text;
+                console.log(element.innerHTML);
+            });
         }
     } else {
         specialdiv.style.display = "none";
         specialdiv2.style.display = "none";
+        curspecial1 = null;
+        curspecial2 = null;
     }
-   
     statsdiv.innerHTML = `
     <p>
         ${p1.health} Health | ${p1.coins} Coda Coins
@@ -2419,6 +2545,7 @@ function updateAdventureScreen() {
         ${p1.managain} Mana Gain | ${p1.maxdiscards} Discards
     </p>
     `;
+    // CARDS
     if (inventorytable != null) {
         inventorytable.remove();
     }
@@ -2439,6 +2566,8 @@ function updateAdventureScreen() {
             }
             let card = document.createElement('td');
             let curcard = p1.deck[Object.keys(p1.deck)[(j*4)+i]];
+            card.setAttribute("data-card",Object.keys(p1.deck)[(j*4)+i]);
+            card.className = "inventorytablecard";
             
             card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | ";
             if (Object.hasOwn(curcard,"atk")) {
@@ -2484,7 +2613,66 @@ function updateAdventureScreen() {
             zerow.appendChild(card);
         }
     }
+    // RELICS
+    if (relictable != null) {
+        relictable.remove();
+    }
     
+    relictable = document.createElement('table');
+    relictable.id = "inventorytable";3
+    relicdiv.appendChild(relictable);
+    let remainder2 = Object.keys(p1.deck).length % 4;
+    let finaltr2;
+    for (let j = 0; j < Math.ceil(Object.keys(p1.relics).length/4); j++) {
+        let zerow = document.createElement('tr');
+        if (j-Math.ceil(Object.keys(p1.relics).length/4) == 1) {
+            finaltr2 = zerow;
+        }
+        relictable.appendChild(zerow);
+        for (let i = 0; i < 4; i++) {
+            if ((j*4)+i > Object.keys(p1.relics).length-1) {
+                break;
+            }
+            let relic = document.createElement('td');
+            relic.style.width = "120px";
+            relic.style.height = "120px";
+            
+            let currelic = p1.relics[Object.keys(p1.relics)[(j*4)+i]];
+            
+            relic.innerHTML = "<span class='title'>"+currelic.formal+":</span><br>"+currelic.rarity+" RARITY | ";
+            relic.innerHTML += "<br><hr><span class='desc'>"+currelic.desc+"</span>";
+            let tempimg;
+            if (currelic.img != "") {
+                tempimg = "url(img/relics/"+currelic.name+".png)";  
+                relic.style.backgroundSize = "120px 120px";
+            } else {
+                tempimg = "url()";
+                relic.style.backgroundSize = "120px 120px";
+            }
+            relic.style.backgroundSize = "120px 120px";
+            relic.style.backgroundImage = tempimg;
+            relic.className = "tooltipholder";
+            let relictooltip = document.createElement("span");
+            relictooltip.className = "tooltip";
+            relictooltip.innerHTML = `<h3>${currelic.formal}</h3><p>${currelic.desc}<hr>${currelic.advdesc}<hr>Current relic stats: ${currelic.attr.toString()}</p>`;
+            zerow.appendChild(relic);
+            relic.appendChild(relictooltip);
+            
+        }
+    }
+    Array.from(document.getElementsByClassName("inventorytablecard")).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if (curspecial1 == "destroycard" && Object.keys(p1.deck).length > 0) {
+                let card = p1.deck[element.getAttribute("data-card")];
+                if (curlocation.name == "behindtallmart") {
+                    p1.coins += 15;
+                }
+                console.log(card);
+                delete p1.deck[element.getAttribute("data-card")];
+                updateAdventureScreen();
+            }
+        });
+    });
 }
 /*function hideStat(element,show) {
     console.log("YES");
@@ -2575,59 +2763,6 @@ unselectbtn.addEventListener('click',function() {
     }
     
 })
-/*modebtn.addEventListener('click',function() {
-    let prevmode = currentmode;
-    let order = ["Easy","Normal","Hard","Insane","Cataclysm","Custom"];
-    let index = order.indexOf(currentmode);
-    let setto;
-    if (index+1 > order.length-1) {
-        setto = order[0];
-    } else {
-        setto = order[index+1];
-    }
-    if (setto == "Easy") {
-        currentmode = "Easy";
-        p1.health = 500;
-        p2.health = 250;
-        modetext.innerHTML = "Current Mode: Easy";
-    }
-    if (setto == "Normal") {
-        currentmode = "Normal";
-        p1.health = 300;
-        p2.health = 300;
-        modetext.innerHTML = "Current Mode: Normal";
-    }
-    if (setto == "Hard") {
-        currentmode = "Hard";
-        p1.health = 200;
-        p2.health = 350;
-        modetext.innerHTML = "Current Mode: Hard";
-    }
-    if (setto == "Insane") {
-        currentmode = "Insane";
-        p1.health = 125;
-        p2.health = 500;
-        modetext.innerHTML = "Current Mode: Insane";
-    }
-    if (setto == "Cataclysm") {
-        currentmode = "Cataclysm";
-        p1.health = 70;
-        p2.health = 650;
-        modetext.innerHTML = "Current Mode: Cataclysm";
-    }
-    if (setto == "Custom") {
-        currentmode = "Custom";
-        customselect.style.display = "block";
-        modetext.innerHTML = "Current Mode: Custom";
-    } else {
-        customselect.style.display = "none";
-    }
-    update();
-});
-customselect.addEventListener("change",function() {
-    let value = customselect.value;
-    customtype = value;
-});*/
 
 playbtn.addEventListener("click",function() {
     console.log(sob, sob == 2);
@@ -2664,16 +2799,34 @@ Array.from(document.getElementsByClassName("startmods")).forEach(function(elemen
         document.body.style.width = null;
     });
 });
+function sCondition(special) {
+    let arr = [];
+    if (speciallock == false && curspecial1 == special) {
+        arr = [true,1];
+    } else if (speciallock2 == false && curspecial2 == special) {
+        arr = [true,2];
+    } else {
+        arr = [false,0];
+    }
+    return arr;
+}
 Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
     element.addEventListener('click', function() {
-        if (speciallock == false && element.getAttribute("id").includes("a") == false) {
+        if (sCondition("gaincard")[0] == true && element.hasAttribute("data-card")) {
+            let num = sCondition("gaincard")[1];
             let card = element.getAttribute("data-card");
             drawCard("p1",true,card,"addToDeck");
             updateAdventureScreen();
-            speciallock = true;
+            if (num == 1) {
+                speciallock = true;
+            } else {
+                speciallock2 = true;
+            }
+            
             element.style.border = "7px solid black";
         }
-        if (element.getAttribute("id").includes("a") && element.style.border != "7px solid black") {
+        if (sCondition("buycard")[0] == true && element.hasAttribute("data-card") && element.hasAttribute("data-cost")) {
+            console.log("YUHHHHH", element.hasAttribute("data-card") && element.hasAttribute("data-cost"));
             let card = element.getAttribute("data-card");
             if (p1.coins >= Number(element.getAttribute("data-cost"))) {
                 p1.coins -= Number(element.getAttribute("data-cost"));
@@ -2684,13 +2837,43 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
             updateAdventureScreen();
             element.style.border = "7px solid black";
         }
+        if (sCondition("buyrelic")[0] == true && element.hasAttribute("data-relic") && element.hasAttribute("data-cost")) {
+            let relic = element.getAttribute("data-relic");
+            if (p1.coins >= Number(element.getAttribute("data-cost"))) {
+                p1.coins -= Number(element.getAttribute("data-cost"));
+            } else {
+                return false;
+            }
+            if (Object.hasOwn(p1.relics,relic)) {
+                if (p1.relics[relic].attrtype == "arrup") {
+                    for (let i = 0; i < p1.relics[relic].attr.length; i++) {
+                        p1.relics[relic].attr[i] = p1.relics[relic].attr[i]+1;
+                    }
+                }
+                if (p1.relics[relic].attrtype == "int") {
+                    p1.relics[relic].attr += relics[relic].attr*0.15;
+                }
+                
+            }else {
+                let key = {};
+                assign(key,relics[relic]);
+                console.log(key);
+                p1.relics[relic] = key;
+            }
+            
+            updateAdventureScreen();
+            element.style.border = "7px solid black";
+        }
         
     });
 });
+
 travelbtn.addEventListener("click", function() {
     skipped = false;
     speciallock = false;
     speciallock2 = false;
+    specialdiv.style.display = "none";
+    specialdiv2.style.display = "none";
     Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
         element.style.border = "2px solid black";
     });

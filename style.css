@@ -176,6 +176,26 @@ body,html {
         font-size: 13px;
     }
 }
+/* OTHER */
+.tooltipholder {
+    display: inline-block;
+}
+.tooltip {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip */
+   
+}
+.tooltipholder:hover .tooltip {
+    visibility: visible;
+}
 /* BATTLE */
 table {
     border: 1px solid black;
@@ -205,7 +225,13 @@ td {
 hr {
     border: 1px solid black;
 }
-
+.inventorytablecard {
+    border: 2px solid black;
+    transition: 0.5s ease-in-out;
+}
+.inventorytablecard:hover {
+    border: 6px solid black;
+}
 .modal-overlay {
     background: rgba(0, 0, 0, 0.7);
     width: 100%;
