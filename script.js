@@ -33,6 +33,7 @@ var enemies = {
         formal: "Andreas",
         managain: 4,
         maxdiscards: 0,
+        coinsgive: 0,
         // battle stats
         health: 100,
         mana: 6,
@@ -47,6 +48,7 @@ var enemies = {
         formal: "Tavern Regulars",
         managain: 5,
         maxdiscards: 1,
+        coinsgive: 50,
         // battle stats
         health: 140,
         mana: 6,
@@ -59,8 +61,9 @@ var enemies = {
     "janjo": {
         name: "janjo",
         formal: "Janjo, Tavern Owner",
-        managain: 6,
+        managain: 5.5,
         maxdiscards: 1,
+        coinsgive: 100,
         // battle stats
         health: 200,
         mana: 7,
@@ -69,14 +72,104 @@ var enemies = {
         simpledeck: ["flamethrower","healbubble","weakener","soulkeeper","etherealguardian"],
         deck: {},
         mods: ["FlameTouch{3,2}","QuickUse{1}"],
-    }
+    },
+    "helloitsme": {
+        name: "helloitsme",
+        formal: "'Helloitsme123'",
+        managain: 7,
+        maxdiscards: 1,
+        coinsgive: 150,
+        // battle stats
+        health: 250,
+        mana: 0,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["teslacoil","bandit","weakener","wizard","spearman"],
+        deck: {},
+        mods: ["Tank{20}","QuickUse{1}"],
+    },
+    "djneon": {
+        name: "djneon",
+        formal: "DJ Neon",
+        managain: 5,
+        maxdiscards: 1,
+        coinsgive: 50,
+        // battle stats
+        health: 300,
+        mana: 10,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["solarprism","wizard","weakener","soulkeeper","managenerator","healorb"],
+        deck: {},
+        mods: ["Tank{20}","Strength{20}","Healing{20}"],
+    },
+    "cheesedino": {
+        name: "cheesedino",
+        formal: "Cheese Dino",
+        managain: 7,
+        maxdiscards: 1,
+        coinsgive: 0,
+        // battle stats
+        health: 350,
+        mana: 12,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["solarprism","oblivion","wizard","spearman","managenerator","healbubble"],
+        deck: {},
+        mods: ["FlameTouch{3,2}"],
+    },
+    "bandits": {
+        name: "bandits",
+        formal: "Bandits",
+        managain: 6,
+        maxdiscards: 1,
+        coinsgive: 0,
+        // battle stats
+        health: 300,
+        mana: 10,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["bandit","wizard","spearman","managenerator","healbubble","turret","flamethrower","manabank"],
+        deck: {},
+        mods: ["Strength{50}"],
+    },
+    "lordk": {
+        name: "lordk",
+        formal: "Lord K",
+        managain: 10,
+        maxdiscards: 1,
+        coinsgive: 50,
+        // battle stats
+        health: 500,
+        mana: 15,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["bandit","wizard","spearman","flamethrower","ninja"],
+        deck: {},
+        mods: ["Strength{250}","QuickUse{-1}"],
+    },
+    "trafficlord": {
+        name: "trafficlord",
+        formal: "Traffic Lord",
+        managain: 10,
+        maxdiscards: 1,
+        coinsgive: 200,
+        // battle stats
+        health: 700,
+        mana: 15,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["bandit","wizard","spearman","flamethrower","ninja","managenerator","solarprism"],
+        deck: {},
+        mods: ["Strength{50}","QuickUse{1}","Tank{20}","Healing{20}"],
+    },
 }
 var locations = {
     "home": {
         name: "home",
         formal: "Home",
         desc: "Your humble house. Where everything all starts.",
-        loretext: "A few days ago, UncleMan threatened to evict you, saying that you're a lazy couch potato that does nothing. Since becoming a homeless beggar is the last thing you want to do, you ask him for ways to stay in the house. Finally, he gives you a daunting task: Find the Bean Duplicator. A rare relic found only in the dangerous mountains, visible shaking begins. Starting with only 100 coda coins and 3 spearmen, you begin your journey to prevent yourself from getting evicted.",
+        loretext: "A few days ago, UncleMan threatened to evict you, saying that you're a lazy couch potato that does nothing. Since becoming a homeless beggar is the last thing you want to do, you ask him for ways to stay in the house. Finally, he gives you a daunting task: Find the Bean Duplicator. A rare relic found only in the dangerous mountains, visible shaking begins. Starting with only 20 coda coins and 2 spearmen, you begin your journey to prevent yourself from getting evicted.",
         proceedtext: "Start your journey by taking the road to Coda.",
         nextloc: "roadtocoda",
     },
@@ -155,7 +248,7 @@ var locations = {
         name: "behindtallmart",
         formal: "Grimy Corner",
         desc: "A dirty, forgotten corner inhabited by the one and only Greg.",
-        loretext: "Having a few scraps left over from the tavern that you forgot to throw away, you decided to go to the back of Tallmart after finishing your order. Expecting to see a normal dumpster, you jumped back in surprise after a man came out of a cardboard box. He said his name was Greg, and, after seeing your cards, he offered you a deal of a special relic if you gave him a card. It might be worth it.. Do you accept?<br>Click a card in your inventory to delete it.",
+        loretext: "Having a few scraps left over from the tavern that you forgot to throw away, you decided to go to the back of Tallmart after finishing your order. Expecting to see a normal dumpster, you jumped back in surprise after a man came out of a cardboard box. He said his name was Greg, and, after seeing your cards, he offered you a deal of 15 coda coins for every card you give him. Do you accept?<br>Click a card in your inventory to delete it.",
         proceedtext: "Leave Greg's place and continue along the road.",
         special: "destroycard",
         nextloc: "roadtocoda3",
@@ -164,8 +257,139 @@ var locations = {
         name: "roadtocoda3",
         formal: "Road To Coda",
         desc: "A busy road taken by many, some with the intent of adventure, of success, of happiness.",
-        loretext: "After leaving the corner and going further throughout the city, you came to a club called 'Deric's Dance Club', dazzled by a blast of chromatic, flashing lights. When you opened the doors, the receptionist asked for your Dance Card. You immediately ran out, unsure of what to do. Fortunately, one just happened to be on the very bench you were about to sit down on. So, you went back in and gave him the receptionist the card, jumping up to the floating elevator before any further questioning would begin. ",
-        proceedtext: "skibidi sigjoasdighdpsaoi gdspa9o id ont have enought ime to finish this",
+        loretext: "After leaving the corner and going further throughout the city, you came to a club called 'Deric's Dance Club', dazzled by a blast of chromatic, flashing lights. Fortunately for you, there was a Dance Card that just happened to be lying on the bench that you were just about to sit on.",
+        proceedtext: "Enter the Dance Club and see what you can do there.",
+        nextloc: "danceclub",
+    },
+    "danceclub": {
+        name: "danceclub",
+        formal: "Deric's Dance Club",
+        desc: "A wild and frivolous club where people can vibe, shout, and dance in a vivid array of lights.",
+        loretext: "Walking up to the receptionist, you were asked the question of where your Dance Card was. You quickly pulled it out, giving it to the receptionist and jumping on the floating elevator before any further questioning could begin. Once you reached the dance floor, you were met with yet another blast of intense noise and lights. You were left staggered, weakened by your long journey without any sleep. So, you decided that it would be best to make your time here quick. The first thing that caught your attention was the DJ's set of prismatic cards, all of them being rare. However, you were unable to talk to the DJ, as just then, a challenger, who went by the name of 'Helloitsme123', approached. The enigmatic figure threw a bet of 150 coda coins on the table, and demanded a battle. It didn't seem like there was any other option..",
+        proceedtext: "Do the only thing you can, accept the challenge.",
+        proceedspecial: "fight|helloitsme",
+        nextloc: "helloitsmevictory",
+    },
+    "helloitsmevictory": {
+        name: "helloitsmevictory",
+        formal: "Deric's Dance Club",
+        desc: "A wild and frivolous club where people can vibe, shout, and dance in a vivid array of lights.",
+        loretext: "That battle.. was strange. Who was that person? Why such a quick appearance and demanding tone? Before you could question the cloaked.. thing, they walked away, quickly disappearing in the crowd. After the battle, you decided to see if there was anything that could aid you. Eventually, you found a bean can dispenser, which can increase your health by 50 (capped at your max health), but at the cost of 20 coda coins. Do you think it's worth it?",
+        proceedtext: "Explore more of the club.",
+        special: "beancandispenser",
+        nextloc: "danceclub2",
+    },
+    "danceclub2": {
+        name: "danceclub2",
+        formal: "Deric's Dance Club",
+        desc: "A wild and frivolous club where people can vibe, shout, and dance in a vivid array of lights.",
+        loretext: "After healing up (or not), you decided to finally meet the DJ, who went by the name of DJ Neon (according to the massive, glowing letters displayed on the wall). For a few minutes you observed him spinning those strange discs that you never really understood, wondering what they even did. How do they even impact the music? They're just circles! Eventually, you asked him who he was. || DJ Neon: My name's DJ Neon! I'm the best DJ in the world! || You: Oh. Well, what about your cards? Why are they rainbow? || DJ Neon: Well, it's because they're special! They're upgraded cards that have better stats than usual. For example, their attack and health is higher. || After a few more minutes of talking, he said that if you can beat him, he'll give you one of his cards and 50 coda coins on top of that. An upgraded card? For free? And 50 coda coins? It's a deal that has to be taken!",
+        proceedtext: "Hopefully get an upgraded card from DJ Neon.",
+        proceedspecial: "fight|djneon",
+        nextloc: "djneonvictory",
+    },
+    "djneonvictory": {
+        name: "djneonvictory",
+        formal: "Deric's Dance Club",
+        desc: "The best DJ in the world? Is that so?",
+        loretext: "You defeated DJ Neon! He did what he promised to, offering 50 coda coins, and a card of your choice (shown below). However, one question still remains: If he's the DJ, and he was just battling you, then how was the music still playing? Is he really a DJ? Whatever, it's fine. You haven't slept in a while..",
+        proceedtext: "Go to the hotel across the street to rest.",
+        special: "gaincard",
+        nextloc: "hotel",
+    },
+    "hotel": {
+        name: "hotel",
+        formal: "Hotel",
+        desc: "A hotel. Literally. It's name is just 'Hotel'. It's fine. All that matters is that the hotel is good.",
+        loretext: "After making sure that there were no speeding cars, you crossed the road and entered the hotel. You can either buy a room for 50 coda coins for one night and heal 70 health, or sleep in the ULTRA-CHEAP beds for free, healing only 20 health. Do you want to save money, or choose the option that'll be the best for you?",
+        special: "rest",
+        proceedtext: "Wake up and continue your journey.", 
+        nextloc: "beanfactory",
+    },
+    "beanfactory": {
+        name: "beanfactory",
+        formal: "Bean Factory Entrance",
+        desc: "The entrance to a Beanmelon Factory. Hopefully you'll be able to enter. After all, you are the owner's nephew.",
+        loretext: "It was nice to have some sleep after more than a day of none at all. Feeling better, you left the hotel to get to visit the Beanmelon Factory. At the entrance, you met a strange dinosaur-humanoid, with a block of cheese with googly eyes as their head. You thought it was a statue, until the dinosaur thing started talking to you. || Cheese Dino: Are you here to talk about Lord K? || You: No.. who's that? || Cheese Dino: You see that guy on the poster? || The picture on the poster showed a ginormous, green dude wearing a crown and a cape, at least double the height of the hotel you were just in, if you looked at the trees in the background of the photo. || You: So.. Who is this Lord K? || Cheese Dino: Well, he's this giant fellow that's been causing a lot of disruption, destroying cities and whatnot. There's a bounty on him. Anyone who can defeat him will get 3000 coda coins. Just bring his crown here, and I'll use the Artifact Confirmation Expert machine to confirm it. || You: 3000? || Cheese Dino: Yep. If you're want to get the prize, you'll have to be able to get cards strong enough to deal with Lord K. Won't be easy. || You: Where can I find him? || Cheese Dino: Oh, somewhere in the forests that follow. || 3000 coda coins seems like a lot, and it'll surely be enough to buy a variety of things. Lord K doesn't seem that bad of enemy, considering the foes you've faced so far. || Cheese Dino: You know what? I'll give you a deal. If you beat me in a card battle, I'll give you a special relic. If you lose, you have to give me 200 coda coins. Come on, it's practically free.",
+        proceedtext: "Battle Cheese Dino for the relic.",
+        proceedspecial: "fight|cheesedino", 
+        nextloc: "cheesedinovictory",
+    },
+    "cheesedinovictory": {
+        name: "cheesedinovictory",
+        formal: "Bean Factory",
+        desc: "One of the great Beanmelon Corp. factories that produces the food that is eaten by everyone around the world.",
+        loretext: "After beating Cheese Dino, he gave you a relic. Check your inventory to see it. After that, you were let into the factory. Following a lot of walking, you met your uncle, Rictor, who was chilling on a plastic chair that looked like it was going to collapse unexpectedly. || Uncle Rictor: Yo, wassup nephew! How have you been doing? What did UncleMan say? || Nephew: Uhh.. He made me go on adventure to find the lost bean duplicator, saying that he'll kick me out if I don't find it. || Uncle Rictor: Oh, that seems bad. Hopefully you'll find it. Do you want some aid? I can upgrade your cards, it'll just cost 30 coda coins per card.|| Nephew: Sure! || Click one of your cards to increase their health by 20%, and their attack/heal by 20%.",
+        proceedtext: "Leave the factory to find Lord K.",
+        special: "upgcard", 
+        nextloc: "roadtocoda4",
+    },
+    "roadtocoda4": {
+        name: "roadtocoda4",
+        formal: "Road To Coda",
+        desc: "A road filled with old tire tracks from trucks and cars that traversed through here. Unfortunately, cars are quite expensive these days. ",
+        loretext: "Surely Lord K can't be that hard to beat, right? He's just a giant green dude with a fake cape and a fake crown. It's probably made of bronze or something, with some special gold paint to make it look cool. With these cards, he'll be easily destroyed! Yeah, hopefully he's somewhere in these woods.. Wait, why does that tree feel familiar?",
+        proceedtext: "Continue searching for Lord K.", 
+        nextloc: "forest1",
+    },
+    "forest1": {
+        name: "forest1",
+        formal: "Mysterious Forest",
+        desc: "An unexplored forest that allegedly contains the legendary Lord K, a giant known for destroying everything.",
+        loretext: "Lord K is somewhere in this forest. For sure. You've been searching here for at least an hour, but there's no-<br>Bandits! They're everywhere!",
+        proceedtext: "Fight the bandits, it's the only way to live!",
+        proceespecial: "fight|bandits",
+        nextloc: "banditsvictory",
+    },
+    "banditsvictory": {
+        name: "banditsvictory",
+        formal: "Mysterious Forest",
+        desc: "An explored forest that allegedly contains the legendary Lord K, a giant known for destroying everything.",
+        loretext: "Whew. Those bandits were pretty annoying. Maybe they had information on Lord K. Should've asked them before they fled. After searching for some time, you found an arrow made of sticks on the ground, pointing to an area heavily covered by trees. By following the line of sticks, you managed to find a clearing that led to a ginormous circle of large trees. Past the trees was a ginormous circle made of some stone, with lights dotting it. In the center was a tall, green figure, just standing there. It was too late.. || Lord K: Who goes there? I will destroy you, for you have disturbed my peace! || If you run, he'll kill you. This is the only way.",
+        proceedtext: "Battle Lord K for a chance of survival.",
+        proceedspecial: "fight|lordk",
+        nextloc: "lordkvictory",
+    },
+    "lordkvictory": {
+        name: "lordkvictory",
+        formal: "Mysterious Forest",
+        desc: "An explored forest that allegedly contains the legendary Lord K, a giant known for destroying everything.",
+        loretext: "After defeating Lord K, you started to slowly drag his giant cape and crown back to the factory, which was at least an hour away. The sun went down, and before midnight you reached the factory, as tired as you were when you went to the dance club. Cheese Dino looked surprised, getting even more shocked when the ACE machine confirmed its authenticity. He gave you the 3000 CC bounty that he promised, and he bode you farewell. You left and continued along the road.", 
+        proceedtext: "Make your way to Coda.",
+        nextloc: "roadtocoda5",
+    },
+    "roadtocoda5": {
+        name: "roadtocoda5",
+        formal: "Road to Coda",
+        desc: "A road. Too tired to finish description.",
+        loretext: "Continuing along the road, you eventually made a hammock from leaves, and fell asleep. Waking up, you continued, not seeing a single person on the desolate, barren road. Why was no one here? Anyways, it's fine. There's not that much of the road to go. You came to a billboard that said, 'CODA - 53 MILES | FILO - 182 MILES | FEEBOLE - 270 MILES'. At least Coda's the closest of the three.", 
+        proceedtext: "Continue your journey.",
+        nextloc: "roadtocoda6",
+    },
+    "roadtocoda6": {
+        name: "roadtocoda6",
+        formal: "Road to Coda",
+        desc: "A road.",
+        loretext: "Hours passed as you slowly walked, your legs begging for mercy. Eventually, you came to a rest stop, which offered a mystery card for 120 coda coins and an energizer foil (makes card's cooldown 2 less) on a card for 150.", 
+        proceedtext: "Continue your journey.",
+        special: "store|mystery|energizer",
+        nextloc: "roadtocoda7",
+    },
+    "roadtocoda7": {
+        name: "roadtocoda6",
+        formal: "Road to Coda",
+        desc: "A ro.",
+        loretext: "One question that you were still dying to know the answer for was: Where is everyone? Sure, there was that one rest stop, but else than that, you haven't met a single person on the road. What must be the cause of this? If so, how can this stop millions of people from traveling? || After some time, you felt a difference in the air. It was as if.. it was even more lonely. Lonelier than it was when you were already at max lonely. How is that possible? You kept walking, hoping to cover as many miles as possible. Why do cars have to be so expensive? || Eventually, you saw a big.. thing. It was entirely made of traffic cones, with big, mad eyes in the front. It was almost as large as Lord K, but there was something about it that didn't make you feel good.. || Traffic Lord: I am the Traffic Lord, and I you are not going to be allowed to continue along this road! || You: What? Why? I've walked like 60 miles already! It's been days! || Traffic Lord: Who asked? Who cares? I am here to take all of your belongings, so I can become the richest being in the world! || You: I'm sorry, but that title belongs to my uncle. || Traffic Lord: Are you sure? I can tell your uncle is struggling. Beanmelon may be the current largest company in the world, but will it last? He gets more and more unhinged everyday. Don't you know that there's something wrong? || You: What? No! What do you mean! Just start this battle already!", 
+        proceedtext: "Battle Traffic Lord, the final obstacle blocking you from getting to Coda.",
+        proceedspecial: "fight|trafficlord",
+        nextloc: "trafficlordvictory",
+    },
+    "trafficlordvictory": {
+        name: "trafficlordvictory",
+        formal: "click",
+        desc: "click",
+        loretext: "click",
+        proceedtext: "click",
         nextloc: "zeend",
     },
     "zeend": {
@@ -200,6 +424,9 @@ var speciallock2 = false;
 var curspecial1 = null;
 var curspecial2 = null;
 var alttravelbtn = byId("alttravel");
+var textfinished = false;
+var currenttext = "";
+var currenttextnum = 0;
 // new run vars
 var startmod;
 // CARD MODES
@@ -213,6 +440,7 @@ var Game = {
     p1: {
         managain: 5,
         maxdiscards: 1,
+        maxhealth: 300,
         coins: 20,
         startingmana: 10,
         // battlestats
@@ -260,7 +488,17 @@ var relics = {
         attr: 10,
         attrtype: "int",
         img: "grandfatheroak.png",
-    }
+    },
+    lifecapsule: {
+        name: "lifecapsule",
+        formal: "Life Capsule",
+        desc: "A neon, futuristic capsule containing life essence.",
+        advdesc: "The life capsule contains life essence that increases a player's max health. The base increase is 60, and then 9 for every additional capsule bought.",
+        rarity: 1,
+        attr: 60,
+        attrtype: "int",
+        img: "lifecapsule.png",
+    },
 }
 var cards = {
     spearman: {
@@ -983,29 +1221,46 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
             }
         }
     }
-    if (Game[player].mods.some(str => str.includes("QuickUse"))) {
-        let str = Game[player].mods.filter(str => str.includes("QuickUse"))[0];
-        console.log(str);
-        str = str.replace("QuickUse{","");
-        str = Number(str.replace("}",""));
-        console.log(str);
-        if (key.cool != 0) {
-            key.cool -= str;
-            key.coolleft -= str;
-            if (key.coolleft < 0) {
-                key.coolleft = 0;
-                key.hp += 15;
+    if (otherargs != "addToDeck") {
+        if (Game[player].mods.some(str => str.includes("QuickUse"))) {
+            let str = Game[player].mods.filter(str => str.includes("QuickUse"))[0];
+            console.log(str);
+            str = str.replace("QuickUse{","");
+            str = Number(str.replace("}",""));
+            console.log(str);
+            if (key.cool != 0) {
+                key.cool -= str;
+                key.coolleft -= str;
+                if (key.coolleft < 0) {
+                    key.coolleft = 0;
+                    key.hp += 15;
+                }
             }
         }
+        if (Game[player].mods.some(str => str.includes("Tank"))) {
+            let str = Game[player].mods.filter(str => str.includes("Tank"))[0];
+            console.log(str);
+            str = str.replace("Tank{","");
+            str = Number(str.replace("}",""));
+            key.hp += key.hp*(str/100);
+            key.hp = Math.round(key.hp);
+        }
+        if (Game[player].mods.some(str => str.includes("Strength")) && Object.hasOwn(key,"atk")) {
+            let str = Game[player].mods.filter(str => str.includes("Strength"))[0];
+            str = str.replace("Strength{","");
+            str = Number(str.replace("}",""));
+            key.atk += key.atk*(str/100);
+            key.atk = Math.round(key.atk);
+        }
+        if (Game[player].mods.some(str => str.includes("Healing")) && Object.hasOwn(key,"heal")) {
+            let str = Game[player].mods.filter(str => str.includes("Healing"))[0];
+            str = str.replace("Healing{","");
+            str = Number(str.replace("}",""));
+            key.heal += key.heal*(str/100);
+            key.heal = Math.round(key.heal);
+        }
     }
-    if (Game[player].mods.some(str => str.includes("Tank"))) {
-        let str = Game[player].mods.filter(str => str.includes("Tank"))[0];
-        console.log(str);
-        str = str.replace("Tank{","");
-        str = Number(str.replace("}",""));
-        key.hp += key.hp*(str/100);
-        key.hp = Math.round(key.hp);
-    }
+    
     update();
     return Object.keys(Game[player][table])[Object.keys(Game[player][table]).length-1];
 } 
@@ -1243,11 +1498,8 @@ function endBattle(outcome) {
         openBtn.style.display = "none";
         let enemy = enemies[p2.name];
         p1.coins += Math.round((randNum(10,20)/10)*(enemy.health/15));
-        if (enemy.name == "taverngroup") {
-            p1.coins += 50;
-        }
+        p1.coins += enemy.coinsgive;
         if (enemy.name == "janjo") {
-            p1.coins += 100;
             enemies.janjo.health *= 1.5;
             enemies.janjo.managain *= 1.5;
             enemies.janjo.mana *= 1.5;
@@ -2045,6 +2297,11 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                 }
                 if (zechosen == "Opp") {
                     user.health += card.heal;
+                    if (user == p1) {
+                        if (user.health > user.maxhealth) {
+                            user.health = user.maxhealth;
+                        }
+                    }
                 } else {
                     zechosen.hp += card.heal;
                 }
@@ -2219,10 +2476,10 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                     drawCard(strmain,true,"cultist");
                     delete user.inventory[Object.keys(user.inventory)[index]];
                     let loss = 0;
-                    if (user.health > 100) {
-                        loss = user.health/2;
+                    if (user.health > 25) {
+                        loss = user.health/10;
                     } else {
-                        loss = 50;
+                        loss = 25;
                     }
                     user.health -= loss;
                 }
@@ -2309,8 +2566,29 @@ function setStartMod(mod) {
         drawCard("p1",true,"spearman","addToDeck");
     }
 }
+/*function transitionScreen(arg) {
+    // SET TO DISPLAY; E.G. BOOL TRUE = DISPLAY; BOOL FALSE = DON'T DISPLAY;
+    let elem = byId("transition");
+    if (arg == true) {
+        adventurescreen.style.display = "none";
+        adventurescreen.style.opacity = 0;
+        elem.style.display = "block";
+        elem.style.opacity = 1;
+        window.setTimeout(transitionScreen, 500, false);
+    }
+    if (arg == false) {
+        elem.style.opacity = 0;
+        adventurescreen.style.display = "block";
+        
+        window.setTimeout(transitionScreen, 500, "falser");
+    }
+    if (arg == "falser") {
+        elem.style.display = "none";
+        adventurescreen.style.opacity = 1;
+    }
+}*/
 function enterAdventureScreen() {
-    console.log("yuh");
+    adventurescreen.style.opacity = 1;
     adventurescreen.style.display = "block";
     curloctxt.innerHTML = "Current Location: "+curlocation.formal;
     curlocdesctxt.innerHTML = curlocation.desc;
@@ -2323,6 +2601,9 @@ function enterAdventureScreen() {
     if (skipped == true) {
         curlocdesctxt.innerHTML = curlocation.altdesc;
         loretxt.innerHTML = curlocation.alttext;
+    }
+    if (curlocation.name == "lordkvictory" && p1.coins < 3000) {
+        p1.coins += 3000;
     }
     if (Object.hasOwn(curlocation,"proceedspecial")) {
         let splitarr1 = curlocation.proceedspecial.split("|");
@@ -2339,6 +2620,11 @@ function enterAdventureScreen() {
     }
     proceeddesc.innerHTML = curlocation.proceedtext;
     if (Object.hasOwn(curlocation,"special") && skipped == false) {
+        curspecial1 = null;
+        curspecial2 = null;
+        byId("sc1").style.display = "block";
+        byId("sc2").style.display = "block";
+        byId("sc3").style.display = "block";
         let special = curlocation.special;
         if (curlocation.special.includes("|") == false) {
             curspecial1 = curlocation.special;
@@ -2347,6 +2633,7 @@ function enterAdventureScreen() {
             secondhalf.splice(0, 1);
             curspecial1 = secondhalf[0];
             curspecial2 = secondhalf[1];
+            console.log(secondhalf,curlocation.special);
         }
         console.log(special,curspecial1,curspecial2);
         if (curspecial1 == "gaincard") {
@@ -2518,6 +2805,32 @@ function enterAdventureScreen() {
                 console.log(element.innerHTML);
             });
         }
+        if (curspecial1 == "beancandispenser") {
+            specialdiv.style.display = "block";
+            byId("sc2").style.display = "none";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Bean Dispenser</h2><p>+50 health, but at the cost of 20 coda coins. Capped at max health.</p>";
+        }
+        if (curspecial1 == "rest") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            byId("sc2").innerHTML = "<h2>ULTRA-CHEAP Room</h2><p>Dirty, old mattresses for the night. It's free, but only heals 20 health.</p>";
+            byId("sc2").setAttribute("data-cost",0);
+            byId("sc2").setAttribute("data-heal",20);
+            byId("sc1").innerHTML = "<h2>Standard Room</h2><p>+70 health, but at the cost of 50 coda coins. Capped at max health.</p>";
+            byId("sc1").setAttribute("data-cost",50);
+            byId("sc1").setAttribute("data-heal",70);
+        }
+        if (curspecial1 == "mystery") {
+            specialdiv.style.display = "block";
+            byId("sc2").style.display = "none";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Mystery Box</h2><p>Lose 120 coda coins, but get a random card.</p>";
+        }
+        if (curspecial1 == "destroycard" || curspecial1 == "upgcard") {
+            specialdiv.style.display = "none";
+            specialdiv2.style.display = "none";
+        }
     } else {
         specialdiv.style.display = "none";
         specialdiv2.style.display = "none";
@@ -2532,6 +2845,19 @@ function enterAdventureScreen() {
         ${p1.managain} Mana Gain | ${p1.maxdiscards} Discards
     </p>
     `;
+    if (curlocation.loretext.includes("||") && textfinished == false) {
+        travelbtn.innerHTML = "Next";
+        alttravelbtn.style.display = "none";
+        loretxt.innerHTML = currenttext;
+        proceedtxt.style.display = "none";
+        proceeddesc.style.display = "none";
+    } else {
+        if (textfinished == true) {
+            loretxt.innerHTML = currenttext;
+        }
+        proceedtxt.style.display = "block";
+        proceeddesc.style.display = "block";
+    }
     updateAdventureScreen();
     
     
@@ -2539,7 +2865,7 @@ function enterAdventureScreen() {
 function updateAdventureScreen() {
     statsdiv.innerHTML = `
     <p>
-        ${p1.health} Health | ${p1.coins} Coda Coins
+        ${p1.health}/${p1.maxhealth} Health | ${p1.coins} Coda Coins
     </p>
     <p>
         ${p1.managain} Mana Gain | ${p1.maxdiscards} Discards
@@ -2567,6 +2893,7 @@ function updateAdventureScreen() {
             let card = document.createElement('td');
             let curcard = p1.deck[Object.keys(p1.deck)[(j*4)+i]];
             card.setAttribute("data-card",Object.keys(p1.deck)[(j*4)+i]);
+            card.setAttribute("data-usetimes",0);
             card.className = "inventorytablecard";
             
             card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | ";
@@ -2662,13 +2989,49 @@ function updateAdventureScreen() {
     }
     Array.from(document.getElementsByClassName("inventorytablecard")).forEach(function(element) {
         element.addEventListener('click', function() {
-            if (curspecial1 == "destroycard" && Object.keys(p1.deck).length > 0) {
+            if (curspecial1 == "destroycard" && Object.keys(p1.deck).length > 1) {
                 let card = p1.deck[element.getAttribute("data-card")];
                 if (curlocation.name == "behindtallmart") {
                     p1.coins += 15;
                 }
                 console.log(card);
                 delete p1.deck[element.getAttribute("data-card")];
+                updateAdventureScreen();
+            }
+            if (curspecial1 == "upgcard" && speciallock >= 5) {
+                if (p1.coins < 31) {
+                    p1.coins -= 30;
+                }
+                if (typeof speciallock == "boolean") {
+                    speciallock = 0;
+                } else {
+                    speciallock++;
+                }
+                let card = p1.deck[element.getAttribute("data-card")];
+                card.hp *= 1.2;
+                card.hp = Math.round(card.hp);
+                if (Object.hasOwn(card,"atk")) {
+                    card.atk *= 1.2;
+                    card.atk = Math.round(card.atk);
+                }
+                if (Object.hasOwn(card,"heal")) {
+                    card.heal *= 1.2;
+                    card.heal = Math.round(card.heal);
+                }
+                
+                updateAdventureScreen();
+            }
+            if (curspecial2 == "energizer" && p1.coins >= 150) {
+                p1.coins -= 150;
+                let card = p1.deck[element.getAttribute("data-card")];
+                card.cool -= 2;
+                card.coolleft -= 2;
+                if (card.cool < 1) {
+                    card.cool = 1;
+                }
+                if (card.coolleft < 0) {
+                    card.coolleft = 0;
+                }
                 updateAdventureScreen();
             }
         });
@@ -2852,6 +3215,10 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
                 }
                 if (p1.relics[relic].attrtype == "int") {
                     p1.relics[relic].attr += relics[relic].attr*0.15;
+                    if (relic == "lifecapsule") {
+                        p1.maxhealth += 9;
+                        p1.health += 9;
+                    }
                 }
                 
             }else {
@@ -2859,12 +3226,40 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
                 assign(key,relics[relic]);
                 console.log(key);
                 p1.relics[relic] = key;
+                if (relic == "lifecapsule") {
+                    p1.maxhealth += 60;
+                    p1.health += 60;
+                }
             }
             
             updateAdventureScreen();
             element.style.border = "7px solid black";
         }
-        
+        if (sCondition("mystery")[0] == true && p1.coins >= 120) {
+            p1.coins -= 120;
+            drawCard("p1",false,null,"addToDeck");
+            updateAdventureScreen();
+        }
+        if (sCondition("beancandispenser")[0] == true && p1.coins >= 20) {
+            p1.coins -= 20;
+            p1.health += 50;
+            if (p1.health > p1.maxhealth) {
+                p1.health = p1.maxhealth;
+            }
+            updateAdventureScreen();
+        }
+        if (sCondition("rest")[0] == true) {
+            if (p1.coins >= element.getAttribute("data-cost")) {
+                p1.coins -= element.getAttribute("data-cost");
+                p1.health += element.getAttribute("data-heal");
+                if (p1.health > p1.maxhealth) {
+                    p1.health = p1.maxhealth;
+                }
+                speciallock= true;
+            }
+            
+            updateAdventureScreen();
+        }
     });
 });
 
@@ -2872,25 +3267,63 @@ travelbtn.addEventListener("click", function() {
     skipped = false;
     speciallock = false;
     speciallock2 = false;
+    if (travelbtn.innerHTML == "Travel") {
+        curlocation = locations[curlocation.nextloc];
+        adventurescreen.style.opacity = 0;
+        window.setTimeout(enterAdventureScreen,200);
+        currenttext = "";
+        textfinished = false;
+        currenttextnum = 0;
+    }
+    if (travelbtn.innerHTML == "Begin Fight") {
+        startBattle(curlocation.proceedspecial.split("|")[1]);
+        fullSD(adventurescreen,gamescreen,"none","block");
+        currenttext = "";
+        textfinished = false;
+        currenttextnum = 0;
+    }
+    if (travelbtn.innerHTML == "Next") {
+        if (curlocation.loretext.includes("||") && textfinished == false) {
+            let texts = curlocation.loretext.split("||");
+            let text = texts[currenttextnum];
+            if (currenttextnum > 0) {
+                text = "<br>"+text;
+            }
+            if (currenttextnum-texts.length >= 0) {
+                textfinished = true;
+                currenttextnum = 0;
+            } else {
+                currenttextnum += 1;
+            }
+            currenttext += text;
+            enterAdventureScreen();
+        }
+        
+    }
+    
     specialdiv.style.display = "none";
     specialdiv2.style.display = "none";
     Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
         element.style.border = "2px solid black";
     });
-    if (travelbtn.innerHTML == "Begin Fight") {
-        startBattle(curlocation.proceedspecial.split("|")[1]);
-        fullSD(adventurescreen,gamescreen,"none","block");
-    }
-    if (travelbtn.innerHTML == "Travel") {
-        curlocation = locations[curlocation.nextloc];
-        enterAdventureScreen();
-    }
+    
+    let sound = new Audio('sounds/pop.mp3');
+    sound.volume = 0.2;
+    sound.play();
+    
 });
 alttravelbtn.addEventListener("click", function() {
     skipped = true;
     curlocation = locations[curlocation.nextloc];
-    enterAdventureScreen();
+    adventurescreen.style.opacity = 0;
+    currenttext = "";
+    textfinished = false;
+    currenttextnum = 0;
+    window.setTimeout(enterAdventureScreen,200);
     Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
         element.style.border = "2px solid black";
     });
+    let sound = new Audio('sounds/pop.mp3');
+    sound.volume = 0.2;
+    sound.play();
 });
