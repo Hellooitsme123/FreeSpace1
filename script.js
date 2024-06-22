@@ -61,7 +61,7 @@ var enemies = {
     "janjo": {
         name: "janjo",
         formal: "Janjo, Tavern Owner",
-        managain: 5.5,
+        managain: 5,
         maxdiscards: 1,
         coinsgive: 100,
         // battle stats
@@ -76,7 +76,7 @@ var enemies = {
     "helloitsme": {
         name: "helloitsme",
         formal: "'Helloitsme123'",
-        managain: 7,
+        managain: 6,
         maxdiscards: 1,
         coinsgive: 150,
         // battle stats
@@ -95,8 +95,8 @@ var enemies = {
         maxdiscards: 1,
         coinsgive: 50,
         // battle stats
-        health: 300,
-        mana: 10,
+        health: 250,
+        mana: 8,
         discards: 1,
         inventory: {},
         simpledeck: ["solarprism","wizard","weakener","soulkeeper","managenerator","healorb"],
@@ -106,17 +106,17 @@ var enemies = {
     "cheesedino": {
         name: "cheesedino",
         formal: "Cheese Dino",
-        managain: 7,
+        managain: 5,
         maxdiscards: 1,
         coinsgive: 0,
         // battle stats
-        health: 350,
+        health: 320,
         mana: 12,
         discards: 1,
         inventory: {},
         simpledeck: ["solarprism","oblivion","wizard","spearman","managenerator","healbubble"],
         deck: {},
-        mods: ["FlameTouch{3,2}"],
+        mods: ["FlameTouch{2,1}"],
     },
     "bandits": {
         name: "bandits",
@@ -136,12 +136,12 @@ var enemies = {
     "lordk": {
         name: "lordk",
         formal: "Lord K",
-        managain: 10,
+        managain: 7,
         maxdiscards: 1,
         coinsgive: 50,
         // battle stats
         health: 500,
-        mana: 15,
+        mana: 10,
         discards: 1,
         inventory: {},
         simpledeck: ["bandit","wizard","spearman","flamethrower","ninja"],
@@ -151,11 +151,11 @@ var enemies = {
     "trafficlord": {
         name: "trafficlord",
         formal: "Traffic Lord",
-        managain: 8,
+        managain: 5,
         maxdiscards: 1,
         coinsgive: 200,
         // battle stats
-        health: 700,
+        health: 500,
         mana: 15,
         discards: 1,
         inventory: {},
@@ -198,8 +198,17 @@ var locations = {
         name: "owarpcenter",
         formal: "Center of Owarp",
         desc: "Further down the road, the center of Owarp contains marketplaces and buildings, with tons of opportunities to increase your deck of cards and get special upgrades to aid yourself in battle.",
-        loretext: "After getting back up and continuing your journey, you reached the center of Owarp. Here, resides one of the biggest plazas in Boraps, so you decide that you must make the most of your time here. One of the stores in the plaza, known as Tallmart, contains a lot of useful cards. However, you don't have enough to buy them.",
-        proceedtext: "Enter the card battling tavern to earn cards and coda coins.",
+        loretext: "After getting back up and continuing your journey, you reached the center of Owarp. Here, resides one of the biggest plazas in Boraps, so you decide that you must make the most of your time here. One of the stores in the plaza, known as Tallmart, contains a lot of useful cards. However, you don't have enough to buy them. So, you decided that it would be best to enter Janjo's Tavern, a place where you can battle other people with your cards and earn coda coins. || Walking down the road, you saw a pink, cottage store named 'Lavender's Cosmetic Shop'. Next to the entrance, you saw a sign that said that free card upgrades were offered on Monday afternoons. It just happened to be a Monday afternoon, so you decided it would be best to get a free card upgrade before fighting against others with possibly better decks in the tavern.",
+        proceedtext: "Go to the cosmetic shop and get a free card upgrade.",
+        nextloc: "cosmeticshop",
+    },
+    "cosmeticshop": {
+        name: "cosmeticshop",
+        formal: "Cosmetic Shop",
+        desc: "A relaxing store smothered with pink, aesthetic vibes that provide a variety of cosmetics, just happening to offer free card upgrades on Monday afternoons.",
+        loretext: "You entered the store, and all of a sudden your stress was gone. It was just too relaxing. You came in to the person at the cash register, and you began talking with her. || You: So, is it true that there are free card upgrades on Mondays? || Lavender: Yeah. Only the first 10 people get it though. Fortunately, you are one of the first 10 people here. || You: Cool! So, how do I get it? || Lavender: Just give me 2 cards, and I can upgrade them. You can also get 1 card and 1 card upgrade instead. || Click a card to upgrade its stats by 10%, or choose a card to get for free. ",
+        special: "shop|gaincard|upgcard",
+        proceedtext: "Leave the store and go visit the tavern.",
         nextloc: "tavern",
     },
     "tavern": {
@@ -310,8 +319,8 @@ var locations = {
         name: "beanfactory",
         formal: "Bean Factory Entrance",
         desc: "The entrance to a Beanmelon Factory. Hopefully you'll be able to enter. After all, you are the owner's nephew.",
-        loretext: "It was nice to have some sleep after more than a day of none at all. Feeling better, you left the hotel to get to visit the Beanmelon Factory. At the entrance, you met a strange dinosaur-humanoid, with a block of cheese with googly eyes as their head. You thought it was a statue, until the dinosaur thing started talking to you. || Cheese Dino: Are you here to talk about Lord K? || You: No.. who's that? || Cheese Dino: You see that guy on the poster? || The picture on the poster showed a ginormous, green dude wearing a crown and a cape, at least double the height of the hotel you were just in, if you looked at the trees in the background of the photo. || You: So.. Who is this Lord K? || Cheese Dino: Well, he's this giant fellow that's been causing a lot of disruption, destroying cities and whatnot. There's a bounty on him. Anyone who can defeat him will get 3000 coda coins. Just bring his crown here, and I'll use the Artifact Confirmation Expert machine to confirm it. || You: 3000? || Cheese Dino: Yep. If you're want to get the prize, you'll have to be able to get cards strong enough to deal with Lord K. Won't be easy. || You: Where can I find him? || Cheese Dino: Oh, somewhere in the forests that follow. || 3000 coda coins seems like a lot, and it'll surely be enough to buy a variety of things. Lord K doesn't seem that bad of enemy, considering the foes you've faced so far. || Cheese Dino: You know what? I'll give you a deal. If you beat me in a card battle, I'll give you a special relic. If you lose, you have to give me 200 coda coins. Come on, it's practically free.",
-        proceedtext: "Battle Cheese Dino for the relic.",
+        loretext: "It was nice to have some sleep after more than a day of none at all. Feeling better, you left the hotel to get to visit the Beanmelon Factory. At the entrance, you met a strange dinosaur-humanoid, with a block of cheese with googly eyes as their head. You thought it was a statue, until the dinosaur thing started talking to you. || Cheese Dino: Are you here to talk about Lord K? || You: No.. who's that? || Cheese Dino: You see that guy on the poster? || The picture on the poster showed a ginormous, green dude wearing a crown and a cape, at least double the height of the hotel you were just in, if you looked at the trees in the background of the photo. || You: So.. Who is this Lord K? || Cheese Dino: Well, he's this giant fellow that's been causing a lot of disruption, destroying cities and whatnot. There's a bounty on him. Anyone who can defeat him will get 3000 coda coins. Just bring his crown here, and I'll use the Artifact Confirmation Expert machine to confirm it. || You: 3000? || Cheese Dino: Yep. If you're want to get the prize, you'll have to be able to get cards strong enough to deal with Lord K. Won't be easy. || You: Where can I find him? || Cheese Dino: Oh, somewhere in the forests that follow. || 3000 coda coins seems like a lot, and it'll surely be enough to buy a variety of things. Lord K doesn't seem that bad of enemy, considering the foes you've faced so far. || Cheese Dino: You know what? I'll give you a deal. If you beat me in a card battle, I'll give you a special boost: +50 max health. If you lose, you have to give me all of your coda coins. Come on, it's practically free.",
+        proceedtext: "Battle Cheese Dino for more max health.",
         proceedspecial: "fight|cheesedino", 
         nextloc: "cheesedinovictory",
     },
@@ -390,7 +399,7 @@ var locations = {
         name: "trafficlordvictory",
         formal: "Road to Coda",
         desc: "A.",
-        loretext: "The Traffic Lord was defeated. Now there was an answer to why the unending silence, which will soon be gone. While the final impediment to your journey to Coda may have been defeated, the lack of endurance and willpower may be your ultimate demise. There are still at least 40 miles left, and it has been more than a week now. Everything in terrible pain, tired and fatigued. 10 miles more and you might as well collapse and die. Hey.. is that.. a motorcycle? || You stumbled upon a man with spiky, black hair in a black and white coat. He was leaning on his motorcycle, which was leaning on a brown wooden fence. He appeared to be idle, just staring off into the distance, until you caught his eye. || ???: What can I do for you, sir? || You: Uh, can I use that motorcycle to ride along the road? || ???: You can't take it for yourself, but I can drive you to Coda for 600 coda coins. || You: 600 coda coins? || ???: Hey, it's not often I get someone who pays. I can't make money off of one drive a month. || It was the only way to go. 600 coda coins may be a lot, but it's much less than the cost of dying. || ???: My name's Interstate, by the way. It's best we leave now, it's an hour long drive.",
+        loretext: "The Traffic Lord was defeated. Now there was an answer to why the unending silence, which will soon be gone. While the final impediment to your journey to Coda may have been defeated, the lack of endurance and willpower may be your ultimate demise. There are still at least 40 miles left, and it has been more than a week now. Everything in terrible pain, tired and fatigued. 10 miles more and you might as well collapse and die. Hey.. is that.. a motorcycle? || You stumbled upon a man with spiky, black hair in a black and white coat. He was leaning on his motorcycle, which was leaning on a brown wooden fence. He appeared to be idle, just staring off into the distance, until you caught his eye. || ???: What can I do for you, sir? || You: Uh, can I use that motorcycle to ride along the road? || ???: You can't take it for yourself, but I can drive you to Coda for 600 coda coins. || You: 600 coda coins? || ???: Hey, it's not often I get someone who pays. I can't make money off of one drive a month. || It was the only way to go. 600 coda coins may be a lot, but it's much less than the cost of dying. || Interstate: My name's Interstate, by the way. It's best we leave now, it's an hour long drive.",
         proceedtext: "Hop on the motorcycle and pay Interstate the 600 coda coin fee.",
         nextloc: "zeend",
     },
@@ -476,7 +485,7 @@ var relics = {
         name: "emberring",
         formal: "Ember Ring",
         desc: "A strange ring that gives all of the beholder's cards an enchanted flame touch.",
-        advdesc: "This ring gives flame touch, with a base value of 3,2. Flame touch makes it so all of your attacking cards give off a fire effect, with the values of the relic's values.",
+        advdesc: "This ring gives flame touch, with a base value of 3,2. Flame touch makes it so all of your attacking cards inflict burn. Flamethrowers will deal +7 damage.",
         rarity: 1,
         attr: [3,2],
         attrincrease: [1,1],
@@ -509,7 +518,7 @@ var relics = {
         name: "redstarmedallion",
         formal: "Red Star Medallion",
         desc: "Pledge your loyalty to the star, and gain ultimate power.",
-        advdesc: "Deal extra damage for every 10 health you are missing.",
+        advdesc: "Deal extra damage for every 10 health you are missing. Cultists will get double this amount, use 0.5 less mana, and will heal you one eighth of their damage.",
         rarity: 3,
         attr: 1,
         attrincrease: 0.25,
@@ -548,6 +557,72 @@ var relics = {
         attrincrease: 0.15,
         attrtype: "int",
         img: "coinsack.png",
+    },
+    mammothtusk: {
+        name: "mammothtusk",
+        formal: "Mammoth Tusk",
+        desc: "An ancient tusk belonging to a mammoth uncovered near the Jarj Mountain Ranges.",
+        advdesc: "If your board has 3 or more spearmen, they will deal 50% more damage. Otherwise, they will deal 30% less damage.",
+        rarity: 2,
+        attr: [50,30],
+        attrincrease: [5,-3],
+        attrtype: "arrup",
+        img: "mammothtusk.png",
+    },
+    gamblersdice: {
+        name: "gamblersdice",
+        formal: "Gambler's Dice",
+        desc: "A pair of dice that was once used by top gamblers.",
+        advdesc: "Mana gain now goes from 60-150% of the standard amount. These stats slowly increase as you buy more of this relic.",
+        rarity: 2,
+        attr: [60,150],
+        attrincrease: [5,5],
+        attrtype: "arrup",
+        img: "gamblersdice.png",
+    },
+    soullantern: {
+        name: "soullantern",
+        formal: "Soul Lantern",
+        desc: "An arcane lantern with a radiating faint, blue glow.",
+        advdesc: "Weakeners, wizards, soul keepers, and reapers all deal 20% more damage, your starting mana is also increased by 1 (fixed value).",
+        rarity: 2,
+        attr: 20,
+        attrincrease: 3,
+        attrtype: "int",
+        img: "soullantern.png",
+    },
+    thundercrate: {
+        name: "thundercrate",
+        formal: "Thunder Crate",
+        desc: "A supply crate that zaps out flashes of thunder.",
+        advdesc: "Supply crates also energize cards, and vice versa.",
+        rarity: 1,
+        attr: 0,
+        attrincrease: 0,
+        attrtype: "int",
+        img: "thundercrate.png",
+    },
+    hammerhammer: {
+        name: "hammerhammer",
+        formal: "Hammer Hammer",
+        desc: "Hammer but two.",
+        advdesc: "Factories and dyson spheres create 2 cards, but cost 1 more mana.",
+        rarity: 1,
+        attr: 0,
+        attrincrease: 0,
+        attrtype: "int",
+        img: "hammerhammer.png",
+    },
+    frostyhorn: {
+        name: "frostyhorn",
+        formal: "Frosty Horn",
+        desc: "An old, cold horn that calls to the beasts of frost.",
+        advdesc: "When a card is used, the first Froster (on cooldown) on board loses its cooldown. The card used cannot be a Froster.",
+        rarity: 3,
+        attr: 0,
+        attrincrease: 0,
+        attrtype: "int",
+        img: "frostyhorn.png",
     },
 }
 var cards = {
@@ -636,6 +711,7 @@ var cards = {
         hp: 20,
         heal: 35,
         uses: 1,
+        cool: 0,
         coolleft: 0,
         manause: 1,
         desc:"A simple orb, giving decent health when used.",
@@ -755,6 +831,7 @@ var cards = {
         formal: "Attack Potion",
         hp: 15,
         manause: 1,
+        cool: 0,
         coolleft: 0,
         desc:"A strong potion that boosts an ally's attack by 50%.",
         funnyname: "ATTACK POTIONORIONIO",
@@ -1083,6 +1160,12 @@ var modalContent = byId("modal-content");
 modal.classList.add("hide");
 var keynames = ["name","formal","atk","hp","manause","ammo","maxammo","cool","coolleft","type","heal","uses","tempuses","obtainable","storedmana","sound"];
 var keyformal = ["Name","Formal Name","Attack","Health","Mana Use","Ammo","Maximum Default Ammo","Cooldown","Starting Cooldown","Card Type","Heal","Uses","Obtainable By Drawing Cards","Stored Mana","Sound"];
+function arrHas(arr,substr) {
+    return arr.some(str => str.includes(substr));
+}
+function arrFirst(arr,substr) {
+    return arr.filter(str => str.includes(substr))[0];
+}
 for (let i = 0; i < Object.keys(cards).length;i++) {
     let para = document.createElement("p");
     para.innerHTML = "<h3>"+cards[Object.keys(cards)[i]].formal+":</h3><p>"+cards[Object.keys(cards)[i]].desc+"</p><h4>Attributes</h4>";
@@ -1167,10 +1250,14 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
     }
     if (specific == true) {
         chosenkey = cards[choice];
+        if (Object.keys(Game[player].deck).includes(choice)) {
+            chosenkey = Game[player].deck[choice];
+        }
     }
-    console.log(chosenkey,choice);
+    console.log(chosenkey,choice,table,Game[player][table],player);
     let key = {};
     assign(key,chosenkey);
+    console.log(key);
     key.effects = [];
     if (key.obtainable == false && specific == false && otherargs == null) {
         drawCard(player);
@@ -1178,6 +1265,7 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
     }
     
     if (Object.hasOwn(Game[player][table],key.name)) {
+        console.log("AAAA");
         let i2 = 0;
         do {
             i2++;
@@ -1187,8 +1275,11 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
             Game[player][table][key.name+i2] = key;
         }
     } else {
+        console.log("HAIKSJFHDSKFA");
         Game[player][table][key.name] = key;
+        console.log(Game[player][table][key.name],Game[player],player);
     }
+    console.log(p2.deck);
     let sound = new Audio('sounds/draw-card.mp3');
     sound.volume = 0.4;
     sound.play();
@@ -1272,6 +1363,9 @@ function drawCard(player,specific = false,choice = null,otherargs = null) {
         }
     }
     if (otherargs != "addToDeck") {
+        if (player == "p1" && Object.hasOwn(p1.relics,"hammerhammer") && ["factory","dysonsphere"].includes(key.name)) {
+            key.manause += 1;
+        }
         if (Game[player].mods.some(str => str.includes("QuickUse"))) {
             let str = Game[player].mods.filter(str => str.includes("QuickUse"))[0];
             console.log(str);
@@ -1511,12 +1605,15 @@ function resetBattleUI(){
     update(true);
 }
 function startBattle(enemy) {
+    Game.p2 = {};
     let zeopp = enemies[enemy];
     turns = 0;
     p1.mods = [];
     battletitle.innerHTML = "Fight Against "+zeopp.formal;
     p1.mana = p1.startingmana;
-    assign(p2,zeopp);
+    assign(Game.p2,zeopp);
+    p2 = Game.p2;
+    console.log(p2.simpledeck);
     for (let i = 0; i<zeopp.simpledeck.length; i++) {
         drawCard("p2",true,zeopp.simpledeck[i],"addToDeck");
     }
@@ -1525,6 +1622,15 @@ function startBattle(enemy) {
     }
     for (let j = 0; j < 3; j++) {
         drawCard("p2",false,null,"Start");
+    }
+    if (currentmode == "Hard") {
+        p2.health *= 1.2;
+    }
+    if (currentmode == "Cataclysm") {
+        p2.health *= 2;
+    }
+    if (currentmode == "Easy") {
+        p2.health *= 0.7;
     }
     gamescreen.style.display = "block";
     // RELICS
@@ -1541,6 +1647,10 @@ function startBattle(enemy) {
     if (Object.hasOwn(p1.relics,"redstarmedallion")) {
         let relic = p1.relics["redstarmedallion"];
         p1.mods.push("RedStarMedallion{"+relic.attr+"}");
+    }
+    if (Object.hasOwn(p1.relics,"soullantern")) {
+        let relic = p1.relics["soullantern"];
+        p1.mods.push("SoulLantern{"+relic.attr+"}");
     }
     update();
 }
@@ -1570,6 +1680,10 @@ function endBattle(outcome) {
             if (p1.health > p1.maxhealth) {
                 p1.health = p1.maxhealth;
             }
+        }
+        if (enemy.name == "cheesedino") {
+            p1.maxhealth += 50;
+            p1.health += 50;
         }
     }
     if (outcome == 2) {
@@ -1660,17 +1774,10 @@ function turnover(player) {
             p1.health += 70;
             p2.health += 70;
         }
-        p1.health -= 30;
-        p2.health -= 30;
-        p1.mana += 15;
+        p1.health -= 25;
+        p2.health -= 50;
+        p1.mana += 22;
         p2.mana += 15;
-        if (p1.health > p2.health) {
-            p2.mana += 10;
-            p1.health -= 15;
-        } else {
-            p1.mana += 10;
-            p2.health -= 15;
-        }
     }
     let plr;
     if (player == "p1") {
@@ -1680,6 +1787,10 @@ function turnover(player) {
     }
     plr.discards = plr.maxdiscards;
     plr.mana += plr.managain;
+    if (plr == p1 && arrHas(Object.keys(plr.relics),"gamblersdice")) {
+        plr.mana -= plr.managain;
+        plr.mana += Math.round((randNum(plr.relics.gamblersdice.attr[0], plr.relics.gamblersdice.attr[1])/100)*plr.managain);
+    }
     for (let i = 0; i < Object.keys(plr.inventory).length; i++) {
         let zecard = plr.inventory[Object.keys(plr.inventory)[i]];
         if (zecard.coolleft != 0) {
@@ -2074,6 +2185,20 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                 element.style.border = "3px solid maroon";
                 window.setTimeout(unborder,500,id);
             }
+            if (user == p1 && Object.hasOwn(p1.relics,"frostyhorn") && card.name != "froster") {
+                let chosen;
+                for (let i = 0; i < Object.keys(p1.inventory).length; i++) {
+                    let card = p1.inventory[Object.keys(p1.inventory)[i]];
+                    if (card.name == "froster" && card.coolleft > 0) {
+                        chosen = card;
+                        break;
+                    }
+                }
+                if (chosen != null) {
+                    chosen.coolleft = 0;
+                }
+                
+            }
             if (card.type == "Attack") {
                 
                 let attacked = firstOpp(stropp);
@@ -2130,6 +2255,24 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                             zeattacked.effects.push(`Burning{${cm[0]},${cm[1]}}`);
                         }
                     }
+                    if (arrHas(user.mods,"SoulLantern") == true && ["soulkeeper","weakener","wizard","reaper"].includes(card.name)) {
+                        let cm = cleanseModifier("Norm",arrFirst(user.mods,"SoulLantern"));
+                        zeattacked.hp -= Math.round(card.atk*(cm/100));
+                    }
+                    if (user == p1 && Object.hasOwn(p1.relics,"mammothtusk")) {
+                        let count = 0;
+                        for (let i = 0; i < Object.keys(p1.inventory).length; i++) {
+                            let card = Object.keys(p1.inventory)[i];
+                            if (card.includes("spearman")) {
+                                count += 1;
+                            }
+                        }
+                        if (count < 3) {
+                            zeattacked.hp += Math.round(card.atk*0.3);
+                        } else {
+                            zeattacked.hp -= Math.round(card.atk*0.5);
+                        }
+                    }
                     if (card.name == "bandit") {
                         let managain = Math.ceil(opponent.mana*(randNum(20,60)/100));
                         if (managain < 1) {
@@ -2146,7 +2289,19 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         opponent.health -= card.atk;
                     }
                     if (card.name == "charger") {
-                        card.atk = 20;
+                        card.atk = 40;
+                        for (let i = 0; i < 3; i++) {
+                            let card = opponent.inventory[Object.keys(opponent.inventory)[i]];
+                            if (card != undefined) {
+                                let substr = "Shock";
+                                if (card.effects.some(str => str.includes(substr)) == false) {
+                                    card.effects.push("Shock{1,1}");
+                                    
+                                }
+                            } else {
+                                opponent.health -= 20;
+                            }
+                        }
                     }
                     if (card.name == "weakener") {
                         let chosen;
@@ -2161,6 +2316,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                             opponent.health -= 30;
                         } else {
                             chosen.atk -= 25;
+                            card.atk += 10;
                             if (chosen.atk < 5) {
                                 chosen.atk = 5;
                             }
@@ -2203,6 +2359,9 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                     }
                     if (card.name == "flamethrower") {
                         let substr = "Burning";
+                        if (arrHas(user.mods,"FlameTouch")) {
+                            zeattacked.hp -= 7;
+                        }
                         if (zeattacked.effects.some(str => str.includes(substr)) == true) {
                             let zeval = zeattacked.effects.filter(str => str.includes(substr))[0];
                             let index = zeattacked.effects.indexOf(zeval);
@@ -2228,16 +2387,20 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                                 let substr = "Stunned";
                                 if (card.effects.some(str => str.includes(substr)) == false) {
                                     card.effects.push("Stunned{1,1}");
-                                    card.hp -= 20;
-                                    if (card.hp <= 0) {
-                                        delete opponent.inventory[Object.keys(opponent.inventory)[i]];
-                                    }
+                                    
                                 }
+                                card.hp -= 20;
+                                
                             } else {
                                 opponent.health -= 20;
                             }
                         }
-                        
+                        for (let i = 0; i < Object.keys(opponent.inventory).length; i++) {
+                            let card = opponent.inventory[Object.keys(opponent.inventory)[i]];
+                            if (card.hp <= 0 && card != zeattacked) {
+                                delete opponent.inventory[Object.keys(opponent.inventory)[i]];
+                            }
+                        }
                     }
                     if (card.name == "reaper") {
                         let substr = "Death";
@@ -2322,8 +2485,16 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                                 add += 30;
                             }
                         }
-                        console.log(add);
                         zeattacked.hp -= add;
+                        if (arrHas(user.mods,"RedStarMedallion")) {
+                            user.mana += 0.5;
+                            if (extraatk > 0) {
+                                card.atk += Math.round(extraatk);
+                                extraatk = Math.round(extraatk)*2;
+                                user.health += extraatk/4;
+                                user.health = Math.round(user.health);
+                            }
+                        }
                     }
                     if (zeattacked.hp <= 0) {
                         if (card.name == "soulkeeper") {
@@ -2417,7 +2588,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                 let sound = new Audio('sounds/item.mp3');
                 sound.volume = 0.4;
                 sound.play();
-                if (card.name == "supplycrate") {
+                if (card.name == "supplycrate" || (user == p1 && Object.hasOwn(p1.relics,"thundercrate") && card.name == "energycapsule")) {
                     let chosen;
                     for (let i = 0; i < Object.keys(user.inventory).length; i++) {
                         let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
@@ -2474,7 +2645,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         card.ammo = card.maxammo;
                     }
                 }
-                if (card.name == "energycapsule") {
+                if (card.name == "energycapsule" || (user == p1 && Object.hasOwn(p1.relics,"thundercrate") && card.name == "supplycrate")) {
                     let chosen;
                     for (let i = 0; i < Object.keys(user.inventory).length; i++) {
                         let tempchosen = user.inventory[Object.keys(user.inventory)[i]];
@@ -2564,7 +2735,24 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                     
                 }
                 
-                
+                if (user == p1 && ["dysonsphere","factory"].includes(card.name) && Object.hasOwn(p1.relics,"hammerhammer")) {
+                    if (card.name == "dysonsphere") {
+                        drawCard(strmain,true,"solarprism");
+                        card.ammo -= 1;
+                        let chosen = firstOpp(stropp);
+                        let substr = "Fear";
+                        if (chosen != "Opp") {
+                            chosen = opponent.inventory[chosen];
+                            if (chosen.effects.some(str => str.includes(substr)) == false) {
+                                chosen.effects.push("Fear{1,1}");
+                                chosen.coolleft += 1;
+                            }
+                        }
+                    }
+                    if (card.name == "factory") {
+                        drawCard(strmain,true,"robot");
+                    }
+                }
             }
             if (card.type == "Action") {
                 if (card.name == "ritual") {
@@ -2572,11 +2760,9 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                     drawCard(strmain,true,"cultist");
                     drawCard(strmain,true,"cultist");
                     delete user.inventory[Object.keys(user.inventory)[index]];
-                    let loss = 0;
-                    if (user.health > 25) {
-                        loss = user.health/10;
-                    } else {
-                        loss = 25;
+                    let loss = 20;
+                    if (user.health - 20 < 1) {
+                        loss = 20-user.health;
                     }
                     user.health -= loss;
                 }
@@ -2658,6 +2844,7 @@ function discard(player, index = null) {
     
 }
 function setStartMod(mod) {
+    
     if (mod == "nephew") {
         drawCard("p1",true,"spearman","addToDeck");
         drawCard("p1",true,"spearman","addToDeck");
@@ -2670,6 +2857,23 @@ function setStartMod(mod) {
         p1.discards = 2;
         p1.managain = 7;
     }
+    if (currentmode == "Hard") {
+        p1.health *= 0.7;
+        p1.maxhealth *= 0.7;
+        //p1.managain *= 0.8;
+    }
+    if (currentmode == "Cataclysm") {
+        p1.health *= 0.2;
+        p1.maxhealth *= 0.2;
+    }
+    if (currentmode == "Easy") {
+        p1.health *= 2;
+        p1.maxhealth *= 2;
+        p1.managain *= 2;
+    }
+    p1.health = Math.round(p1.health);
+    p1.maxhealth = Math.round(p1.maxhealth);
+    p1.managain = Math.round(p1.managain);
 }
 /*function transitionScreen(arg) {
     // SET TO DISPLAY; E.G. BOOL TRUE = DISPLAY; BOOL FALSE = DON'T DISPLAY;
@@ -2776,10 +2980,10 @@ function enterAdventureScreen() {
                             card.hp = Math.round(card.hp);
                         }
                         if (chance2 > 7) {
-                            let prevcool = card.manause;
+                            let prevuse = card.manause;
                             card.manause -= randNum(1,6)/2;
-                            if (card.manause < 1 && prevcool != 0) {
-                                card.manause = 1;
+                            if (card.manause < 0.5 && prevuse >= 0.5) {
+                                card.manause = 0.5;
                             }
                             if (card.manause < 0) {
                                 card.manause = 0;
@@ -2839,10 +3043,13 @@ function enterAdventureScreen() {
                         card.hp = Math.round(card.hp);
                     }
                     if (chance2 > 7) {
-                        let prevcool = card.manause;
+                        let prevuse = card.manause;
                         card.manause -= randNum(1,6)/2;
-                        if (card.manause < 1 && prevcool != 0) {
-                            card.manause = 1;
+                        if (card.manause < 0.5 && prevuse >= 0.5) {
+                            card.manause = 0.5;
+                        }
+                        if (card.manause < 0) {
+                            card.manause = 0;
                         }
                     }
                 }
@@ -2933,9 +3140,12 @@ function enterAdventureScreen() {
             byId("sc3").style.display = "none";
             byId("sc1").innerHTML = "<h2>Mystery Box</h2><p>Lose 120 coda coins, but get a random card.</p>";
         }
-        if (curspecial1 == "destroycard" || curspecial1 == "upgcard") {
+        if (curspecial1 == "destroycard" || curspecial1 == "upgcard" || curspecial2 == "upgcard") {
             specialdiv.style.display = "none";
             specialdiv2.style.display = "none";
+            if (curlocation.name == "cosmeticshop") {
+                specialdiv.style.display = "block";
+            }
         }
     } else {
         specialdiv.style.display = "none";
@@ -2951,6 +3161,7 @@ function enterAdventureScreen() {
         ${p1.managain} Mana Gain | ${p1.maxdiscards} Discards
     </p>
     `;
+    console.log(textfinished);
     if (curlocation.loretext.includes("||") && textfinished == false) {
         travelbtn.innerHTML = "Next";
         alttravelbtn.style.display = "none";
@@ -2958,7 +3169,17 @@ function enterAdventureScreen() {
         proceedtxt.style.display = "none";
         proceeddesc.style.display = "none";
         byId("reroll").style.display = "none";
+        specialdiv.style.display = "none";
+        specialdiv2.style.display = "none";
     } else {
+        console.log(curspecial1 != null && curspecial1 != "upgcard" && curspecial1 != "destroycard");
+        if (curspecial1 != null && curspecial1 != "upgcard" && curspecial1 != "destroycard") {
+            specialdiv.style.display = "block";
+            console.log("yo");
+        }
+        if (curspecial2 != null && ["destroycard", "upgcard", "mystery"].includes(curspecial2) == false) {
+            specialdiv2.style.display = "block";
+        }
         if (textfinished == true) {
             loretxt.innerHTML = currenttext;
         }
@@ -2969,6 +3190,7 @@ function enterAdventureScreen() {
         }
         proceedtxt.style.display = "block";
         proceeddesc.style.display = "block";
+        
     }
     updateAdventureScreen();
     
@@ -3125,31 +3347,61 @@ function updateAdventureScreen() {
                 delete p1.deck[element.getAttribute("data-card")];
                 updateAdventureScreen();
             }
-            if (curspecial1 == "upgcard" && speciallock < 5) {
-                if (p1.coins < 30) {
-                    return false;
-                } else {
-                    p1.coins -= 30;
+            if (sCondition("upgcard")[0]) {
+                if (curlocation.name == "cheesedinovictory") {
+                    if (curspecial1 == "upgcard" && speciallock < 3) {
+                        if (p1.coins < 30) {
+                            return false;
+                        } else {
+                            p1.coins -= 30;
+                        }
+                        if (typeof speciallock == "boolean") {
+                            speciallock = 1;
+                        } else {
+                            speciallock++;
+                        }
+                        let card = p1.deck[element.getAttribute("data-card")];
+                        card.hp *= 1.2;
+                        card.hp = Math.round(card.hp);
+                        if (Object.hasOwn(card,"atk")) {
+                            card.atk *= 1.2;
+                            card.atk = Math.round(card.atk);
+                        }
+                        if (Object.hasOwn(card,"heal")) {
+                            card.heal *= 1.2;
+                            card.heal = Math.round(card.heal);
+                        }
+                        
+                        updateAdventureScreen();
+                    }
                 }
-                if (typeof speciallock == "boolean") {
-                    speciallock = 1;
-                } else {
-                    speciallock++;
+                if (curlocation.name == "cosmeticshop") {
+                    if (curspecial2 == "upgcard" && speciallock2 < 2) {
+                        if (speciallock == true && speciallock2 == 1) {
+                            return false;
+                        } 
+                        if (typeof speciallock2 == "boolean") {
+                            speciallock2 = 1;
+                        } else {
+                            speciallock2++;
+                        }
+                        let card = p1.deck[element.getAttribute("data-card")];
+                        card.hp *= 1.1;
+                        card.hp = Math.round(card.hp);
+                        if (Object.hasOwn(card,"atk")) {
+                            card.atk *= 1.1;
+                            card.atk = Math.round(card.atk);
+                        }
+                        if (Object.hasOwn(card,"heal")) {
+                            card.heal *= 1.1;
+                            card.heal = Math.round(card.heal);
+                        }
+                        
+                        updateAdventureScreen();
+                    }
                 }
-                let card = p1.deck[element.getAttribute("data-card")];
-                card.hp *= 1.2;
-                card.hp = Math.round(card.hp);
-                if (Object.hasOwn(card,"atk")) {
-                    card.atk *= 1.2;
-                    card.atk = Math.round(card.atk);
-                }
-                if (Object.hasOwn(card,"heal")) {
-                    card.heal *= 1.2;
-                    card.heal = Math.round(card.heal);
-                }
-                
-                updateAdventureScreen();
             }
+            
             if (curspecial2 == "energizer" && p1.coins >= 150 && speciallock2 < 2) {
                 p1.coins -= 150;
                 if (typeof speciallock2 == "boolean") {
@@ -3262,9 +3514,29 @@ unselectbtn.addEventListener('click',function() {
 })
 
 playbtn.addEventListener("click",function() {
-    console.log(sob, sob == 2);
     if (sob == 2) {
-        console.log("UHHH");
+        if (playbtn.innerHTML == "RESTART") {
+            curlocation = locations.home;
+            Game.p1 = {
+                managain: 5,
+                maxdiscards: 1,
+                maxhealth: 300,
+                coins: 20,
+                startingmana: 10,
+                // battlestats
+                health: 300,
+                mana: 10,
+                discards: 1,
+                inventory: {},
+                deck: {},
+                battledeck: {},
+                mods: [],
+                relics: {},
+            };
+            p1 = Game.p1;
+            drawCard("p1",true,"spearman","addToDeck");
+            drawCard("p1",true,"spearman","addToDeck");
+        }
         fullSD(menuscreen,adventurescreen,"none","block");
         window.setTimeout(enterAdventureScreen,200);
     }
@@ -3298,9 +3570,9 @@ Array.from(document.getElementsByClassName("startmods")).forEach(function(elemen
 });
 function sCondition(special) {
     let arr = [];
-    if (speciallock == false && curspecial1 == special) {
+    if ((speciallock == false || typeof speciallock == "number") && curspecial1 == special) {
         arr = [true,1];
-    } else if (speciallock2 == false && curspecial2 == special) {
+    } else if ((speciallock2 == false || typeof speciallock2 == "number") && curspecial2 == special) {
         arr = [true,2];
     } else {
         arr = [false,0];
@@ -3319,6 +3591,9 @@ Array.from(document.getElementsByClassName("reroll")).forEach(function(element) 
 Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
     element.addEventListener('click', function() {
         if (sCondition("gaincard")[0] == true && element.hasAttribute("data-card")) {
+            if (curlocation.name == "cosmeticshop" && speciallock2 == 2) {
+                return false;
+            }
             let num = sCondition("gaincard")[1];
             let card = element.getAttribute("data-card");
             drawCard("p1",true,card,"addToDeck");
@@ -3353,7 +3628,7 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
             if (Object.hasOwn(p1.relics,relic)) {
                 if (p1.relics[relic].attrtype == "arrup") {
                     for (let i = 0; i < p1.relics[relic].attr.length; i++) {
-                        p1.relics[relic].attr[i] = p1.relics[relic].attrincrease[i];
+                        p1.relics[relic].attr[i] += p1.relics[relic].attrincrease[i];
                     }
                 }
                 if (p1.relics[relic].attrtype == "int") {
@@ -3367,7 +3642,10 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
                         p1.discards += 0.5;
                     }
                 }
-                
+                let list = ["thundercrate","frostyhorn","hammerhammer"]
+                if (list.includes(relic)) {
+                    p1.coins += Number(element.getAttribute("data-cost"));
+                }
             }else {
                 let key = {};
                 assign(key,relics[relic]);
@@ -3380,6 +3658,9 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
                 if (relic == "trashcan") {
                     p1.maxdiscards += 1;
                     p1.discards += 1;
+                }
+                if (relic == "soullantern") {
+                    p1.startingmana += 1;
                 }
             }
             
@@ -3423,7 +3704,30 @@ travelbtn.addEventListener("click", function() {
     skipped = false;
     speciallock = false;
     speciallock2 = false;
+    specialdiv.style.display = "none";
+    specialdiv2.style.display = "none";
+    Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+        element.style.border = "2px solid black";
+    });
+    
+    let sound = new Audio('sounds/pop.mp3');
+    sound.volume = 0.2;
+    sound.play();
     if (travelbtn.innerHTML == "Travel") {
+        if (curlocation.name == "trafficlordvictory") {
+            if (p1.coins < 600) {
+                resetBattleUI();
+                fullSD(gamescreen,menuscreen,"none","block");
+                sob = 2;
+                //window.setTimeout(enterAdventureScreen,200);
+                gametitle.innerHTML = "You Lose..";
+                playbtn.innerHTML = "RESTART";
+                openBtn.style.display = "none";
+                return false;
+            } else {
+                p1.coins -= 600;
+            }
+        }
         curlocation = locations[curlocation.nextloc];
         adventurescreen.style.opacity = 0;
         window.setTimeout(enterAdventureScreen,200);
@@ -3459,15 +3763,7 @@ travelbtn.addEventListener("click", function() {
         
     }
     
-    specialdiv.style.display = "none";
-    specialdiv2.style.display = "none";
-    Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
-        element.style.border = "2px solid black";
-    });
     
-    let sound = new Audio('sounds/pop.mp3');
-    sound.volume = 0.2;
-    sound.play();
     
 });
 alttravelbtn.addEventListener("click", function() {
