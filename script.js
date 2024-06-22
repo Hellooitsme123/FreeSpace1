@@ -2259,7 +2259,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         let cm = cleanseModifier("Norm",arrFirst(user.mods,"SoulLantern"));
                         zeattacked.hp -= Math.round(card.atk*(cm/100));
                     }
-                    if (user == p1 && Object.hasOwn(p1.relics,"mammothtusk")) {
+                    if (user == p1 && Object.hasOwn(p1.relics,"mammothtusk") && card.name == "spearman") {
                         let count = 0;
                         for (let i = 0; i < Object.keys(p1.inventory).length; i++) {
                             let card = Object.keys(p1.inventory)[i];
