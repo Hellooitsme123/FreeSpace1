@@ -29,6 +29,19 @@ body,html {
     background-size: 100%;
     transition: opacity 0.2s ease-in-out;
 }
+#versiontext {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    color: rgb(136, 255, 178);
+    font-weight: bolder;
+    font-size: 20px;
+    text-shadow:
+    0.07em 0 black,
+    0 0.07em black,
+    -0.07em 0 black,
+    0 -0.07em black;
+}
 #background {
 }
 #gametitle {
