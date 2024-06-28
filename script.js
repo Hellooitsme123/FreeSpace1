@@ -44,6 +44,21 @@ var enemies = {
         deck: {},
         mods: [],
     },
+    "goldslime": {
+        name: "goldslime",
+        formal: "Golden Slime",
+        managain: 6,
+        maxdiscards: 0,
+        coinsgive: 50,
+        // battle stats
+        health: 300,
+        mana: 7,
+        discards: 0,
+        inventory: {},
+        simpledeck: ["etherealguardian","froster","jester"],
+        deck: {},
+        mods: ["Strength{20}","Tank{20}","QuickUse{1}"],
+    },
     "taverngroup": {
         name: "taverngroup",
         formal: "Tavern Regulars",
@@ -147,7 +162,7 @@ var enemies = {
         inventory: {},
         simpledeck: ["charger","cannoneer","factory","juggernaut","oblivion","healorb"],
         deck: {},
-        mods: ["Tank{20}","Healing{100}"],
+        mods: ["Tank{20}","Healing{200}","QuickUse{1}"],
     },
     "lordk": {
         name: "lordk",
@@ -193,7 +208,15 @@ var locations = {
         name: "roadtocoda",
         formal: "Road To Coda",
         desc: "The long path to Coda, one of the biggest cities in the world. There, you'll be able to stock up on cards to continue your journey.",
-        loretext: "You start the trip to Coda, journeying along the path with your cards and some money. On the road, a man comes up to you, noticing your cards. He says name is Andreas, and he offers to give you powerful cards if you can beat him, along with 30 coda coins. However, if you lose, you have to give him all of your cards. It seems sketchy, but some better cards would be very useful.",
+        loretext: "You start the trip to Coda, journeying along the path with your cards and some money. The sun has risen, and the birds are now chirping. It's still relatively quiet, so you keep walking.",
+        proceedtext: "Continue along the road.",
+        nextloc: "andreasappear",
+    },
+    "andreasappear": {
+        name: "andreasappear",
+        formal: "Road To Coda",
+        desc: "The long path to Coda, one of the biggest cities in the world. There, you'll be able to stock up on cards to continue your journey.",
+        loretext: "On the road, a man comes up to you, noticing your cards. He says name is Andreas, and he offers to give you powerful cards if you can beat him, along with 30 coda coins. However, if you lose, you have to give him all of your cards. It seems sketchy, but some better cards would be very useful.",
         proceedtext: "Battle it out with Andreas for a chance of getting some special cards.",
         proceedspecial: "fight|andreas",
         nextloc: "andreasvictory",
@@ -208,6 +231,24 @@ var locations = {
         alttext: "'Powerful' cards? That doesn't seem right. What if he's hogging them all for himself, and if he somehow loses, he'll just give out one of his weaker cards? You decline the suspicious offer.",
         special: "gaincard",
         proceedtext: "Get back up and make your way to the center of Owarp, where the trading hubs reside.",
+        nextloc: "owarpcenter",
+    },
+    "goldslimeappear": {
+        name: "goldslimeappear",
+        formal: "Road To Coda",
+        desc: "The long path to Coda, one of the biggest cities in the world. There, you'll be able to stock up on cards to continue your journey.",
+        loretext: "You kept walking, until you started hearing a faint splashing noise. || PLOP. PLOP. PLOP. || Something shiny was in the distance, shiny and golden. It was slowly bouncing towards you. || PLOP. SPLAP. PLOP. || Eventually, you could make out what it was. It was a golden slime going after you. Seems like there's only one way out of this..",
+        proceedtext: "End the golden slime.",
+        proceedspecial: "fight|goldslime",
+        nextloc: "andreasvictory",
+    },
+    "goldslimevictory": {
+        name: "goldslimevictory",
+        formal: "Road To Coda",
+        desc: "Golden slime defeated!",
+        loretext: "You saw the mushy blob melt into smaller globs, now fading away. Once it died away, it left behind traces of gold (approximately 50 coda coins) and one card.",
+        special: "gaincard",
+        proceedtext: "Continue and make your way to the center of Owarp, where the trading hubs reside.",
         nextloc: "owarpcenter",
     },
     "owarpcenter": {
@@ -338,6 +379,15 @@ var locations = {
         special: "drinkrobot",
         nextloc: "danceclub2",
     },
+    "slotmachine": {
+        name: "slotmachine",
+        formal: "Slot Machine",
+        desc: "A blue slot machine with coins all over, attempting to attract dazzled people.",
+        loretext: "After a few minutes of trying to navigate through the rainbow tiles, which time and time again left you lost in all of the changing lights, you found yourself in front of a slot machine. || It was like a slot machine that one would find in a casino, except it was all alone in a faint corner. Its slight blue and white paint looked rather dim in the midst of all of the lights, but it still attracted you. || It read: 'BEAN SLOT MACHINE - CHOOSE A CARD AND DEPOSIT 50 CODA COINS, 50/50 CHANCE OF GETTING YOUR CARD EATEN OR UPGRADED'. A massive lever was on the machine, giving off an aura that made you want to gamble. It's only 50 coda coins.. Is it worth the risk? || Do you want to gamble?",
+        proceedtext: "Continue touring the dance club.",
+        special: "gamble",
+        nextloc: "danceclub2",
+    },
     "danceclub2": {
         name: "danceclub2",
         formal: "Deric's Dance Club",
@@ -390,6 +440,15 @@ var locations = {
         loretext: "You left the factory, searching for Lord K. The road was silent as usual, the trees rustling as the loud wind blew. It was getting quite cold. || After some walking, you met a strange altar. Its strange, red aura. You could hear whispers. Must.. go.. closer.. || It was talking to you. Something was in your head. What did that mean? Something was off.. || ???: Are you willing to take a risk, young mortal? || You: Wh- what? What's happening || ???: I won't say this again. Are you prepared to lose everything? || You: No.. get me out of here!",
         special: "risk",
         proceedtext: "Leave the altar and continue your search.", 
+        nextloc: "roadtocoda4",
+    },
+    "unclemanstatue": {
+        name: "unclemanstatue",
+        formal: "UNCLE MAN STATUE",
+        desc: "A large, stone statue depicting your own uncle. Hopefully you will achieve success as great as his one day.",
+        loretext: "It had not been long sing you got back on the road. It'd been maybe 30 minutes or so, but now you'd need to stop again. You must admire your uncle and his achievements, as you were just at one of his factories an hour or so ago. You gaze at the statue, pondering about whether or not you will ever achieve a level of greatness equal to your uncle. || Will you? A question that even the greatest mathematicians can't solve. || Woosh. Woooosh. || What was that? It must be a sign. But what sign? Eventually, you saw it. There was something, a card on UncleMan's head. You'll have to climb quite a bit to get it. But is it really worth it? || Choose wisely.",
+        special: "unclemanstatue",
+        proceedtext: "Leave the statue.", 
         nextloc: "roadtocoda4",
     },
     "roadtocoda4": {
@@ -1335,19 +1394,20 @@ var locationplacing = {
         stages: {
             stage1: {
                 name: "AdventureStart",
-                set: ["home","roadtocoda","andreasvictory","owarpcenter","anyshops","tavern","taverngroupvictory","janjovictory","mysteryloc","tallmart","behindtallmart"],
+                set: ["home","roadtocoda","mysteryfight","owarpcenter","anyshops","tavern","taverngroupvictory","janjovictory","mysteryloc","tallmart","behindtallmart"],
                 anyshops: ["cosmeticshop"],
                 mysteryloc: ["cloakedhuman","speedingcar","none"],
+                mysteryfight: ["andreasappear,andreasvictory","goldslimeappear,goldslimevictory"],
             },
             stage2: {
                 name: "CityOutskirts",
                 set: ["roadtocoda3","danceclub","helloitsmevictory","mysteryloc","danceclub2","djneonvictory","hotel","beanfactory","cheesedinovictory"],
-                mysteryloc: ["beancandispenser","neonrobot","none"],
+                mysteryloc: ["beancandispenser","neonrobot","slotmachine","none"],
             },
             stage3: {
                 name: "LordKSearch",
-                set: ["mysteryloc","roadtocoda4","mysteryfight1","lordkarena","lordkvictory","roadtocoda5","roadtocoda6","roadtocoda7","trafficlordvictory"],
-                mysteryloc: ["strangealtar","none"],
+                set: ["mysteryloc","roadtocoda4","mysteryfight","lordkarena","lordkvictory","roadtocoda5","roadtocoda6","roadtocoda7","trafficlordvictory"],
+                mysteryloc: ["strangealtar","unclemanstatue","none"],
                 mysteryfight: ["forest1,banditsvictory","leafos,leafosvictory"],
             },
         },
@@ -1371,15 +1431,30 @@ var curlocation = locations["home"];
 for (let i = 0; i < 100; i++) {
     let zestage = locationplacing[curlocationstage].stages["stage"+curlocationpart];
     let zeloc = zestage.set[i];
-    console.log(zeloc,keywords.includes(zeloc));
-    if (keywords.includes(zeloc)) {
-        console.log("hi");
+    if (arrHas(keywords,zeloc)) {
+        console.log(zeloc,randItem(zestage[zeloc]));
         zeloc = randItem(zestage[zeloc]);
+        
+    }
+    if (zeloc.includes(",")) {
+        zeloc = zeloc.split(",");
+        for (let j = 0; j < zeloc.length; j++) {
+            if (arrHas(keywords,zeloc[j])) {
+                zeloc[j] = randItem(zestage[zeloc[j]]);
+            }
+        }
+    } else {
+        
     }
     if (zeloc != "none") {
-        locationsarr.push(zeloc);
+        if (typeof zeloc == "string") {
+            locationsarr.push(zeloc);
+        } else {
+            for (let k =0; k < zeloc.length; k++) {
+                locationsarr.push(zeloc[k]);
+            }
+        }
     }
-    console.log(zestage.set.length)
     if (zestage.set.length == i+1) {
         break;
     }
@@ -1394,31 +1469,36 @@ function nextLoc() {
         for (let i = 0; i < 100; i++) {
             let zestage = locationplacing[curlocationstage].stages["stage"+curlocationpart];
             let zeloc = zestage.set[i];
-            let leftovers;
-            console.log(zeloc,keywords.includes(zeloc));
+            if (arrHas(keywords,zeloc)) {
+                console.log(zeloc,randItem(zestage[zeloc]));
+                zeloc = randItem(zestage[zeloc]);
+                
+            }
             if (zeloc.includes(",")) {
                 zeloc = zeloc.split(",");
-                leftovers = zeloc.splice(0);
-                zeloc = zeloc[0];
-            }
-            if (arrHas(keywords,zeloc)) {
-                zeloc = randItem(zestage[zeloc]);
+                for (let j = 0; j < zeloc.length; j++) {
+                    if (arrHas(keywords,zeloc[j])) {
+                        zeloc[j] = randItem(zestage[zeloc[j]]);
+                    }
+                }
+            } else {
+                
             }
             if (zeloc != "none") {
-                locationsarr.push(zeloc);
-                if (leftovers != null) {
-                    for (let k =0; k < leftovers.length; k++) {
-                        locationsarr.push(leftovers[k]);
+                if (typeof zeloc == "string") {
+                    locationsarr.push(zeloc);
+                } else {
+                    for (let k =0; k < zeloc.length; k++) {
+                        locationsarr.push(zeloc[k]);
                     }
                 }
             }
-            console.log(zestage.set.length)
             if (zestage.set.length == i+1) {
                 break;
             }
         }
     }
-    if (curlocationindex+2 != locationsarr.length) {
+    if (curlocationindex+1 != locationsarr.length) {
         curlocationindex++;
         curlocation = locations[locationsarr[curlocationindex]];
     } else {
@@ -1432,34 +1512,46 @@ function nextLoc() {
         for (let i = 0; i < 100; i++) {
             let zestage = locationplacing[curlocationstage].stages["stage"+curlocationpart];
             let zeloc = zestage.set[i];
-            let leftovers;
-            console.log(zeloc,keywords.includes(zeloc));
+            if (arrHas(keywords,zeloc)) {
+                console.log(zeloc,randItem(zestage[zeloc]));
+                zeloc = randItem(zestage[zeloc]);
+                
+            }
             if (zeloc.includes(",")) {
                 zeloc = zeloc.split(",");
-                leftovers = zeloc.splice(0);
-                zeloc = zeloc[0];
-            }
-            if (arrHas(keywords,zeloc)) {
-                zeloc = randItem(zestage[zeloc]);
+                for (let j = 0; j < zeloc.length; j++) {
+                    if (arrHas(keywords,zeloc[j])) {
+                        zeloc[j] = randItem(zestage[zeloc[j]]);
+                    }
+                }
+            } else {
+                
             }
             if (zeloc != "none") {
-                locationsarr.push(zeloc);
-                if (leftovers != null) {
-                    for (let k =0; k < leftovers.length; k++) {
-                        locationsarr.push(leftovers[k]);
+                if (typeof zeloc == "string") {
+                    locationsarr.push(zeloc);
+                } else {
+                    for (let k =0; k < zeloc.length; k++) {
+                        locationsarr.push(zeloc[k]);
                     }
                 }
             }
-            console.log(zestage.set.length)
             if (zestage.set.length == i+1) {
                 break;
             }
         }
+        curlocation = locations[locationsarr[0]];
     }
     
 }
 // LOCATIONSMAXXING //
 // UNIMPORTANCE //
+for (let k =0; k < Object.keys(enemies).length; k++) {
+    let zeopp = enemies[Object.keys(enemies)[k]];
+    for (let i = 0; i<zeopp.simpledeck.length; i++) {
+        drawCard(zeopp,true,zeopp.simpledeck[i],["addToDeck","specialp"]);
+    }
+}
 var openBtn = document.querySelector(".open-modal-btn");
 var modal = document.querySelector(".modal-overlay");
 var closeBtn = document.querySelector(".close-modal-btn");
@@ -1486,24 +1578,97 @@ for (let i = 0; i < Object.keys(cards).length;i++) {
         // use val
     });
     
-    modalContent.appendChild(para);
+    byId("cardstab").appendChild(para);
     let img = document.createElement("img");
     img.src = "img/cards/"+cards[Object.keys(cards)[i]].name+".png";
     img.width = "140";
     img.height = "160";
-    modalContent.appendChild(img);
+    byId("cardstab").appendChild(img);
+}
+for (let i = 0; i < Object.keys(locations).length;i++) {
+    let para = document.createElement("p");
+    para.innerHTML = "<h3>"+locations[Object.keys(locations)[i]].formal+":</h3><p>"+locations[Object.keys(locations)[i]].desc+"</p><h4>Attributes</h4>";
+    Object.keys(locations[Object.keys(locations)[i]]).forEach(function (key) {
+        let val = locations[Object.keys(locations)[i]][key];
+        para.innerHTML += key+": "+val+"<hr style='opacity:0.1;margin:4px;'>";
+        // use val
+    });
+    
+    byId("locationstab").appendChild(para);
+    /*let img = document.createElement("img");
+    img.src = "img/cards/"+cards[Object.keys(cards)[i]].name+".png";
+    img.width = "140";
+    img.height = "160";
+    byId("cardstab").appendChild(img);*/
+}
+for (let i = 0; i < Object.keys(relics).length;i++) {
+    let para = document.createElement("p");
+    para.innerHTML = "<h3>"+relics[Object.keys(relics)[i]].formal+":</h3><p>"+relics[Object.keys(relics)[i]].desc+"</p><h4>Attributes</h4>";
+    Object.keys(relics[Object.keys(relics)[i]]).forEach(function (key) {
+        let val = relics[Object.keys(relics)[i]][key];
+        para.innerHTML += key+": "+val+"<hr style='opacity:0.1;margin:4px;'>";
+        // use val
+    });
+    
+    byId("relicstab").appendChild(para);
+    /*let img = document.createElement("img");
+    img.src = "img/cards/"+cards[Object.keys(cards)[i]].name+".png";
+    img.width = "140";
+    img.height = "160";
+    byId("cardstab").appendChild(img);*/
+}
+for (let i = 0; i < Object.keys(enemies).length;i++) {
+    let para = document.createElement("p");
+    para.innerHTML = "<h3>"+enemies[Object.keys(enemies)[i]].formal+":</h3><h4>Attributes</h4>";
+    Object.keys(enemies[Object.keys(enemies)[i]]).forEach(function (key) {
+        let val = enemies[Object.keys(enemies)[i]][key];
+        para.innerHTML += key+": "+val+"<hr style='opacity:0.1;margin:4px;'>";
+        // use val
+    });
+    
+    byId("enemiestab").appendChild(para);
+    /*let img = document.createElement("img");
+    img.src = "img/cards/"+cards[Object.keys(cards)[i]].name+".png";
+    img.width = "140";
+    img.height = "160";
+    byId("cardstab").appendChild(img);*/
 }
 function openModal() {
     modal.classList.remove("hide");
 }
- 
+
 function closeModal(e, clickedOutside) {
     if (clickedOutside) {
         if (e.target.classList.contains("modal-overlay"))
             modal.classList.add("hide");
     } else modal.classList.add("hide");
 }
- 
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+function openMiniTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("minitabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks-mini");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 openBtn.addEventListener("click", openModal);
 modal.addEventListener("click", (e) => closeModal(e, true));
 closeBtn.addEventListener("click", closeModal);
@@ -1543,6 +1708,14 @@ function fullSD(element,successor,t1,t2) {
     window.setTimeout(setDisplay,200,element,t1);
 }
 function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
+    if (otherargs.includes("specialp")) {
+        let chosenkey = cards[choice];
+        let key = {};
+        assign(key,chosenkey);
+        key.effects = [];
+        player.deck[key.name] = key;
+        return false;
+    }
     let table = "inventory";
     if (otherargs.includes("addToDeck")) {
         table = "deck";
@@ -1929,9 +2102,7 @@ function startBattle(enemy) {
     p1.mana = p1.startingmana;
     assign(Game.p2,zeopp);
     p2 = Game.p2;
-    for (let i = 0; i<zeopp.simpledeck.length; i++) {
-        drawCard("p2",true,zeopp.simpledeck[i],"addToDeck");
-    }
+    
     for (let i = 0; i < 3; i++) {
         drawCard("p1",false,null,"Start");
     }
@@ -2097,6 +2268,9 @@ function turnover(player) {
         plr = p1;
     } else {
         plr = p2;
+    }
+    if (plr.name == "goldslime") {
+        plr.health -= 10;
     }
     if (plr.name == "janjo" && turns % 4 == 0) {
         for (let i = 0; i < 3; i++) {
@@ -3370,44 +3544,45 @@ function enterAdventureScreen() {
                     return;
                 }
                 let card = randKey(cards);
-                if (special.includes("gaincardupg") || special =="tallmart") {
-                    let chance = randNum(1,2);
-                    if (chance > 0) {
-                        let chance2 = randNum(1,10);
-                        if (chance2 > 0) {
-                            if (Object.hasOwn(card,"atk")) {
-                                card.atk *= randNum(7,20)/10;
-                                card.atk = Math.round(card.atk);
-                            }
-                            if (Object.hasOwn(card,"heal")) {
-                                card.heal *= randNum(7,20)/10;
-                                card.heal = Math.round(card.heal);
-                            }
-                        } 
-                        if (chance2 > 4) {
-                            let prevcool = card.cool;
-                            card.cool -= randNum(1,3);
-                            if (card.cool < 1 && prevcool != 0) {
-                                card.cool = 1;
-                            }
-                            if (card.cool < 0) {
-                                card.cool = 0;
-                            }
-                            card.hp *= randNum(7,20)/10;
-                            card.hp = Math.round(card.hp);
+                /*let tempobj = {};
+                assign(tempobj,card);
+                card = tempobj;*/
+                let chance = randNum(1,3);
+                if (chance > 2) {
+                    let chance2 = randNum(1,10);
+                    if (chance2 > 0) {
+                        if (Object.hasOwn(card,"atk")) {
+                            card.atk *= randNum(7,20)/10;
+                            card.atk = Math.round(card.atk);
                         }
-                        if (chance2 > 7) {
-                            let prevuse = card.manause;
-                            card.manause -= randNum(1,6)/2;
-                            if (card.manause < 0.5 && prevuse >= 0.5) {
-                                card.manause = 0.5;
-                            }
-                            if (card.manause < 0) {
-                                card.manause = 0;
-                            }
+                        if (Object.hasOwn(card,"heal")) {
+                            card.heal *= randNum(7,20)/10;
+                            card.heal = Math.round(card.heal);
+                        }
+                    } 
+                    if (chance2 > 4) {
+                        let prevcool = card.cool;
+                        card.cool -= randNum(1,3);
+                        if (card.cool < 1 && prevcool != 0) {
+                            card.cool = 1;
+                        }
+                        if (card.cool < 0) {
+                            card.cool = 0;
+                        }
+                        card.hp *= randNum(7,20)/10;
+                        card.hp = Math.round(card.hp);
+                    }
+                    if (chance2 > 7) {
+                        let prevuse = card.manause;
+                        card.manause -= randNum(1,6)/2;
+                        if (card.manause < 0.5 && prevuse >= 0.5) {
+                            card.manause = 0.5;
+                        }
+                        if (card.manause < 0) {
+                            card.manause = 0;
                         }
                     }
-                };
+                }
                 element.innerHTML = `<h2>${card.formal}</h2>`;
                 element.setAttribute("data-card",card.name);
                 let text = `<p>${card.desc}<br><span style='font-size:13px;'>${card.hp} HP`;
@@ -3437,6 +3612,9 @@ function enterAdventureScreen() {
                     return false;
                 }
                 let card = randKey(cards);
+                /*let tempobj = {};
+                assign(tempobj,card);
+                card = tempobj;*/
                 let chance = randNum(1,10);
                 if (chance >= 4) {
                     let chance2 = randNum(1,10);
@@ -3561,11 +3739,23 @@ function enterAdventureScreen() {
             byId("sc2").setAttribute("data-cost",100);
             byId("sc2").setAttribute("data-heal",-70);
         }
+        if (curspecial1 == "gainpower") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            byId("sc2").style.display = "none";
+            byId("sc1").innerHTML = "<h2>GAIN POWER</h2><p>BECOME THE ALMIGHTY</p>";
+        }
         if (curspecial1 == "risk") {
             specialdiv.style.display = "block";
             byId("sc2").style.display = "none";
             byId("sc3").style.display = "none";
             byId("sc1").innerHTML = "<h2>Take the risk.</h2><p>???</p>";
+        }
+        if (curspecial1 == "unclemanstatue") {
+            specialdiv.style.display = "block";
+            byId("sc2").style.display = "none";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Climb the statue.</h2><p>Seems a little dangerous.. Surely isn't that bad.. right?</p>";
         }
         if (curspecial1 == "rest") {
             specialdiv.style.display = "block";
@@ -3854,6 +4044,28 @@ function updateAdventureScreen() {
                         }
                         updateAdventureScreen();
                     }
+                }
+            }
+            if (sCondition("gamble")[0] && p1.coins >= 50) {
+                let card = p1.deck[element.getAttribute("data-card")];
+                p1.coins -= 50;
+                let chance = randNum(1,5);
+                if (chance < 3) {
+                    card.hp *= 1.5;
+                    card.hp = Math.round(hp);
+                    if (Object.hasOwn(card,"atk")) {
+                        card.atk *= 1.5;
+                        card.atk = Math.round(atk);
+                    }
+                    if (Object.hasOwn(card,"heal")) {
+                        card.heal *= 1.5;
+                        card.heal = Math.round(heal);
+                    }
+                    if (Object.hasOwn(card,"stat")) {
+                        card.stat += card.statincrease*2;
+                    }
+                } else {
+                    delete p1.deck[element.getAttribute("data-card")];
                 }
             }
             
@@ -4157,6 +4369,27 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
                 }
                 speciallock= true;
             }
+            updateAdventureScreen();
+        }
+        if (sCondition("gainpower")[0] && speciallock ==false) {
+            speciallock = true;
+            p1.maxhealth = 100;
+            p1.health = 100;
+            p1.coins = 2000;
+            for (let z = 0; z < Object.keys(p1.deck).length; z++) {
+                let chosencard = p1.deck[Object.keys(p1.deck)[z]];
+                chosencard.hp *= 3;
+                if (Object.hasOwn(chosencard,"atk")) {
+                    chosencard.atk *= 3;
+                }
+                if (Object.hasOwn(chosencard,"heal")) {
+                    chosencard.heal *= 3;
+                }
+                if (Object.hasOwn(chosencard,"stat")) {
+                    chosencard.stat += chosencard.statincrease*4;
+                }
+            }
+            updateAdventureScreen();
         }
         if (sCondition("risk")[0] == true && Object.keys(p1.deck).length > 1) {
             let card = randKey(p1.deck);
@@ -4180,6 +4413,15 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
             }
             p1.health += 100;
             p1.maxhealth += 100;
+            updateAdventureScreen();
+        }
+        if (sCondition("unclemanstatue")[0] == true) {
+            let card = randKey(cards);
+            drawCard("p1",true,card.name,"addToDeck");
+            p1.health -= 100;
+            if (p1.health < 1) {
+                p1.health = 1;
+            }
             updateAdventureScreen();
         }
         if (sCondition("rest")[0] == true) {
@@ -4227,7 +4469,6 @@ travelbtn.addEventListener("click", function() {
                 gametitle.innerHTML = "Coda At Last!";
                 playbtn.innerHTML = "CONTINUE";
                 openBtn.style.display = "none";
-                curlocationpart += 1;
                 nextLoc();
                 
                 currenttext = "";

@@ -197,29 +197,112 @@
                     Close
                 </button>
             </div>
-            <h1>Update v0.3PRE-1 - ADVENTUREMAXXING</h1>
-            <div class="modal-content" id="modal-content">
-                <h3>ADVENTURE</h3>
-                <p>Locations can now change! The game is slowly adapting to a random location layout, meaning mysterious events can happen. Of course, I don't have enough time to add all of them right now. Enjoy mysterious events like altars or drunk drivers.</p>
-                <h3>New cards!</h3>
-                <ul>
-                    <li>Cannoneer! Deals 40 damage to 3 different cards. May be very overpowered, I'll let it stay for a little bit.</li>
-                </ul>
-                <h3>Other Additions:</h3>
-                <ul>
-                    <li>Volume toggle! Apparently some people need to be watching youtube while playing because their attention span is too short.. Whatever! In the bottom right corner, click to toggle.</li>
-                </ul>
-                <h3>Balance Changes:</h3>
-                <ul>
-                    <li>Traffic Lord slightly nerfed.</li>
-                </ul>
-                <h3>Bug Fixes:</h3>
-                <ul>
-                    <li>None</li>
-                </ul>
-                <h3>Next Update?</h3>
-                <p>Finish the adventuremaxxing update.</p>
-                <h3>Cards as of current: </h3>
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event,'changelogtab')">
+                    Changelog
+                </button>
+                <button class="tablinks" onclick="openTab(event,'tutorialtab')">
+                    Tutorial
+                </button>
+            </div>
+            <div id="changelogtab" class="tabcontent">
+                <h1>Update v0.3PRE-2 - ADVENTURE UPDATE (polished)</h1>
+                <hr>
+                <div class="modal-content" id="modal-content">
+                    <h3>ADVENTURE</h3>
+                    <p>Locations can now change! The game is slowly adapting to a random location layout, meaning mysterious events can happen. Of course, I don't have enough time to add all of them right now. Enjoy mysterious events like altars or drunk drivers.</p>
+                    <h3>New cards!</h3>
+                    <ul>
+                        <li>Cannoneer! Deals 40 damage to 3 different cards. May be very overpowered, I'll let it stay for a little bit.</li>
+                    </ul>
+                    <h3>Other Additions:</h3>
+                    <ul>
+                        <li>A BUNCH of new locations that randomly appear in the game! This can be shrines to new enemies. Try it out!</li>
+                        <li>The other 3 main game values have been added to the changelog (in a much more lazy way). Scroll to the bottom to see. Previously you could only see card values, now you can see other variable values (like relics and locations).</li>
+                        <li>Changelog has been YASSIFIED! SLAYYY 💅💅💅💅</li>
+                    </ul>
+                    <h3>Balance Changes:</h3>
+                    <ul>
+                        <li>Cannoneer nerfed.</li>
+                    </ul>
+                    <h3>Bug Fixes (a lot from v0.3PRE-1):</h3>
+                    <ul>
+                        <li>Dynamic multi-events will now work.</li>
+                        <li>The final location of a stage will now no longer repeat, it will automatically take you to the next stage.</li>
+                        <li>The transition from Owarp to Coda now works.</li>
+                        <li>A few events will now update once they happen, instead of updating after you leave the location.</li>
+                        <li>Opponents will now no longer get their cards buffed from RNG buffs from the shop. Previously, if a special upgraded card appeared in shop, all enemies would immediately have their card become as strong as that one.</li>
+                    </ul>
+                    <h3>Next Update?</h3>
+                    <p>Finish the adventuremaxxing update.</p>
+                    <h3>Other Information:</h3>
+                    <div class="tab tab-mini">
+                        <button class="tablinks-mini tablinks" onclick="openMiniTab(event,'cardstab')">
+                            All Cards
+                        </button>
+                        <button class="tablinks-mini tablinks" onclick="openMiniTab(event,'relicstab')">
+                            All Relics
+                        </button>
+                        <button class="tablinks-mini tablinks" onclick="openMiniTab(event,'locationstab')">
+                            All Locations
+                        </button>
+                        <button class="tablinks-mini tablinks" onclick="openMiniTab(event,'enemiestab')">
+                            All Enemies
+                        </button>
+                        <br><br><br>
+                        <div id="cardstab" class="minitabcontent">
+                            <h3>Cards as of current: </h3>
+                        </div>
+                        <div id="relicstab" class="minitabcontent">
+                            <h3>Relics as of current: </h3>
+                            <p id="relicp"></p>
+                        </div>
+                        <div id="locationstab" class="minitabcontent">
+                            <h3>Locations as of current: </h3>
+                            <p id="locp"></p>
+                        </div>
+                        <div id="enemiestab" class="minitabcontent">
+                            <h3>Enemies as of current: </h3>
+                            <p id="enemp"></p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div id="tutorialtab" class="tabcontent">
+                <h1>Tutorial & Other Game Info!</h1>
+                <hr>
+                <div class="modal-content" id="modal-content2">
+                    <h3>Card Information</h3>
+                    <p>When starting a game, your cards will look like this: </p>
+                    <br>
+                    <img src="/img/tutorial/carddemo1.png" width="140" height="160">
+                    <h4>What does it mean?</h4>
+                    <p>Here is a simple list of all of the attributes of a card:</p>
+                    <ul>
+                        <li>Title - The big, bold text on the top shows the name of the card. This is also shown in the drawing.</li>
+                        <li><i>x</i> HP - Shows the card's health. Some cards have more health, like juggernaut, with 100. At zero HP, the card is destroyed.</li>
+                        <li><i>x</i> ATK - The card's attack. Not all cards are attack cards, but those that are will deal a certain amount of damage that can be buffed. </li>
+                        <li><i>x</i> HEAL - Some cards are healing cards, and the HEAL attribute shows how much health the heal. </li>
+                        <li><i>x</i> CD - This is the card's cooldown. Whenever you end a turn, the cooldown goes down by one. Cards like juggernaut require you to wait 3 turns before using them again, while other cards like spearman can be used once every turn.</li>
+                        <li><i>x</i> AMMO/USES - How many times a card can be used before going on cooldown. Cards like turret and flamethrower can be used multiple times before going on cooldown, but it will cost quite a bit of mana to exhaust all of the ammo. Ammo regens by 1 each turn.</li>
+                        <li><i>x</i> MU - Mana use. Mana is an important aspect of the game, as if you don't have enough, you can't use cards. You start with a base 10 starting mana each battle and 5 mana gained each turn. This card, spearman, only uses 1 mana. Other cards use 2, 3, 4, and more.</li>
+                    </ul>
+                    <h3>Other Mechanics</h3>
+                    <p>There are other mechanics used in a card battle, which are shown here:</p>
+                    <img src="/img/tutorial/othermechanics.png" width="400" height="245" style="border: 3px solid black;">
+                    <h4>What are these mechanics?</h4>
+                    <ul>
+                        <li>Health & Mana Bar - This text is right below the title, "Fight Against [Enemy]". It shows your health and mana, as well as the enemy's (plus AI Mode, which is for testing). At 0 health, you will lose.</li>
+                        <li>YOUR TURN - This shows who's turn it is. "OPP TURN" means it's the opponent's turn.</li>
+                        <li>Draw Card - You can draw cards here. It'll cost 3 mana.</li>
+                        <li>Discard (<i>x</i> left) - You can discard cards by selecting them and clicking the button. It will delete them from the board, and give you 1 mana.</li>
+                        <li>Toggle Card Mode - There are 2 card modes, use and select. With use, you can use one of your cards. With select, you can target a card to do something on. This can be for healing, or attacking a specific enemy card.</li>
+                        <li>End Turn - Not displayed on screen, but at the very bottom. Scroll down below the enemy's cards, and end turn when you don't want to do anything.</li>
+                    </ul>
+                    <h3>What Else?</h3>
+                    <p>Some cards have special mechanics, like soul keeper or solar prism. You will slowly discover these as you play. If you want to know every card's attributes, go to the changelog and scroll down. Have fun!</p>
+                </div>
             </div>
         </div>
     </div>
