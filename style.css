@@ -33,7 +33,7 @@ body,html {
     position: absolute;
     bottom: 0px;
     left: 0px;
-    color: rgb(136, 255, 178);
+    color: rgb(204, 84, 84);
     font-weight: bolder;
     font-size: 20px;
     text-shadow:
@@ -354,4 +354,22 @@ button {
 }
 button:hover {
     background: rgb(200,200,200);
+}
+#togglevolume {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    background-color: rgba(210, 210, 250, 0.7);
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 1;
+    transition: 0.5s ease-in-out;
+}
+#togglevolume:hover {
+    width: 65px;
+    height: 65px;
+    opacity: 0.8;
 }
