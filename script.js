@@ -164,6 +164,21 @@ var enemies = {
         deck: {},
         mods: ["Tank{20}","Healing{200}","QuickUse{1}"],
     },
+    "wisespirits": {
+        name: "wisespirits",
+        formal: "Three Wise Spirits: Adov, Lappur, and Praskim",
+        managain: 6,
+        maxdiscards: 1,
+        coinsgive: 0,
+        // battle stats
+        health: 300,
+        mana: 12,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["wizard","weakener","reaper","soulkeeper","oblivion","healorb"],
+        deck: {},
+        mods: ["Tank{-10}","Healing{200}","Strength{50}","QuickUse{1}"],
+    },
     "lordk": {
         name: "lordk",
         formal: "Lord K",
@@ -492,6 +507,39 @@ var locations = {
         desc: "The road to Coda, formally known as the Boraps Path, as it technically goes through all of Boraps.",
         loretext: "They really thought! They may be monsters, but your cards are simply too powerful! They crumbled into the dust, rightfully so. || The forest where Lord K resided was very large. You could not distinguish rock from rock. Tree from tree. You still knew that you were making progress, however. || Wasn't that rock there before? Or is it a different rock? Hmm... || Hey, that tree looks familiar. ",
         proceedtext: "Continue exploring the forest.",
+        nextloc: "lordkarena",
+    },
+    "forestclearing": {
+        name: "forestclearing",
+        formal: "Gloomy Forest Clearing",
+        desc: "A dim, silent clearing bringing light to the dark forest that contains Lord K.",
+        loretext: "At an old, overgrown and fallen log, you met a slow path to what you thought was a forest clearing. A minute or so later, you were in it. The sun's fading rays shone ever so slightly, now making only a faint difference between the experience under the thick canopies of the trees. || It was both full of life and devoid of it at the same time, with glowing fireflies and crickets chirping filling up the background. You kept continuing across the clearing, seeing a small, grey structure in the distance.",
+        proceedtext: "Continue across the forest clearing.",
+        nextloc: "forestcastle",
+    },
+    "forestcastle": {
+        name: "forestcastle",
+        formal: "Ancient Castle",
+        desc: "Once full of life, this crippling, stony structure represents what once was a blooming village.",
+        loretext: "There were ruins everywhere. Old stone bricks now sinking into the ground, pieces of wood and stone scattered across the ground. You could make out a few houses. || You made your way to the structure that mattered most to you: the castle. The great, wooden door that was meant to protect had now decayed, so you made your way through the thick vines that took up parts of the door. In the castle were very castly things, with castly doors and castly torches. You made a beeline to the throne room, where you saw an old, grand chair in the middle. There were tiny shreds of fabric, presumably carpet. || You went back, and navigated your way through a series of hallways with fallen roofs and broken walls. After many lefts and rights, you wound up in an old room with a wood surface mounted on a wall, and a broken mirror that was lavishly bordered sitting on it. || You looked into a it, and then three glowing orbs came out. || ???: What do you seek? || You: I seek.. rare relics. || ???: The equivalent of power. Do not make the same mistake that our ruler did. || You: What do you mean by that? || ???: Power corrupts. Absolute power corrupts absolutely. || You: But, I have good intentions! || ???: That is what they all say. They go on for a few years, making the village prosper with great amounts of wealth never seen before, and then it all burns. || The hoarse voice coughed, and continued. || ???: We are the three wise spirits, Avod, Lappur, and Praskim. We were once some of the greatest wizards in the world. || Praskim: Yes, yes, until that stupid king captured us for our powers. || Lappur: We are here to ensure that you don't do the same. || You: But, it's necessary. I have to get the duplication relic! || Avod: And? Destroy the world? It seems like you simply are too unwilling to believe what your inner motives are. || But.. You have gained so much. You defeated some of the best card battlers in town. What is stopping you from continuing? || Wise Spirits: We must end it here. We may not defeat you, but at least we can impede your progress. || You: You guys don't understand..",
+        proceedtext: "End the stupid spirits.",
+        proceedspecial: "fight|wisespirits",
+        nextloc: "wisespirits",
+    },
+    "wisespiritsvictory": {
+        name: "wisespiritsvictory",
+        formal: "Ancient Castle",
+        desc: "Once full of life, this crippling, stony structure represents what once was a blooming village.",
+        loretext: "The spirits howled for a moment, and then slowly went back into their mirror. You explored the rest of the castle, but found nothing. It was all a waste. It aches your mind, not knowing what secrets lie in that ominous castle. But time is of the essence. You must continue your journey.",
+        proceedtext: "Continue looking for Lord K.",
+        nextloc: "lordkarena",
+    },
+    "banditsvictory": {
+        name: "banditsvictory",
+        formal: "Mysterious Forest",
+        desc: "An explored forest that allegedly contains the legendary Lord K, a giant known for destroying everything.",
+        loretext: "Whew. Those bandits were pretty annoying. Maybe they had information on Lord K. Should've asked them before they fled. Whatever, it's fine. All that matters is that you're alive.",
+        proceedtext: "Keep exploring the forest.",
         nextloc: "lordkarena",
     },
     "lordkarena": {
@@ -1408,7 +1456,7 @@ var locationplacing = {
                 name: "LordKSearch",
                 set: ["mysteryloc","roadtocoda4","mysteryfight","lordkarena","lordkvictory","roadtocoda5","roadtocoda6","roadtocoda7","trafficlordvictory"],
                 mysteryloc: ["strangealtar","unclemanstatue","none"],
-                mysteryfight: ["forest1,banditsvictory","leafos,leafosvictory"],
+                mysteryfight: ["forest1,banditsvictory","leafos,leafosvictory","forestclearing,forestcastle,wisespiritsvictory"],
             },
         },
     },
@@ -1427,7 +1475,7 @@ var locationsarr = [];
 var curlocationindex = 0;
 var curlocationstage = 1;
 var curlocationpart = 1;
-var curlocation = locations["home"];
+
 for (let i = 0; i < 100; i++) {
     let zestage = locationplacing[curlocationstage].stages["stage"+curlocationpart];
     let zeloc = zestage.set[i];
@@ -1459,6 +1507,7 @@ for (let i = 0; i < 100; i++) {
         break;
     }
 }
+var curlocation = locations[locationsarr[0]];
 function nextLoc() {
     if (curlocation.name == "zeend") {
         curlocation = locations.home;
@@ -1844,8 +1893,7 @@ function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
             let str = Game[player].mods.filter(str => str.includes("QuickUse"))[0];
             str = str.replace("QuickUse{","");
             str = Number(str.replace("}",""));
-            if (key.cool != 0) {
-                key.cool -= str;
+            if (key.coolleft != 0) {
                 key.coolleft -= str;
                 if (key.coolleft < 0) {
                     key.coolleft = 0;
@@ -2270,7 +2318,7 @@ function turnover(player) {
         plr = p2;
     }
     if (plr.name == "goldslime") {
-        plr.health -= 10;
+        plr.health -= 15;
     }
     if (plr.name == "janjo" && turns % 4 == 0) {
         for (let i = 0; i < 3; i++) {
@@ -2281,6 +2329,7 @@ function turnover(player) {
                 }
             }
         }
+        playAudio("sounds/burn.mp3");
     }
     if (plr.name == "djneon" && turns % 4 == 0) {
         for (let i = 0; i < 3; i++) {
@@ -2293,8 +2342,50 @@ function turnover(player) {
             }
         }
     }
+    console.log(turns);
+    if (plr.name == "wisespirits") {
+        // to get a cycle, do: turns % 6 == 0, turns % 6 == 2, and turns % 6 == 4
+        if (turns % 6 == 0) {
+            for (let i = 0; i < 3; i++) {
+                let card = randKey(p2.inventory);
+                if (card != null) {
+                    card.hp += 20;
+                    if (Object.hasOwn(card,"atk")) {
+                        card.atk += 20;
+                    }
+                    if (Object.hasOwn(card,"heal")) {
+                        card.heal += 20;
+                    }
+                    card.coolleft = 0;
+                    card.ammo += 2;
+                }
+            }
+            // AVOD'S ABILITY
+        } 
+        if (turns % 6 == 2) {
+            for (let i = 0; i < 3; i++) {
+                let card = randKey(p2.inventory);
+                if (card != null) {
+                    card.hp += 20;
+                }
+            }
+            // LAPPUR'S ABILITY
+        }
+        if (turns % 6 == 4) {
+            for (let i = 0; i < 4; i++) {
+                let card = randKey(p1.inventory);
+                if (card != null) {
+                    if (arrHas(card.effects,"Death") == false) {
+                        card.effects.push("Death{1,2}");
+                    }
+                    card.hp -= 10;
+                }
+            }
+            // PRASKIM'S ABILITY
+        } 
+    }
     if (plr.name == "lordk" && turns % 4 == 0) {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 4; i++) {
             let card = randKey(p1.inventory);
             console.log("yuh",card);
             if (card != null) {
@@ -2304,7 +2395,14 @@ function turnover(player) {
                 card.hp -= 20;
             }
         }
+        playAudio("sounds/bash.mp3");
+        p1.health -= 50;
+        p1.mana -= 3;
+        if (p1.mana < 0) {
+            p1.mana = 0;
+        }
     }
+    
     plr.discards = plr.maxdiscards;
     plr.mana += plr.managain;
     if (plr == p1 && arrHas(Object.keys(plr.relics),"gamblersdice")) {
@@ -2382,6 +2480,10 @@ function turnover(player) {
         if (zecard.name == "bank") {
             zecard.storedmana += 2;
         }
+    }
+    if (plr.name == "trafficlord" && randNum(1,6) == 6) {
+        p1.mana = 0;
+        p1.discards = 0;
     }
 }
 function unborder(id) {
@@ -3088,7 +3190,9 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                 if (extraatk > 0) {
                     card.atk -= extraatk;
                 }
+                console.log(card);
                 card.ammo -= 1;
+                console.log(card);
                 if (card.ammo <= 0) {
                     card.coolleft = card.cool;
                     card.ammo = card.maxammo;
