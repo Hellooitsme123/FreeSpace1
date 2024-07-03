@@ -124,7 +124,7 @@
             </button>
             
         </div>
-        <p id="versiontext">v0.3PRE-3 - COMICALLY LARGE UPDATE</p>
+        <p id="versiontext">v0.3 - ZE UPDATE FOR THINE PEOPLE</p>
     </div>
     <div id="game" class="hide">
         <h2 id="battletitle">FIGHT AGAINST</h2>
@@ -187,7 +187,9 @@
         <p id="text"></p>
         <button type="button" id="turn">End Turn</button>
     </div>
-    
+    <div id="ultrawrapper">
+        <img id="ultrawrapperimg" src="">
+    </div>
     
  
     <div class="modal-overlay hide">
@@ -204,30 +206,37 @@
                 <button class="tablinks" onclick="openTab(event,'tutorialtab')">
                     Tutorial
                 </button>
+                <button class="tablinks" onclick="openTab(event,'importanttab')">
+                    Important Information
+                </button>
             </div>
             <div id="changelogtab" class="tabcontent">
-                <h1>Update v0.3PRE-3 - ADVENTURE UPDATE (polished)</h1>
+                <h1>Update v0.3PRE-4 - venture venture venture</h1>
                 <hr>
                 <div class="modal-content" id="modal-content">
-                    <h3>ADVENTURE</h3>
-                    <p>Locations can now change! The game is slowly adapting to a random location layout, meaning mysterious events can happen. Of course, I don't have enough time to add all of them right now. Enjoy mysterious events like altars or drunk drivers.</p>
+                    <h3>Doth thou trust thyself?</h3>
+                    <p>A true question.</p>
                     <h3>New cards!</h3>
                     <ul>
                         <li>Cannoneer! Deals 40 damage to 3 different cards. May be very overpowered, I'll let it stay for a little bit.</li>
                     </ul>
+                    <h3>YASSIFICATION</h3>
+                    <ul>
+                        <li>Play button has been yassified</li>
+                        <li>Locations & fights (not all as of yet) will now have faint image backgrounds!</li>
+                        <li>Select mode & startmods is now slightly more smooth (has hover effect, etc.)</li>
+                    </ul>
                     <h3>Other Additions:</h3>
                     <ul>
-                        <li>A BUNCH of new locations that randomly appear in the game! This can be shrines to new enemies. Try it out!</li>
-                        <li>The other 3 main game values have been added to the changelog (in a much more lazy way). Scroll to the bottom to see. Previously you could only see card values, now you can see other variable values (like relics and locations).</li>
-                        <li>Changelog has been YASSIFIED! SLAYYY 💅💅💅💅</li>
+                        <li>Added changelog annotations. Look at this! <br>.text-blue{## This is a blue note.}<br>.text-purp{## This is a purple note.}<br>.text-yell{## Yellow note.}<br>.text-green{## Green note.}<br>.text-red{## Red note.}<br>A special function was added, so it'll be easier to add them. If you want to make an annotation, you can just add a value like: <input type="text" value=".text-yell{## Note here}" readonly><li>
                     </ul>
                     <h3>Balance Changes:</h3>
                     <ul>
-                        <li>Cannoneer nerfed.</li>
+                        <li>Yes.</li>
                     </ul>
-                    <h3>Bug Fixes (some from v0.3PRE-2):</h3>
+                    <h3>Bug Fixes:</h3>
                     <ul>
-                        <li>Enemies with quick use now no longer have infinite uses. Previously all enemies with quick use would be able to use their cards infinitely, regardless of cooldown.</li>
+                        <li>None</li>
                     </ul>
                     <h3>Next Update?</h3>
                     <p>Finish the adventuremaxxing update.</p>
@@ -300,6 +309,15 @@
                     <p>Some cards have special mechanics, like soul keeper or solar prism. You will slowly discover these as you play. If you want to know every card's attributes, go to the changelog and scroll down. Have fun!</p>
                 </div>
             </div>
+            <div id="importanttab" class="tabcontent">
+                <h1>Important Info That The Developer Always Forgets</h1>
+                <hr>
+                <div class="modal-content" id="modal-content3">
+                    <h3>Sizing</h3>
+                    <p>Let <i>w:h</i> be width to height ratio.<br>All cards have a <i>7:8</i> size ratio. (~0.875)<br>All background images have a roughly <i>11:5</i> size ratio. (~2.2) .text-yell{## Note - Some images (like DJ Neon image) have a ratio of 2.6}</p>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
     <audio id="sfx1">

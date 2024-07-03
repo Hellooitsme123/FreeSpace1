@@ -27,6 +27,8 @@ var curvolume = 0.4;
 var gamescreen = byId("game");
 var sob = 1; // start or battle? 1 = start | 2 = battle
 var skipped = false;
+var ultrawrap = byId("ultrawrapper");
+var ultrawrapimg= byId("ultrawrapperimg");
 // adventure screen vars
 var enemies = {
     "andreas": {
@@ -43,6 +45,7 @@ var enemies = {
         simpledeck: ["spearman","turret"],
         deck: {},
         mods: [],
+        fightimg: "",
     },
     "goldslime": {
         name: "goldslime",
@@ -58,6 +61,7 @@ var enemies = {
         simpledeck: ["etherealguardian","froster","jester"],
         deck: {},
         mods: ["Strength{20}","Tank{20}","QuickUse{1}"],
+        fightimg: "goldenslimefight.png",
     },
     "taverngroup": {
         name: "taverngroup",
@@ -218,6 +222,7 @@ var locations = {
         loretext: "A few days ago, UncleMan threatened to evict you, saying that you're a lazy couch potato that does nothing. Since becoming a homeless beggar is the last thing you want to do, you ask him for ways to stay in the house. || You: What can I do to stay here? || UncleMan: You have to earn your keep! I'll give you one simple task: Find the Bean Duplicator. If you can get that relic, then I'll give you lifelong permission to stay here. || A rare relic found only in the dangerous mountains, visible shaking started. You knew that protesting would do nothing, so, starting with only 20 coda coins and 2 spearmen, you began your journey to prevent yourself from getting evicted.",
         proceedtext: "Start your journey by taking the road to Coda.",
         nextloc: "roadtocoda",
+        locimg: "owarpcenter.png",
     },
     "roadtocoda": {
         name: "roadtocoda",
@@ -226,6 +231,7 @@ var locations = {
         loretext: "You start the trip to Coda, journeying along the path with your cards and some money. The sun has risen, and the birds are now chirping. It's still relatively quiet, so you keep walking.",
         proceedtext: "Continue along the road.",
         nextloc: "andreasappear",
+        locimg: "roadtocoda.png",
     },
     "andreasappear": {
         name: "andreasappear",
@@ -236,6 +242,7 @@ var locations = {
         proceedspecial: "fight|andreas",
         nextloc: "andreasvictory",
         skipallowed: true,
+        locimg: "roadtocoda.png",
     },
     "andreasvictory": {
         name: "andreasvictory",
@@ -247,6 +254,7 @@ var locations = {
         special: "gaincard",
         proceedtext: "Get back up and make your way to the center of Owarp, where the trading hubs reside.",
         nextloc: "owarpcenter",
+        locimg: "roadtocoda.png",
     },
     "goldslimeappear": {
         name: "goldslimeappear",
@@ -256,6 +264,7 @@ var locations = {
         proceedtext: "End the golden slime.",
         proceedspecial: "fight|goldslime",
         nextloc: "andreasvictory",
+        locimg: "roadtocoda.png",
     },
     "goldslimevictory": {
         name: "goldslimevictory",
@@ -265,6 +274,7 @@ var locations = {
         special: "gaincard",
         proceedtext: "Continue and make your way to the center of Owarp, where the trading hubs reside.",
         nextloc: "owarpcenter",
+        locimg: "roadtocoda.png",
     },
     "owarpcenter": {
         name: "owarpcenter",
@@ -273,6 +283,7 @@ var locations = {
         loretext: "After getting back up and continuing your journey, you reached the center of Owarp. Here, resides one of the biggest plazas in Boraps, so you decide that you must make the most of your time here. One of the stores in the plaza, known as Tallmart, contains a lot of useful cards. However, you don't have enough to buy them. So, you decided that it would be best to enter Janjo's Tavern, a place where you can battle other people with your cards and earn coda coins.",
         proceedtext: "Continue walking.",
         nextloc: "cosmeticshop",
+        locimg: "owarpcenter.png",
     },
     "cosmeticshop": {
         name: "cosmeticshop",
@@ -282,6 +293,7 @@ var locations = {
         special: "shop|gaincard|upgcard",
         proceedtext: "Leave the store and go visit the tavern.",
         nextloc: "tavern",
+        locimg: "owarpcenter.png",
     },
     "tavern": {
         name: "tavern",
@@ -341,6 +353,7 @@ var locations = {
         proceedtext: "Leave the store and continue your trek along the road.",
         special: "store|buycard|buyrelic",
         nextloc: "behindtallmart",
+        locimg: "owarpcenter.png",
     },
     "behindtallmart": {
         name: "behindtallmart",
@@ -358,6 +371,7 @@ var locations = {
         loretext: "After leaving the corner and going further throughout the city, you came to a club called 'Deric's Dance Club', dazzled by a blast of chromatic, flashing lights. Fortunately for you, there was a Dance Card that just happened to be lying on the bench that you were just about to sit on.",
         proceedtext: "Enter the Dance Club and see what you can do there.",
         nextloc: "danceclub",
+        locimg: "owarpcenter.png",
     },
     "danceclub": {
         name: "danceclub",
@@ -411,6 +425,7 @@ var locations = {
         proceedtext: "Hopefully get an upgraded card from DJ Neon.",
         proceedspecial: "fight|djneon",
         nextloc: "djneonvictory",
+        locimg: "djneon.png",
     },
     "djneonvictory": {
         name: "djneonvictory",
@@ -558,6 +573,7 @@ var locations = {
         loretext: "After defeating Lord K, you started to slowly drag his giant cape and crown back to the factory, which was at least an hour away. The sun went down, and before midnight you reached the factory, as tired as you were when you went to the dance club. Cheese Dino looked surprised, getting even more shocked when the ACE machine confirmed its authenticity. He gave you the 1000 CC bounty that he promised, and he bode you farewell. You left and continued along the road.", 
         proceedtext: "Make your way to Coda.",
         nextloc: "roadtocoda5",
+        locimg: "roadtocoda.png",
     },
     "roadtocoda5": {
         name: "roadtocoda5",
@@ -567,6 +583,7 @@ var locations = {
         special: "shop|buycard|buyrelic", 
         proceedtext: "Continue your journey.",
         nextloc: "roadtocoda6",
+        locimg: "roadtocoda.png",
     },
     "roadtocoda6": {
         name: "roadtocoda6",
@@ -576,6 +593,7 @@ var locations = {
         proceedtext: "Continue your journey.",
         special: "store|mystery|energizer",
         nextloc: "roadtocoda7",
+        locimg: "roadtocoda.png",
     },
     "roadtocoda7": {
         name: "roadtocoda6",
@@ -1750,7 +1768,21 @@ function playAudio(zesound) {
 function setDisplay(element,value) {
     element.style.display = value;
 }
+// ULTRAWRAPPER INTEGRATION
 function fullSD(element,successor,t1,t2) {
+    let ultrawrapintegration = ["adventure"];
+    console.log(successor.getAttribute('id'));
+    if (ultrawrapintegration.includes(successor.getAttribute('id'))) {
+        ultrawrap.display = "block";
+        ultrawrapimg.style.opacity = 0.2;
+        ultrawrapimg.src = "img/background/"+curlocation.locimg;
+    } else {
+        if (successor.getAttribute('id') != "game") {
+            ultrawrap.display = "none";
+            ultrawrapimg.style.opacity = 0;
+        }
+        
+    }
     element.style.opacity = 0;
     successor.style.opacity = 1;
     setDisplay(successor,t2);
@@ -2148,6 +2180,7 @@ function startBattle(enemy) {
     p1.mods = [];
     battletitle.innerHTML = "Fight Against "+zeopp.formal;
     p1.mana = p1.startingmana;
+    ultrawrapimg.src = "img/background/"+zeopp.fightimg;
     assign(Game.p2,zeopp);
     p2 = Game.p2;
     
@@ -2188,6 +2221,7 @@ function startBattle(enemy) {
     update();
 }
 function endBattle(outcome) {
+    ultrawrapimg.src = "";
     // 1 == win | 2== lose
     if (outcome == 1) {
         nextLoc();
@@ -4585,6 +4619,7 @@ travelbtn.addEventListener("click", function() {
         nextLoc();
         // curlocation = locations[curlocation.nextloc];
         adventurescreen.style.opacity = 0;
+        ultrawrapimg.src = "img/background/"+curlocation.locimg;
         window.setTimeout(enterAdventureScreen,200);
         currenttext = "";
         textfinished = false;
@@ -4651,5 +4686,46 @@ byId("togglevolume").addEventListener("click",function() {
     } else {
         curvolume = 0.4;
         byId("togglevolume").style.backgroundColor = `rgba(210, 210, 250, 0.7)`;
+    }
+});
+/* CHANGELOG ANNOTATIONS */
+function replaceChar(origString, replaceChar, index) {
+    let firstPart = origString.substr(0, index);
+
+    let lastPart = origString.substr(index + 1);
+
+    let newString =
+        firstPart + replaceChar + lastPart;
+
+    return newString;
+}
+var changelogtab = byId("changelogtab");
+var tutorialtab = byId("tutorialtab");
+var importanttab = byId("importanttab");
+var annot_in = [".text-yell{",".text-blue{",".text-purp{",".text-green{",".text-red{"];
+var annot_out = ["<span class='text-yell'>|||</span>","<span class='text-blue'>|||</span>","<span class='text-purp'>|||</span>","<span class='text-green'>|||</span>","<span class='text-red'>|||</span>"];
+Array.from(document.getElementsByClassName("modal-content")).forEach(function(element) {
+
+    for (let i =0; i < annot_in.length; i++) {
+        let annot = annot_in[i];
+        if (element.innerHTML.includes(annot) == false) {
+            continue;
+        }
+        let tries = 0;
+        do {
+            let zetext = element.innerHTML;
+            let index1 = zetext.indexOf(annot);
+            let annot1 = annot_out[i].split("|||")[0];
+            let annot2 = annot_out[i].split("|||")[1];
+            let textslice1 = zetext.substring(0,index1);
+            let textslice2 = zetext.substring(index1,index1+zetext.substring(index1).indexOf("}"));
+            let textslice3 = zetext.substring(index1+zetext.substring(index1).indexOf("}"));
+            zetext = textslice1+textslice2.replace(annot,annot1)+textslice3.replace("}",annot2);
+            element.innerHTML = zetext;
+            /*let index2 = zetext.substring((index1-(annot_in[i].length-1))+annot_out[i].length-1).indexOf("}");
+            zetext = zetext.substring(0,index2)+annot2+zetext.substring(index2+annot2.length-1);*/
+            tries++;
+            
+        } while (element.innerHTML.includes(annot) && tries < 1);
     }
 });
