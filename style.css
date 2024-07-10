@@ -42,7 +42,7 @@ body,html {
     0 -0.07em black;*/
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent;
-    background: linear-gradient(rgb(155, 255, 255),rgb(249, 167, 255));
+    background: linear-gradient(rgb(242, 255, 0),rgb(255, 0, 0));
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
 }
@@ -166,6 +166,7 @@ body,html {
 /* width */
 ::-webkit-scrollbar {
 width: 7px;
+height: 7px;
 }
 
 /* Track */
@@ -223,9 +224,10 @@ background: #555;
     height: 10%;
 }
 .specialcard {
-    background:cadetblue;
-    border: 2px solid black;
+    background:rgb(108, 164, 185);
+    box-shadow: 0px 0px 4px 5px inset rgb(33, 119, 162), 0px 0px 10px 4px inset rgb(176, 205, 215),0px 0px 20px 5px rgba(71, 73, 136, 0.5);
     border-radius: 15px;
+    border: 2px solid black;
     height: 24%;
     margin-right: 2%;
     margin-left: 2%;
@@ -235,10 +237,15 @@ background: #555;
     padding: 2%;
     width: 90%;
     text-align: center;
-    transition: border 0.4s ease-in-out;
+    transition: 0.4s ease-in-out;
 }
+.specialcard:hover {
+    background: rgb(128, 184, 205);
+}
+
 .specialcard > h2, p {
     margin: 0;
+    transition: 0.2s ease-in-out;
 }
 .specialcard > h2 {
     font-size: 21px;
@@ -343,14 +350,16 @@ hr {
     transform: translate(-50%, -50%);
     overflow-y:scroll;
     word-wrap:break-word;
+    
 }
+
  
 /*.open-modal-btn-wrapper {
     yes
 }*/
  
-.close-modal-btn,
-.open-modal-btn {
+
+.open-modal-btn, .close-modal-btn {
     padding: 8px;
     background: slateblue;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -364,7 +373,12 @@ hr {
     margin-right: 10px;
     cursor: pointer;
 }
- 
+.open-modal-btn {
+    margin-left: 10px;
+    box-shadow:0px 0px 5px 2px rgb(112, 106, 162);
+}
+
+
 .close-btn-wrapper {
     display: flex;
 }
@@ -469,6 +483,21 @@ button:hover {
     height: 100%;
 }
 /* ANNOTATIONS */
+.text-maxi {
+    font-size: 22px;
+}
+.text-large {
+    font-size: 18px;
+}
+.text-small {
+    font-size: 14px;
+}
+.text-mini {
+    font-size: 12px;
+}
+.text-miny {
+    font-size: 10px;
+}
 .text-purp {
     color: rgb(189, 2, 186);
 }
@@ -483,4 +512,36 @@ button:hover {
 }
 .text-yell {
     color: rgb(187, 187, 0);
+}
+.text-woah {
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(rgb(255, 255, 255),rgb(176, 176, 176));
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    font-size: 30px;
+    font-weight:bolder;
+    display: block;
+    transform: rotate(5deg);
+    margin-bottom: 10px;
+    transform-origin: 0 0;
+    text-shadow: 2px 2px 3px rgb(150, 150, 150);
+}
+.text-skewdash {
+    display: inline-block;
+    padding: .25em .5em;
+    background: teal;
+    transform: skew(-15deg);
+}
+.text-skewdash span {
+    transform: skew(15deg);
+    color: #fff;
+    
+    display: inline-block;
+}
+.ico {
+    width: 24px;
+    height: 24px;
+    margin-bottom:-6px;
+    display: inline !important;
 }

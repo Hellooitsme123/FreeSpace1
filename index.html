@@ -13,6 +13,43 @@
 
 </head>
 <body>
+    <div id="filler" style="margin-bottom:-36.5px;opacity: 0;">
+        filler
+    </div>
+    <svg height="0" width="0" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="gradient-1" y2="1" x2="0">
+                <stop stop-color="white" offset="0" stop-opacity="0.5"/>
+                <stop stop-color="black" offset="1"/>
+            </linearGradient>
+            <radialGradient id="gradient-2" y2="1">
+                <stop stop-color="white" offset="0"/>
+                <stop stop-color="rgb(200,200,200)" offset="1" />
+            </radialGradient>
+            <filter id="filter-1" x="0" y="0">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+            </filter>
+            <filter id="filter-2" x="0" y="0">
+                <feTurbulence type="fractalNoise" baseFrequency="10" numOctaves="6" stitchTiles="stitch" opacity="0.1"/>
+            </filter>
+            <pattern id="patt-1" x="0" y="0" width="1" height="1" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="0.9" fill="white"/>
+            </pattern>
+            <pattern id="patt-2" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="6" height="100" fill="white"/>
+                <rect x="6" y="0" width="4" height="100" fill="white" opacity="0.7"/>
+            </pattern>
+            <mask id="mask-1">
+                <rect x="0.5" y="0.2" width="1000" height="1000" fill="url(#patt-1)"/>
+            </mask>
+            <mask id="mask-2">
+                <rect x="0.5" y="0.2" width="1000" height="1000" fill="url(#patt-2)"/>
+            </mask>
+            <mask id="mask-3">
+                <rect x="0.5" y="0.2" width="140" height="160" fill="url(#gradient-2)"/>
+            </mask>
+        </defs>
+    </svg>
     <div id="transition">
         <p>FILLER</p>
     </div>
@@ -69,6 +106,8 @@
             <div id="plrstats">
 
             </div>
+            <h4 id="inventoryspecialtext"></h4>
+            <h4 id="playerpower" class="hide">Power: 0</h4>
             <h3>Inventory</h3>
             <div id="plrinventory">
 
@@ -124,7 +163,7 @@
             </button>
             
         </div>
-        <p id="versiontext">v0.3 - ZE UPDATE FOR THINE PEOPLE</p>
+        <p id="versiontext">v0.3PRE-4BETTER - SUPER DUPER UPDATE</p>
     </div>
     <div id="game" class="hide">
         <h2 id="battletitle">FIGHT AGAINST</h2>
@@ -211,32 +250,44 @@
                 </button>
             </div>
             <div id="changelogtab" class="tabcontent">
-                <h1>Update v0.3PRE-4 - venture venture venture</h1>
+                <h1>Update v0.3PRE-4BETTER - Imagery Update</h1>
                 <hr>
                 <div class="modal-content" id="modal-content">
                     <h3>Doth thou trust thyself?</h3>
                     <p>A true question.</p>
                     <h3>New cards!</h3>
                     <ul>
-                        <li>Cannoneer! Deals 40 damage to 3 different cards. May be very overpowered, I'll let it stay for a little bit.</li>
+                        <li>None.</li>
                     </ul>
                     <h3>YASSIFICATION</h3>
                     <ul>
-                        <li>Play button has been yassified</li>
-                        <li>Locations & fights (not all as of yet) will now have faint image backgrounds!</li>
-                        <li>Select mode & startmods is now slightly more smooth (has hover effect, etc.)</li>
+                        <li style="mask:url(#mask-1)">Locations & fights (not all as of yet) will now have faint image backgrounds!</li>
+                        <li>Button designs somewhat changed.</li>
                     </ul>
                     <h3>Other Additions:</h3>
                     <ul>
-                        <li>Added changelog annotations. Look at this! <br>.text-blue{## This is a blue note.}<br>.text-purp{## This is a purple note.}<br>.text-yell{## Yellow note.}<br>.text-green{## Green note.}<br>.text-red{## Red note.}<br>A special function was added, so it'll be easier to add them. If you want to make an annotation, you can just add a value like: <input type="text" value=".text-yell{## Note here}" readonly><li>
+                        <li>Added changelog annotations. Look at this! <br>.text-blue{## This is a blue note.}<br>.text-purp{## This is a purple note.}<br>.text-yell{## Yellow note.}<br>.text-green{## Green note.}<br>.text-red{## Red note.}<br>A special function was added, so it'll be easier to add them. If you want to make an annotation, you can just add a value like: <input type="text" value=".text-yell{## Note here}" readonly></li>
+                        <li>More! Annotations! Look: .text-highlight~~red{RED HIGHLIGHT!}</li>
+                        <li>.text-woah{BWOAH!}</li>
+                        <li>I 💖 .text-skewdash{SKEWDASH TEXT}</li>
+                        <li>IMPORTANT! SVG FILTERS NOW ADDED! REFER TO IMPORTANT INFO TAB FOR MORE!</li>
+                        <li>Added more images.</li>
+                        <li>There is now a text at the inventory, informing the player about possible upgrades in case they didn't read the dialogue thoroughly (skill issue).</li>
+                        <li>BATTLE MODIFIERS INFO! You can now see *some* enemy modifiers, like flametouch and quickuse.</li>
+                        <li>Removed the Spirit of Chaos</li>
                     </ul>
                     <h3>Balance Changes:</h3>
                     <ul>
-                        <li>Yes.</li>
+                        <li>Nerfed golden slime to gain less mana and have less health.</li>
+                        <li>Traffic Lord slightly buffed, Lord K slightly nerfed.</li>
+                        <li>Mammoth tusk buffed.</li>
                     </ul>
                     <h3>Bug Fixes:</h3>
                     <ul>
-                        <li>None</li>
+                        <li>When buying a card, it will now no longer be a copy of one if you already have a different version of the given card in your deck.</li>
+                        <li>Cards and shop cards now count as a separate object, as before, if a shop card was upgraded, the card itself would be upgraded. For example, if the shop offered a solar prism with 70 atk, and you use a dyson sphere, it would create that solar prism instead of a standard one.</li>
+                        <li>Debounce added to play button. Previously, if you clicked the button twice within 0.2 seconds, you would glitch into a screen with both the adventure screen and mode select screen. Now you can only click again after 0.3 seconds.</li>
+                        <li>Fake Coins battle fixed.</li>
                     </ul>
                     <h3>Next Update?</h3>
                     <p>Finish the adventuremaxxing update.</p>
@@ -309,12 +360,16 @@
                     <p>Some cards have special mechanics, like soul keeper or solar prism. You will slowly discover these as you play. If you want to know every card's attributes, go to the changelog and scroll down. Have fun!</p>
                 </div>
             </div>
+            
             <div id="importanttab" class="tabcontent">
+                
                 <h1>Important Info That The Developer Always Forgets</h1>
                 <hr>
                 <div class="modal-content" id="modal-content3">
                     <h3>Sizing</h3>
                     <p>Let <i>w:h</i> be width to height ratio.<br>All cards have a <i>7:8</i> size ratio. (~0.875)<br>All background images have a roughly <i>11:5</i> size ratio. (~2.2) .text-yell{## Note - Some images (like DJ Neon image) have a ratio of 2.6}</p>
+                    <h3>SVG Usage</h3>
+                    <p style="mask:url(#mask-1);">This is mask 1. I love mask 1. Mask one is my life.</p>
                 </div>
             </div>
         </div>
