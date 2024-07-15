@@ -163,7 +163,7 @@
             </button>
             
         </div>
-        <p id="versiontext">v0.3PRE-4BETTER - SUPER DUPER UPDATE</p>
+        <p id="versiontext">v0.3 - STELLAR UPDATE</p>
     </div>
     <div id="game" class="hide">
         <h2 id="battletitle">FIGHT AGAINST</h2>
@@ -171,6 +171,7 @@
         <p id="p2">Player 2: 500 health</p>
         
         <h4 id="whichturn">YOUR TURN</h4>
+        <p id="battletext"></p>
         <!--        <div>
             <p id="curmode">Current Mode: Normal</p>
             <select id="customoptions" class="hide">
@@ -250,30 +251,37 @@
                 </button>
             </div>
             <div id="changelogtab" class="tabcontent">
-                <h1>Update v0.3PRE-4BETTER - Imagery Update</h1>
+                <h1>Update v0.3OFFICIAL - Official Adventure Update Release</h1>
                 <hr>
                 <div class="modal-content" id="modal-content">
-                    <h3>Doth thou trust thyself?</h3>
-                    <p>A true question.</p>
+                    <h3>Important Note</h3>
+                    <p>Card modifiers have been implemented (you can buy them at some locations) but as of current do nothing. Do not buy them if you want to save up money!</p>
                     <h3>New cards!</h3>
                     <ul>
-                        <li>None.</li>
+                        <li>Bubblemancer, a card that heals multiple allies and gives them an attack boost. Was added 2 updates ago but forgot to mention.</li>
+                    </ul>
+                    <h3>New relics!</h3>
+                    <ul>
+                        <li>Quincy's Chainsaw of Omega Doom - Deal 50% more damage after death mode.</li>
+                        <li>Red Star Staff - Double all card stats every 5 turns at the cost of 20 health.</li>
+                        <li>SXR-500 - Deal 50 damage to first opponent card for 1 mana every 4 turns.</li>
                     </ul>
                     <h3>YASSIFICATION</h3>
                     <ul>
                         <li style="mask:url(#mask-1)">Locations & fights (not all as of yet) will now have faint image backgrounds!</li>
                         <li>Button designs somewhat changed.</li>
                     </ul>
+                    <h3>RandKey Conditioning!</h3>
+                    <p>randKey() conditioning! There is now a second argument to the function randKey(), which is .text-bold{con}. Since I am too lazy to learn regex, I have created my own, which follows this style: 'subobj?val=target;subobj?val2=target2;' etc.. Any keys that qualify for those conditions will be eliminated from the random process, which disables gaining unobtainable cards in shops. This is necessary to stop people from gaining unobtainable cards specific to other cards or enemies.</p>
+                    <h3>Coda Update!</h3>
+                    <p>Coda now has more locations, allowing for further adventure after defeating Traffic Lord.</p>
                     <h3>Other Additions:</h3>
                     <ul>
-                        <li>Added changelog annotations. Look at this! <br>.text-blue{## This is a blue note.}<br>.text-purp{## This is a purple note.}<br>.text-yell{## Yellow note.}<br>.text-green{## Green note.}<br>.text-red{## Red note.}<br>A special function was added, so it'll be easier to add them. If you want to make an annotation, you can just add a value like: <input type="text" value=".text-yell{## Note here}" readonly></li>
-                        <li>More! Annotations! Look: .text-highlight~~red{RED HIGHLIGHT!}</li>
-                        <li>.text-woah{BWOAH!}</li>
-                        <li>I 💖 .text-skewdash{SKEWDASH TEXT}</li>
-                        <li>IMPORTANT! SVG FILTERS NOW ADDED! REFER TO IMPORTANT INFO TAB FOR MORE!</li>
-                        <li>Added more images.</li>
+                        <li>New relics.</li>
                         <li>There is now a text at the inventory, informing the player about possible upgrades in case they didn't read the dialogue thoroughly (skill issue).</li>
                         <li>BATTLE MODIFIERS INFO! You can now see *some* enemy modifiers, like flametouch and quickuse.</li>
+                        <li>Added plenty mo' locations!</li>
+                        <li>Upgraded image of Juggernaut.</li>
                         <li>Removed the Spirit of Chaos</li>
                     </ul>
                     <h3>Balance Changes:</h3>
@@ -281,6 +289,7 @@
                         <li>Nerfed golden slime to gain less mana and have less health.</li>
                         <li>Traffic Lord slightly buffed, Lord K slightly nerfed.</li>
                         <li>Mammoth tusk buffed.</li>
+                        <li>Charger slight rework: Now has 50 starting damage and gains 15 damage per turn, but it is uncapped and does not decrease on attack. Shock effect now applies to 4 cards, and has a 1/2 chance of stunning them.</li>
                     </ul>
                     <h3>Bug Fixes:</h3>
                     <ul>
@@ -288,9 +297,10 @@
                         <li>Cards and shop cards now count as a separate object, as before, if a shop card was upgraded, the card itself would be upgraded. For example, if the shop offered a solar prism with 70 atk, and you use a dyson sphere, it would create that solar prism instead of a standard one.</li>
                         <li>Debounce added to play button. Previously, if you clicked the button twice within 0.2 seconds, you would glitch into a screen with both the adventure screen and mode select screen. Now you can only click again after 0.3 seconds.</li>
                         <li>Fake Coins battle fixed.</li>
+                        <li>Bubblemancer removing bad effects fixed.</li>
                     </ul>
                     <h3>Next Update?</h3>
-                    <p>Finish the adventuremaxxing update.</p>
+                    <p>Finish card modifiers AND add special character cards. Also planned: Card named Celestial Striker, spawns in stuff from space. And a few locations for the library.</p>
                     <h3>Other Information:</h3>
                     <div class="tab tab-mini">
                         <button class="tablinks-mini tablinks" onclick="openMiniTab(event,'cardstab')">
@@ -356,6 +366,13 @@
                         <li>Toggle Card Mode - There are 2 card modes, use and select. With use, you can use one of your cards. With select, you can target a card to do something on. This can be for healing, or attacking a specific enemy card.</li>
                         <li>End Turn - Not displayed on screen, but at the very bottom. Scroll down below the enemy's cards, and end turn when you don't want to do anything.</li>
                     </ul>
+                    <h3>Other Not Shown Mechanics</h3>
+                    <ul>
+                        <li>Reloading - At the start of each round and reload, your hand consists of .text-bold{inventory length}*.text-bold{1.5}+1 cards. 1 card is added to your hand at the end of each turn. If you spend all cards in your hand, you will have to end turn to reload.</li>
+                        <li>Relics - They give special effects like extra damage and health, or an upgrade for one specific card.</li>
+                        <li>Enemy Modifiers - Some enemies have special abilities, like Lord K's .text-bold{Meteor Strike} and Traffic Lord's .text-bold{Turn Block}. As of current only a few are displayed.</li>
+                        <li>[UPCOMING] Card Modifiers - You can add modifiers to your cards like an .text-bold{Infernal Foil}, which makes it resistant to fire. Coming soon.</li>
+                    </ul>
                     <h3>What Else?</h3>
                     <p>Some cards have special mechanics, like soul keeper or solar prism. You will slowly discover these as you play. If you want to know every card's attributes, go to the changelog and scroll down. Have fun!</p>
                 </div>
@@ -370,6 +387,7 @@
                     <p>Let <i>w:h</i> be width to height ratio.<br>All cards have a <i>7:8</i> size ratio. (~0.875)<br>All background images have a roughly <i>11:5</i> size ratio. (~2.2) .text-yell{## Note - Some images (like DJ Neon image) have a ratio of 2.6}</p>
                     <h3>SVG Usage</h3>
                     <p style="mask:url(#mask-1);">This is mask 1. I love mask 1. Mask one is my life.</p>
+                    <p>Each card has a 1% chance of gaining either a dotted or striped mask. If you get one, you're lucky!</p>
                 </div>
             </div>
         </div>

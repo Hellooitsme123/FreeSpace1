@@ -42,9 +42,9 @@ body,html {
     0 -0.07em black;*/
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent;
-    background: linear-gradient(rgb(242, 255, 0),rgb(255, 0, 0));
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+    background: linear-gradient(rgb(163, 214, 255),rgb(226, 176, 255));
+    -webkit-text-stroke-width: 0.4px;
+    -webkit-text-stroke-color: white;
 }
 #background {
 }

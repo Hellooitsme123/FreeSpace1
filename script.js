@@ -64,6 +64,22 @@ var enemies = {
         mods: ["Strength{20}","QuickUse{1}"],
         fightimg: "goldenslimefight.png",
     },
+    "magicapprentice": {
+        name: "magicapprentice",
+        formal: "Magic Apprentice",
+        managain: 6,
+        maxdiscards: 0,
+        coinsgive: 70,
+        // battle stats
+        health: 70,
+        mana: 7,
+        discards: 0,
+        inventory: {},
+        simpledeck: ["wizard","froster","soulkeeper","reaper","bubblemancer"],
+        deck: {},
+        mods: ["Strength{20}","Healing{50}"],
+        fightimg: "",
+    },
     "taverngroup": {
         name: "taverngroup",
         formal: "Tavern Regulars",
@@ -105,7 +121,7 @@ var enemies = {
         mana: 0,
         discards: 1,
         inventory: {},
-        simpledeck: ["teslacoil","bandit","weakener","wizard","spearman"],
+        simpledeck: ["teslacoil","bandit","weakener","wizard","bus"],
         deck: {},
         mods: ["Tank{20}","QuickUse{1}","SoulLantern{20}"],
     },
@@ -230,6 +246,21 @@ var enemies = {
         deck: {},
         mods: ["Strength{50}","QuickUse{1}","Tank{20}","Healing{20}"],
     },
+    "cursedtome": {
+        name: "cursedtome",
+        formal: "Cursed Tome",
+        managain: 12,
+        maxdiscards: 1,
+        coinsgive: 200,
+        // battle stats
+        health: 400,
+        mana: 10,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["atkpot","wizard","clonebox","bubblemancer","charger","managenerator","solarprism"],
+        deck: {},
+        mods: ["Strength{100}","QuickUse{1}","Tank{20}","Healing{100}"],
+    },
 }
 var locations = {
     "home": {
@@ -288,6 +319,26 @@ var locations = {
         formal: "Road To Coda",
         desc: "Golden slime defeated!",
         loretext: "You saw the mushy blob melt into smaller globs, now fading away. Once it died away, it left behind traces of gold (approximately 50 coda coins) and one card.",
+        special: "gaincard",
+        proceedtext: "Continue and make your way to the center of Owarp, where the trading hubs reside.",
+        nextloc: "owarpcenter",
+        locimg: "roadtocoda.png",
+    },
+    "magicapprenticeappear": {
+        name: "magicapprenticeappear",
+        formal: "Road To Coda",
+        desc: "The long path to Coda, one of the biggest cities in the world. There, you'll be able to stock up on cards to continue your journey.",
+        loretext: "On the road, you saw a weird dude in the distance doing what you thought were kung fu moves. He had a black hat and was in robes, and he was dancing around moving his arms and legs in a strange manner. Was he crazy? Had he overdosed on beans? You couldn't really tell what he was doing until he got closer. || It turns out that he was actually a mage in training, who was just flexing off his spells. He was pretty obnoxious, casting random spells everywhere, like shrinking some poor guy's cat or blasting random stuff. He came up to you, wanting to show off his skills. || Magic Apprentice: Hey pbro! I'm going to be the next master of magic! Wanna see my spells? || You: No.. || Magic Apprentice: Fine then, you'll be able to see them in the fight.",
+        proceedtext: "Fight the magic apprentice.",
+        proceedspecial: "fight|magicapprentice",
+        nextloc: "andreasvictory",
+        locimg: "roadtocoda.png",
+    },
+    "magicapprenticevictory": {
+        name: "magicapprenticevictory",
+        formal: "Road To Coda",
+        desc: "Obnoxious mage defeated!",
+        loretext: "Bro really thought he was him 💀💀💀💀. Anyways, the magic apprentice was pretty sad when he lost. || Magic Apprentice: Lil' bro! Why'd you have to do me like that? I just wanted to show off my skills! || You: I have things to do! || Magic Apprentice: Womp womp. Fine, here's a free card. Just don't tell anyone you defeated me, okay?",
         special: "gaincard",
         proceedtext: "Continue and make your way to the center of Owarp, where the trading hubs reside.",
         nextloc: "owarpcenter",
@@ -373,6 +424,26 @@ var locations = {
         nextloc: "behindtallmart",
         locimg: "tallmart.png",
     },
+    "suddenurge": {
+        name: "suddenurge",
+        formal: "Tallmart",
+        desc: "A tall store that contains a wide range of items to buy, from food to nukes to cards.",
+        loretext: "After looking at the aisles and seeing what there was to buy, you felt something strange. It called to you. || ???: Come on, Quincy's asleep. Steal something. It's the perfect opportunity.. || You: No.. || Do you submit to the strange power?",
+        actiontext: "Quincy was still as a stone, sleeping on the chair. Wanting another upgrade, you decided to secretly take another, making as little sound as possible. You slowly tiptoed out.. until.. VRRRRRR!!! Quincy was standing behind you, with a chainsaw at full power. You ran away as fast as possible dropping the stolen item and a few coda coins, with a few injuries. Maybe don't steal next time.",
+        proceedtext: "Leave the store and continue your trek along the road.",
+        special: "suddenurge",
+        nextloc: "behindtallmart",
+        locimg: "tallmart.png",
+    },
+    "tallmartroof": {
+        name: "tallmartroof",
+        formal: "Tallmart Roof",
+        desc: "A tall store that contains a wide range of items to buy, from food to nukes to cards.",
+        loretext: "Before leaving, you suddenly thought about going upstairs and looking at other things. You went all the way up to the roof, not seeing anything of relative value. Still, you relished the nice view, looking at the great forest surrounding the city. It recalled a faint memory from long ago.. || UncleMan: You know nephew, no one really knows how this place came to be. At some point in time, there was no Owarp. And then there was Owarp. There's not much information, but some do say that Owarp has been a small village town for hundreds of years. || You: What about outside of Owarp? || UncleMan: Well, right now, Boraps and the other islands are mostly just big chunks of land full of big central trade hubs and long, big roads. Owarp itself is surrounded by hundreds of extremely tall trees, hiding who knows what. The forests are full of undiscovered wildlife, but no one really wants to go in there and document it. This place is very mysterious as a whole. Who knows what happened in the past? || The conversation faded away, and then you realized that you were on the verge of falling off the 10 story building, with its roof being completely devoid of any guard rails. You saw a broken wooden plank right before you started your way down, suspicious of what it was there for.",
+        proceedtext: "Leave the store and continue your trek along the road.",
+        nextloc: "behindtallmart",
+        locimg: "",
+    },
     "behindtallmart": {
         name: "behindtallmart",
         formal: "Grimy Corner",
@@ -380,6 +451,7 @@ var locations = {
         loretext: "Having a few scraps left over from the tavern that you forgot to throw away, you decided to go to the back of Tallmart after finishing your order. Expecting to see a normal dumpster, you jumped back in surprise after a man came out of a cardboard box. He said his name was Greg, and, after seeing your cards, he offered you a deal of 15 coda coins for every card you give him. Do you accept?<br>Click a card in your inventory to delete it.",
         proceedtext: "Leave Greg's place and continue along the road.",
         special: "destroycard",
+        specialmax: 2,
         nextloc: "roadtocoda3",
         locimg: "grimycorner.png",
     },
@@ -403,6 +475,7 @@ var locations = {
     "helloitsmeappear": {
         name: "helloitsmeappear",
         formal: "Deric's Dance Club",
+        desc: "A wild and frivolous club where people can vibe, shout, and dance in a vivid array of lights.",
         loretext: "The first thing that caught your attention was the DJ's set of prismatic cards, all of them being rare. However, you were unable to talk to the DJ, as just then, a challenger, who went by the name of 'Helloitsme123', approached. || Helloitsme123: I bet 150 coda coins I'll win! || You: What? || Helloitsme123: Come on, battle! || The enigmatic figure provided only one option, and with the moon at its peak, it didn't seem like you could do anything else.",
         proceedtext: "Do the only thing you can, accept the challenge.",
         proceedspecial: "fight|helloitsme",
@@ -474,7 +547,33 @@ var locations = {
         name: "djneonvictory",
         formal: "Deric's Dance Club",
         desc: "The best DJ in the world? Is that so?",
-        loretext: "You defeated DJ Neon! He did what he promised to, offering 50 coda coins, and a card of your choice (shown below). However, one question still remains: If he's the DJ, and he was just battling you, then how was the music still playing? Is he really a DJ? Whatever, it's fine. You haven't slept in a while..",
+        loretext: "You defeated DJ Neon! He did what he promised to, offering 50 coda coins, and a card of your choice (shown below). However, one question still remains: If he's the DJ, and he was just battling you, then how was the music still playing? Is he really a DJ? Whatever, it's fine. What else is here to see of this club?",
+        proceedtext: "Explore more.",
+        nextloc: "danceclubexit",
+    },
+    "danceclubroof": {
+        name: "danceclubroof",
+        formal: "Dance Club Roof",
+        desc: "The loud screaming and partying now dying out, all you see is the city view.",
+        loretext: "You went back to the floaty elevators, where you saw a staircase that you had missed before. It was blue and had a neon aesthetic, leading to some strange place upstairs. || You went up the stairs, being greeted with a dark, night sky. There were boxy, metal railings that prevented dazed people from falling off. There were tall, tall trees surrounding the city walls, marking the start of the great forest that was outside the city. You could see one of your uncle's bean factories behind a few buildings, made up of big, white boxes and whatnot. Again it came across your mind, the question of whether or not you would become as great as your uncle. || There was not much more to see, so you decided to go down the stairs and back to the dance floor.",
+        proceedtext: "Explore more.",
+        nextloc: "danceclubexit",
+    },
+    "danceclubspill": {
+        name: "danceclubspill",
+        formal: "Dance Club",
+        desc: "A wild and frivolous club where people can vibe, shout, and dance in a vivid array of lights.",
+        loretext: "You walked away from DJ Neon, looking around the club to see if there was anything else. You were feeling quite happy about your victory, until.. .text-woah{SLIP!} You slipped on a puddle of spilled Coda Cola and fell, just narrowly missing a faceplant. You couldn't see well, and all of your cards had fallen out of your backpack. A crowd is slowly forming, so you need to think fast.",
+        proceedtext: "Explore more.",
+        special: "danceclubspill",
+        nextloc: "danceclubexit",
+        forceaction: true,
+    },
+    "danceclubexit": {
+        name: "danceclubexit",
+        formal: "Dance Club Exit",
+        desc: "The dark, night streets give off an eerie vibe, with the echoes of the faint, flickering street lights bouncing off the ground.",
+        loretext: "After exploring the dance club for quite some time, you decided it was best to leave. You slowly made your way out, jumping down the floaty blue elevator pads, swinging the glass doors open. You haven't slept in a while..",
         proceedtext: "Go to the hotel across the street to rest.",
         special: "gaincard",
         nextloc: "hotel",
@@ -501,10 +600,42 @@ var locations = {
         name: "cheesedinovictory",
         formal: "Bean Factory",
         desc: "One of the great Beanmelon Corp. factories that produces the food that is eaten by everyone around the world.",
-        loretext: "After beating Cheese Dino, he gave you a relic. Check your inventory to see it. After that, you were let into the factory. Following a lot of walking, you met your uncle, Rictor, who was chilling on a plastic chair that looked like it was going to collapse unexpectedly. || Uncle Rictor: Yo, wassup nephew! How have you been doing? What did UncleMan say? || Nephew: Uhh.. He made me go on adventure to find the lost bean duplicator, saying that he'll kick me out if I don't find it. || Uncle Rictor: Oh, that seems bad. Hopefully you'll find it. Do you want some aid? I can upgrade your cards, it'll just cost 30 coda coins per card.|| Nephew: Sure! || Click one of your cards to increase their health by 20%, and their attack/heal by 20%.",
-        proceedtext: "Leave the factory to find Lord K.",
+        loretext: "After beating Cheese Dino, he gave you a relic. Check your inventory to see it. After that, you were let into the factory. He gave you access into the factory, where you remembered that you had to go through a long maze to get into it. It was pretty disorienting, but using small fragments of your memory, you managed to make your way through.",
+        proceedtext: "Look around.", 
+        nextloc: "unclerictorappear",
+    },
+    "unclerictorappear": {
+        name: "unclerictorappear",
+        formal: "Bean Factory",
+        desc: "One of the great Beanmelon Corp. factories that produces the food that is eaten by everyone around the world.",
+        loretext: "Following a lot of walking, you met your uncle, Rictor, who was chilling on a plastic chair that looked like it was going to collapse unexpectedly. || Uncle Rictor: Yo, wassup nephew! How have you been doing? What did UncleMan say? || Nephew: Uhh.. He made me go on adventure to find the lost bean duplicator, saying that he'll kick me out if I don't find it. || Uncle Rictor: Oh, that seems bad. Hopefully you'll find it. Do you want some aid? I can upgrade your cards, it'll just cost 30 coda coins per card.|| Nephew: Sure! || Click one of your cards to increase their health by 20%, and their attack/heal by 20%.",
+        proceedtext: "Continue exploring the factory.",
         special: "upgcard", 
-        nextloc: "strangealtar",
+        nextloc: "securityguard",
+    },
+    "securityguard": {
+        name: "securityguard",
+        formal: "Bean Factory",
+        desc: "One of the great Beanmelon Corp. factories that produces the food that is eaten by everyone around the world.",
+        loretext: "You went deeper into the factory, seeing the hundreds of conveyor belts and bean cans, with loud noises bouncing off the metal walls. Looking at your left, you saw a room marked with big, bold letters, saying - 'SECURITY'. You decided to enter the room despite its label, and saw a sleeping security guard in front of a computer that showed everything throughout the facility. You could see Uncle Rictor standing in the cool, lush section of the factory with grass and trees. You could see Cheese Dino standing by the entrance, his heavy gaze unending. You wondered what wandered about within his strange mind, and why he seemed so mysterious compared to the others. The red star on his arm glistened as he sharpened his cleaver, still looking serious and blank as ever. || You switched focus to another camera, where you could see trucks and boxes full of beans. There was no one there at the moment, so you switched cameras again. || This time, the camera was looking at the bean conveyors. There were several bulky, metal structures that had big labels on them, likely marking there purpose in the bean refining process. One read, .text-bold{'BEAN ENCHANTING MACHINE'}, dispensing purply, glowy bean cans that likely came from another conveyor. It was getting quite boring, so you decided to leave before the security guard woke up.",
+        proceedtext: "Leave the factory.",
+        nextloc: "roadtocoda4",
+    },
+    "shippingsector": {
+        name: "shippingsector",
+        formal: "Bean Factory",
+        desc: "One of the great Beanmelon Corp. factories that produces the food that is eaten by everyone around the world.",
+        loretext: "A clacking sound echoed throughout the facility as you walked by the conveyors, entering the shipping sector. Here, you saw a bunch of boxes on metal racks, with a truck containing a few of them. It had not left yet, as it was the middle of the night and no one was awake. You went through one of the doors, seeing an employee crouching in a corner. || Adoba: Get me out of here! This place is terrible! || You: Why? || Adoba: It's all lies! I know the secret of Beanmelon. UncleMan has been lying all along. || You: What do you mean? Beanmelon Corp. is the best company in the world and nothing will ever change that! || Adoba: That's what you oblivious folk all think. I've seen the process, and it's not like what UncleMan has told the public. There's a reason why factory employees can never leave. UncleMan can't let the world know. || You: Know what? You have to explain to me the truth man! I've tried beans all my life and I don't see anything wrong. || Adoba: The beans.. are artificial. Fake. || You: Wh- what?? What- what do you mean? || .text-custom~~font-size:20px;font-weight:bolder{Leave. Now.}",
+        proceedtext: "Leave the factory.",
+        nextloc: "roadtocoda4",
+    },
+    "tastetestingsector": {
+        name: "tastetestingsector",
+        formal: "Bean Factory",
+        desc: "One of the great Beanmelon Corp. factories that produces the food that is eaten by everyone around the world.",
+        loretext: "You could hear the loud sounds of the machines pumping out cans of beans, with hundreds of different varieties of flavors. While walking past the conveyors, you noticed that there was a small walkway that led to a strange corner that you hadn't seen before, so you decided to see what was there. || Walking past the conveyors, you saw a big sign that read, 'TASTE TESTERS'. There was a group of people that looked extremely tired, endlessly testing out different bean cans. They seemed to be pleading for help deep inside, but you couldn't tell. You spotted one, who was named XSnipe11. || XSnipe11: Get us out of here! || You: Why? || XSnipe11: We have been forced to try out these beans for the last 3 years! I need to leave! || You: Can't you leave anytime you want? || XSnipe11: We can't! The doors are locked with keycards that none of us have! All we can do is review the beans and tell UncleMan what he should do to improve them! We need help! || You walked away before you could hear anymore screaming, confused. Why did they want to leave? Being a Beanmelon Corp. employee must be an insanely privileged status! Fools.. they're probably too lazy to work. ",
+        proceedtext: "Leave the factory.",
+        nextloc: "roadtocoda4",
     },
     "strangealtar": {
         name: "strangealtar",
@@ -530,6 +661,7 @@ var locations = {
         desc: "A road filled with old tire tracks from trucks and cars that traversed through here. Unfortunately, cars are quite expensive these days. ",
         loretext: "Surely Lord K can't be that hard to beat, right? He's just a giant green dude with a fake cape and a fake crown. It's probably made of bronze or something, with some special gold paint to make it look cool. With these cards, he'll be easily destroyed! Yeah, hopefully he's somewhere in these woods.. Wait, why does that tree feel familiar? || After some time you found an altar, with a sign saying: 'DISPOSE OF CARDS HERE'. What could it be? Click a card to destroy it.",
         special: "destroycard",
+        specialmax: 2,
         proceedtext: "Continue searching for Lord K.", 
         nextloc: "forest1",
     },
@@ -553,8 +685,8 @@ var locations = {
     "leafos": {
         name: "leafos",
         formal: "Leafos",
-        desc: "Something that fills the world. Two miniature people, with backpacks and fluffy hats.",
-        loretext: "As you went along the road, trying to find Lord K, you found many things. A comically large crowbar. An unnecessarily large amount of coda coins scattered across the ground (unfortunately, they weren't real, so they were worthless). And, two strange creatures. || They were two very small green 'people'. Like sprouts. They stared into your soul for quite a while, until.. .text-woah{BOOM!}<br>The group of forestfolk were now monsters running at you, leaving only one choice: A battle.",
+        desc: "Something that fills the world.",
+        loretext: "As you went along the road, trying to find Lord K, you found many things. A comically large crowbar. An unnecessarily large amount of coda coins scattered across the ground (unfortunately, they weren't real, so they were worthless). And, two strange creatures. || They were strange beings from the undocumented forest. Mysterious, you decided to look at them for a dangerously long amount of time. It was all fine, until, .text-woah{BOOM!} Their dead stare was broken, and now they were running straight out you. You didn't have enough time to think, and was forced to start a battle.",
         proceedtext: "Fight the Leafos.",
         proceedspecial: "fight|leafos",
         nextloc: "leafosvictory",
@@ -640,14 +772,36 @@ var locations = {
         name: "roadtocoda6",
         formal: "Road to Coda",
         desc: "A road.",
-        loretext: "Hours passed as you slowly walked, your legs begging for mercy. Eventually, you came to a rest stop, which offered a mystery card with DOUBLE stats for 120 coda coins and an energizer foil (makes card's cooldown 2 less) on a card for 150.", 
+        loretext: "Hours passed as you slowly walked, your legs begging for mercy. Eventually, you came to a rest stop, which was a small wooden stand that offered a few items. || Shopowner: Going about on your way to Coda, huh? It's strange, not many people here this season. I usually get a lot of customers. Wasn't even able to stock up through some trading. Hopefully you'll buy one of the few items I have. || You: What are they? || Shopowner: Well, I'm offering a mystery card with DOUBLE stats for 120 coda coins and an energizer foil (makes card's starting cooldown 1 less) on a card for 150. On sale so people can buy them! Barely any business these past days.. I wonder why..", 
         proceedtext: "Continue your journey.",
         special: "store|mystery|energizer",
-        nextloc: "roadtocoda7",
+        nextloc: "trafficlordappear",
         locimg: "roadtocoda.png",
     },
-    "roadtocoda7": {
-        name: "roadtocoda6",
+    "crowattack": {
+        name: "crowattack",
+        formal: "Road to Coda",
+        desc: "A road.",
+        loretext: "You were walking down the road to Coda, bored and tired, when suddenly loud squawking appeared. A flurry of squawks and flaps left you stunned as a murder of crows started flying towards you. You didn't have enough time to think.. || Do something! Quick! ", 
+        proceedtext: "Continue your journey.",
+        special: "crowattack",
+        nextloc: "trafficlordappear",
+        forceaction: true,
+        locimg: "roadtocoda.png",
+    },
+    "cardtornado": {
+        name: "cardtornado",
+        formal: "Road to Coda",
+        desc: "A road.",
+        loretext: "Buzz. Buzz. What's that strange noise? You tried going closer to it, seeing a slowly growing crowd of moving dots, like a wild hive of bees. Still curious, you continued to run closer to it. BZZ. BZZ. It was getting louder, now sounding like static noise. || Oh no! It turns out that the strange crowd of dots was actually a card tornado, speeding towards you faster than ever. What will you do?", 
+        proceedtext: "Continue your journey.",
+        special: "cardtornado",
+        nextloc: "trafficlordappear",
+        forceaction: true,
+        locimg: "roadtocoda.png",
+    },
+    "trafficlordappear": {
+        name: "trafficlordappear",
         formal: "Road to Coda",
         desc: "A ro.",
         loretext: "One question that you were still dying to know the answer for was: Where is everyone? Sure, there was that one rest stop, but else than that, you haven't met a single person on the road. What must be the cause of this? If so, how can this stop millions of people from traveling? || After some time, you felt a difference in the air. It was as if.. it was even more lonely. Lonelier than it was when you were already at max lonely. How is that possible? You kept walking, hoping to cover as many miles as possible. Why do cars have to be so expensive? || Eventually, you saw a big.. thing. It was entirely made of traffic cones, with big, mad eyes in the front. It was almost as large as Lord K, but there was something about it that didn't make you feel good.. || Traffic Lord: I am the Traffic Lord, and I you are not going to be allowed to continue along this road! || You: What? Why? I've walked like 60 miles already! It's been days! || Traffic Lord: Who asked? Who cares? I am here to take all of your belongings, so I can become the richest being in the world! || You: I'm sorry, but that title belongs to my uncle. || Traffic Lord: Are you sure? I can tell your uncle is struggling. Beanmelon may be the current largest company in the world, but will it last? He gets more and more unhinged everyday. Don't you know that there's something wrong? || You: What? No! What do you mean! Just start this battle already!", 
@@ -678,18 +832,130 @@ var locations = {
         loretext: "Surprisingly, there weren't that many people at the hotel. It was a relatively calm day, so most people were probably working or doing their usual business. At the register, you were offered 2 choices, similar to those you got previously. You can book a room for 50 coda coins and gain 70 health, or get a free but low quality room, only healing 20 hp. What do you do?",
         special: "rest",
         proceedtext: "Sleep until the next day.",
+        nextloc: "jamodarcards",
+    },
+    "jamodarcards": {
+        name: "jamodarcards",
+        formal: "Jamodar's Cards",
+        desc: "The greatest hub for trading cards and upgrading them!",
+        loretext: "A new day, a new thing to do! You woke up at 9am, tired and sleepy, but you decided to get out of bed anyways. You brushed your teeth, looked at your cards, and did all of the stuff that normal people do. After some time, you went downstairs and bought some food, making sure that you'll have a full stomach for the entire day. After eating, you walked to the building where cards were carded. || You opened the door and heard loud chattering, like Janjo's Tavern, except much more busy. Walking around the first floor, you saw lots of people talking and showing off their cool cards and whatnot. You made your way to a lonely machine with no one nearby, and looked at it closely. It had a big, yellow, neon sign that read, 'DUPLIC-O MACHINE: DUPLICATE A CARD HERE!' If you do, you'll get 50 coda coins. That's an amazing deal, right?",
+        special: "duplicatecard",
+        proceedtext: "Go up to the next floor.",
+        nextloc: "jamodarcards2",
+    },
+    "jamodarcards2": {
+        name: "jamodarcards2",
+        formal: "Jamodar's Cards",
+        desc: "The greatest hub for trading cards and upgrading them!",
+        loretext: "After exploring the first floor, you decided to go check out the second. Walking up the stairs, you were presented with a cool forge with many people. There was a massive, feebolum and steel anvil covered in flames at the center, with a ginormous hammer hammer on the side. Here, you can choose to either apply a 30% boost to your card or an infernal foil, which: <br>1) Heals your card instead of damages it when given burn effect.<br>2)Has a 1/5 chance of burning opponent card, which deals 25 damage and applies level 5 burn.<br>Click the upgrade button and a card to upgrade it, or click the infernal button and a card to apply the foil. One card upgrade costs 50 coda coins, one infernal foil costs 150 coda coins.",
+        special: "showopt|upgcard|infernalfoil",
+        proceedtext: "Go up to the next floor.",
+        nextloc: "jamodarcards3",
+    },
+    "jamodarcardsvendingmachine": {
+        name: "jamodarcardsvendingmachine",
+        formal: "Vending Machine",
+        desc: "A bright, neon vending machine giving out random drinks.",
+        loretext: "You were just about to go up to the next floor, when, out of the corner of your eye, you spotted a vending machine. 50 coda coins for a random drink. Is it worth it?",
+        special: "jamodarcardsvendingmachine",
+        proceedtext: "Go up to the next floor.",
+        nextloc: "jamodarcards3",
+    },
+    "jamodarcardsdealer": {
+        name: "jamodarcardsdealer",
+        formal: "Jamodar's Cards",
+        desc: "The greatest hub for trading cards and upgrading them!",
+        loretext: "You walked around the building, where you spotted a table with a crowd around it. After some time, a few people left and you managed to talk with the guy at the table. || Dealer: Do you want to play a game? || You: What game? || Dealer: You can choose a number from 1-3. If you get it right, you get 100 coda coins. If you get it wrong, you lose 100 coda coins. || The odds are not in your favor.. But will luck be?",
+        special: "jamodarcardsdealer",
+        proceedtext: "Go up to the next floor.",
+        nextloc: "jamodarcards3",
+    },
+    "jamodarcards3": {
+        name: "jamodarcards3",
+        formal: "Jamodar's Cards",
+        desc: "The greatest hub for trading cards and upgrading them!",
+        loretext: "You finally got up to the third floor, where a large crowd was gathered around one specific guy: Jamodar. You couldn't really tell what was happening, but after some asking around, it turned out that he was selling a special card foil: a .text-blue{Diamond} Foil. From what you've learned from your observations, it multiplies a card's health by 5 and attack by 2, but, if the card dies, there's a 1/5 chance it'll be .text-bold{PERMANENTLY} removed from your deck. It seems pretty cool.. Do you think it'll be pretty useful for a while? || Click a card to apply a diamond foil, which costs 200 coda coins.",
+        special: "diamondfoil",
+        proceedtext: "Go up to the next floor.",
+        nextloc: "jamodarcardsroof",
+    },
+    "jamodarcardsroof": {
+        name: "jamodarcardsroof",
+        formal: "Jamodar's Cards Roof",
+        desc: "The greatest hub for trading cards and upgrading them!",
+        loretext: "After going up a few more floors, you made your way up to the roof. There was a large telescope surrounded at one corner, which was disabled due to it being daytime, peering at the sky. It was pretty cloudy today, and you were quite cold with all of the wind blowing. You could see a lot of the city with your view, observing the cars on the road and the people walking on the streets, conducting business and whatnot. || After some time, you went downstairs and back on to the streets. Where to next?",
+        proceedtext: "Walk around the city and see what else there is to do.",
+        nextloc: "ancientlibrary",
+    },
+    "ancientlibrary": {
+        name: "ancientlibrary",
+        formal: "Ancient Library",
+        desc: "An old library full of ancient manuscripts and texts dating back to hundreds of years ago.",
+        loretext: "After looking at the city map, you decided that it'd be best to walk to the city library, which contained thousands of important texts that might be helpful for your journey. You made your way up the marble stairs, amazed by the slick and smooth, glossy design. The librarian greeted you at the entrance, showing off the many books that the library held.",
+        proceedtext: "Continue exploring the library.",
+        nextloc: "cursedtome",
+    },
+    "cursedtome": {
+        name: "cursedtome",
+        formal: "Cursed Tome",
+        desc: "A book full of vile, dark spells that should not be unveiled.",
+        loretext: "You walked around the library, and the first thing that caught your attention was a dusty, purple book that was on a large, wooden pedestal. Its title was in some strange language you didn't understand, but nevertheless, it piqued you interest. The librarian quickly came up to stop you, but it was too late.. || The cursed tome immediately sprang up into a jumble of pages and random stuff, with a purple glow surrounding it. You have to save the library!",
+        proceedtext: "Battle the Cursed Tome",
+        proceedspecial: "fight|cursedtome",
         nextloc: "zeend",
     },
     "zeend": {
         name: "zeend",
         formal: "THE END",
         desc: "You have beaten the demo. Good job!",
-        loretext: "You see a laid down 8 in front of you, with a condescending aura surrounding it. You have started the infinity loop.",
+        loretext: "You see a laid down 8 in front of you, with a strange aura surrounding it. The end is never the end is never the end is never the end is never the end is never the end is never the end is never ....",
         proceedtext: "This is your destiny..",
         special: "shop|buycard|buyrelic",
         nextloc: "home",
     },
-}
+};
+var specials = {
+    "buycard": {
+        name: "buycard",
+        formal: "Buy Card",
+        desc: "Spend money to buy cards.",
+    },
+    "upgcard": {
+        name: "upgcard",
+        formal: "Upgrade Card",
+        desc: "Upgrade a card's stats, like health and attack.",
+    },
+    "destroycard": {
+        name: "destroycard",
+        formal: "Destroy Card",
+        desc: "Remove a card from your deck.",
+    },
+    "gaincard": {
+        name: "gaincard",
+        formal: "Gain Card",
+        desc: "Get a card for free.",
+    },
+    "buyrelic": {
+        name: "buyrelic",
+        formal: "Buy Relic",
+        desc: "Spend money to buy relics.",
+    },
+    "mystery": {
+        name: "mystery",
+        formal: "Mystery Card",
+        desc: "Get a random card.",
+    },
+    "energizer": {
+        name: "energizer",
+        formal: "Energizer Foil",
+        desc: "Apply energizer foil, that decreases starting cooldown.",
+    },
+    "infernalfoil": {
+        name: "infernalfoil",
+        formal: "Infernal Foil",
+        desc: "Apply infernal foil, that gives fire resistance and damage.",
+    },
+};
 // adventure screen
 var curoverview = byId("currentoverview");
 var curloctxt = byId("curloc");
@@ -716,6 +982,7 @@ var currenttext = "";
 var currenttextnum = 0;
 var rerolls = 0;
 var shopmult = 1;
+var shopmod = null;
 // new run vars
 var startmod;
 // CARD MODES
@@ -741,6 +1008,8 @@ var Game = {
         battledeck: {},
         mods: [],
         relics: {},
+        drawarr: [],
+        drawarrindex: 0,
     },
     p2: {
         managain: 5,
@@ -983,11 +1252,22 @@ var relics = {
         formal: "Red Star Staff",
         desc: "A bloody, scarred staff with a red star in the center.",
         advdesc: "Every 5 turns, sacrifice 20 health but double the attack and health of all of your cards on board. Does not activate under 61 health.",
-        rarity: 3,
+        rarity: 4,
         attr: 1,
         attrincrease: 0.2,
         attrtype: "int",
         img: "redstarstaff.png",
+    },
+    beamturret: {
+        name: "beamturret",
+        formal: "SXR-500",
+        desc: "A metal turret that can shoot powerful plasma rays.",
+        advdesc: "A secret creation from Marco. Every 4 turns, sacrifice 1 mana to deal 50 damage to the first opponent card.",
+        rarity: 3,
+        attr: 50,
+        attrincrease: 15,
+        attrtype: "int",
+        img: "beamturret.png",
     },
 }
 var cards = {
@@ -1139,7 +1419,7 @@ var cards = {
     charger: {
         name: "charger",
         formal: "Charger",
-        atk: 40,
+        atk: 50,
         hp: 30,
         ammo: 1,
         maxammo: 1,
@@ -1337,7 +1617,7 @@ var cards = {
         hp: 40,
         ammo: 1,
         maxammo: 1,
-        manause: 3,
+        manause: 2,
         cool: 1,
         coolleft: 1,
         desc:"A lethal reaper, sentencing cards to an inevitable death.",
@@ -1534,7 +1814,7 @@ var cards = {
         maxammo: 2,
         cool: 2,
         coolleft: 0,
-        manause: 2,
+        manause: 2.5,
         desc:"Purifying ally cards with bubbles and rainbows, negative effects will be completely wiped.",
         funnyname: "BUBBLEMANCER UNITED",
         type: "Healing",
@@ -1581,6 +1861,13 @@ var modifiers = {
     },*/
 }
 
+/* COOL LANGUAGE:
+
+randKey(cards)[??WHERE@return.obtainable!=false~~];
+
+
+
+*/
 var importantoknowledgo = ["The select mode allows you to do more strategic moves.","High attack is not always the best.","Solar Prism is the easiest way to win a run.","You can hover over relics to see tooltips.","This jar has no other purpose than providing mildly helpful information."];
 
 // GET SOUNDS
@@ -1620,21 +1907,25 @@ var locationplacing = {
         stages: {
             stage1: {
                 name: "AdventureStart",
-                set: ["home","roadtocoda","mysteryfight","owarpcenter","anyshops","tavern","taverngroupvictory","janjovictory","mysteryloc","tallmart","behindtallmart"],
+                set: ["home","roadtocoda","mysteryfight","owarpcenter","anyshops","tavern","taverngroupvictory","janjovictory","mysteryloc","tallmart","mysteryloc2","behindtallmart"],
                 anyshops: ["cosmeticshop"],
                 mysteryloc: ["cloakedhuman","speedingcar","none"],
-                mysteryfight: ["andreasappear,andreasvictory","goldslimeappear,goldslimevictory"],
+                mysteryloc2: ["tallmartroof","suddenurge"],
+                mysteryfight: ["andreasappear,andreasvictory","goldslimeappear,goldslimevictory","magicapprenticeappear,magicapprenticevictory"],
             },
             stage2: {
                 name: "CityOutskirts",
-                set: ["roadtocoda3","danceclub","mysteryfight","mysteryloc","danceclub2","djneonvictory","hotel","beanfactory","cheesedinovictory"],
+                set: ["roadtocoda3","danceclub","mysteryfight","mysteryloc","danceclub2","djneonvictory","mysteryloc2","danceclubexit","hotel","beanfactory","cheesedinovictory","unclerictorappear","mysteryloc3"],
                 mysteryfight: ["helloitsmeappear,helloitsmevictory","danceclubsign,fakecoinsvictory"],
                 mysteryloc: ["beancandispenser","neonrobot","slotmachine","none"],
+                mysteryloc2: ["danceclubroof","danceclubspill","none"],
+                mysteryloc3: ["securityguard","shippingsector"],
             },
             stage3: {
                 name: "LordKSearch",
-                set: ["mysteryloc","roadtocoda4","mysteryfight","lordkarena","lordkvictory","roadtocoda5","roadtocoda6","roadtocoda7","trafficlordvictory"],
+                set: ["mysteryloc","roadtocoda4","mysteryfight","lordkarena","lordkvictory","roadtocoda5","roadtocoda6","mysteryloc2","trafficlordappear","trafficlordvictory"],
                 mysteryloc: ["strangealtar","unclemanstatue","none"],
+                mysteryloc2: ["crowattack","cardtornado","none"],
                 mysteryfight: ["forest1,banditsvictory","leafos,leafosvictory","forestclearing,forestcastle,wisespiritsvictory","forest1,banditsvictory","leafos,leafosvictory","forestclearing,forestcastle,wisespiritsvictory","lostcave"],
             },
         },
@@ -1644,7 +1935,8 @@ var locationplacing = {
         stages: {
             stage1: {
                 name: "CodaCity",
-                set: ["coda","hotel2","zeend"],
+                set: ["coda","hotel2","jamodarcards","jamodarcards2","mysteryloc","jamodarcards3","jamodarcardsroof","ancientlibrary","cursedtome","zeend"],
+                mysteryloc: ["jamodarcardsvendingmachine","jamodarcardsdealer"],
             },
         },
     }
@@ -1652,7 +1944,7 @@ var locationplacing = {
 var keywords = ["anyshops","mysteryloc","mysteryloc2","mysteryloc3","mysteryfight","mysteryfight2"];
 var locationsarr = [];
 var curlocationindex = 0;
-var curlocationstage = 1;
+var curlocationstage = 2;
 var curlocationpart = 1;
 
 for (let i = 0; i < 100; i++) {
@@ -1725,6 +2017,7 @@ function nextLoc() {
                 break;
             }
         }
+        curlocation = locationsarr[0];
     }
     if (curlocationindex+1 != locationsarr.length) {
         curlocationindex++;
@@ -1781,7 +2074,8 @@ for (let k =0; k < Object.keys(enemies).length; k++) {
     }
 }
 var shopcards = structuredClone(cards);
-
+var reloading = false;
+var battletext = byId("battletext");
 var openBtn = document.querySelector(".open-modal-btn");
 var modal = document.querySelector(".modal-overlay");
 var closeBtn = document.querySelector(".close-modal-btn");
@@ -1796,8 +2090,44 @@ function arrHas(arr,substr) {
 function arrFirst(arr,substr) {
     return arr.filter(str => str.includes(substr))[0];
 }
-function randKey(obj) {
+function morphType(str) {
+    if (Number(str) != "NaN") {
+        return parseFloat(str);
+    }
+    if (str == "true") {
+        return true;
+    }
+    if (str == "true") {
+        return true;
+    }
+}
+function randKey(obj,con = null) {
     var keys = Object.keys(obj);
+    if (con) {
+        for (let i =0; i < keys.length; i++) {
+            let key = keys[i];
+            // subobj?val=false
+            // prop?val=false
+            // prop?=false;
+            let conditions = con.split(";");
+            for (let j = 0; j < conditions.length; j++) {
+                let tempcon = conditions[j].split("?");
+                let secondary = tempcon[1].split("=");
+                secondary[1] = morphType(secondary[1]);
+                if (tempcon[0] == "subobj") {
+                    if (obj[key][secondary[0]] == secondary[1]) {
+                        keys.splice(keys.indexOf(key),1);
+                    }
+                }
+                if (tempcon[0] == "prop") {
+                    if (obj[key] == secondary[0]) {
+                        keys.splice(keys.indexOf(key),1);
+                    }
+                }
+            }
+        }
+    }
+    
     return obj[keys[ keys.length * Math.random() << 0]];
 };
 function randNum(min, max) {
@@ -1843,6 +2173,20 @@ Math.logb = function (x,base) {
 String.prototype.splitTwo = function (delimiter1,delimiter2) {
     return this.split(delimiter1)[1].split(delimiter2)[0];
 }
+function shuffle([...arr]) {
+    let m = arr.length;
+    while (m) {
+        const i = Math.floor(Math.random() * m--);
+        [arr[m], arr[i]] = [arr[i], arr[m]];
+    }
+    return arr;
+};
+function sample([...arr],n=1) {
+    return shuffle(arr).slice(0,n);
+}
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
 function assign(object, source) {
     //console.log(object);
     if (typeof source == "object" && source) {
@@ -1854,6 +2198,14 @@ function assign(object, source) {
         return false;
     }
     
+}
+function reload() {
+    p1.drawarr = sample(Object.keys(p1.deck),Object.keys(p1.deck).length);
+    let extraarr = sample(Object.keys(p1.deck),Math.min(Math.round(Object.keys(p1.deck).length/2),1));
+    p1.drawarr.concat(extraarr);
+    p1.drawarrindex = 0;
+    reloading = true;
+    battletext.innerHTML = "Reloading...";
 }
 function playAudio(zesound) {
     let sound = new Audio(zesound);
@@ -2000,6 +2352,18 @@ openBtn.addEventListener("click", openModal);
 modal.addEventListener("click", (e) => closeModal(e, true));
 closeBtn.addEventListener("click", closeModal);
 
+function checkDead() {
+    if (p1.health < 1) {
+        resetBattleUI();
+        fullSD(gamescreen,menuscreen,"none","block");
+        sob = 2;
+        //window.setTimeout(enterAdventureScreen,200);
+        gametitle.innerHTML = "You Lose..";
+        playbtn.innerHTML = "RESTART";
+        openBtn.style.display = "none";
+    }
+}
+
 function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
     if (otherargs.includes("specialp")) {
         let chosenkey = cards[choice];
@@ -2007,6 +2371,9 @@ function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
         assign(key,chosenkey);
         key.effects = [];
         player.deck[key.name] = key;
+        return false;
+    }
+    if (otherargs[0] == "None" && player == "p1" && reloading == true) {
         return false;
     }
     let table = "inventory";
@@ -2019,8 +2386,19 @@ function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
 
     let chosenkey;
     chosenkey = randKey(Game[player].deck);
+    if (otherargs[0] == "None" && player == "p1") {
+        chosenkey = p1.deck[p1.drawarr[p1.drawarrindex]];
+        p1.drawarrindex++;
+        if (p1.drawarrindex == p1.drawarr.length) {
+            reload();
+        } else {
+            reloading = false;
+            battletext.innerHTML = "Next Card: "+p1.drawarr[p1.drawarrindex];
+        }
+    }
     if (otherargs.includes("addToDeck")) {
         chosenkey = randKey(shopcards);
+
         
     }
     if (specific == true) {
@@ -2059,10 +2437,14 @@ function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
     } else {
         Game[player][table][key.name] = key;
     }
+    if (otherargs.includes("addToDeck")) {
+        key["cardmods"] = [];
+    }
     playAudio("sounds/draw-card.mp3");
     console.log(otherargs);
     if (otherargs[0] == "None") {
         if (player == "p1") {
+            
             if (currentmode == "Easy") {
                 key.hp *= 1.5;
                 if (key.type == "Attack") {
@@ -2322,10 +2704,7 @@ function update(reset = null) {
             if (Object.hasOwn(curcard,"ammo")) {
                 card.innerHTML += curcard.ammo+" AMMO | ";
             }
-            if (Object.hasOwn(curcard,"tempuses")) {
-                card.innerHTML += curcard.tempuses+" AMMO | ";
-            }
-            if (Object.hasOwn(curcard,"uses") && Object.hasOwn(curcard,"tempuses") == false) {
+            if (Object.hasOwn(curcard,"uses") && Object.hasOwn(curcard,"ammo") == false) {
                 card.innerHTML += curcard.uses+" USES | ";
             }
             if (Object.hasOwn(curcard,"storedmana")) {
@@ -2439,6 +2818,10 @@ function startBattle(enemy) {
     assign(Game.p2,zeopp);
     p2 = Game.p2;
     
+    reload();
+    reloading = false;
+    battletext.innerHTML = "Next Card: "+p1.drawarr[p1.drawarrindex];
+
     for (let i = 0; i < 3; i++) {
         drawCard("p1",false,null,"Start");
     }
@@ -2477,6 +2860,8 @@ function startBattle(enemy) {
 }
 function endBattle(outcome) {
     ultrawrapimg.src = "";
+    p1.drawarr = [];
+    p1.drawarrindex = 0;
     // 1 == win | 2== lose
     if (outcome == 1) {
         nextLoc();
@@ -2603,33 +2988,85 @@ function turnover(player) {
     let plr;
     if (player == "p1") {
         plr = p1;
+        reloading = false;
+        battletext.innerHTML = "Next Card: "+p1.drawarr[p1.drawarrindex];
+        p1.drawarr.push(randItem(Object.keys(p1.deck)));
     } else {
         plr = p2;
     }
-    if (plr = p1) {
+    if (plr == p1) {
         if (Object.hasOwn(p1.relics,"redstarstaff") && (turns+1) % 10 == 0 && p1.health > 60 && Object.keys(p1.inventory).length > 0) {
             p1.health -= 20;
             let zestat = p1.relics.redstarstaff.attr;
+            console.log(zestat);
             for (let i =0; i < Object.keys(p1.inventory).length; i++) {
                 let zecard = p1.inventory[Object.keys(p1.inventory)[i]];
-                zecard.hp *= zestat;
+                zecard.hp *= 1+zestat;
                 zecard.hp = Math.round(zecard.hp);
                 if (Object.hasOwn(zecard,"atk")) {
-                    zecard.atk *= zestat;
-                    zecard.atk = Math.round(zecard.hp);
+                    zecard.atk *= 1+zestat;
+                    zecard.atk = Math.round(zecard.atk);
                 }
                 if (Object.hasOwn(zecard,"heal")) {
-                    zecard.heal *= zestat;
+                    zecard.heal *= 1+zestat;
                     zecard.heal = Math.round(zecard.heal);
                 }
+                if (Object.hasOwn(zecard,"ammo")) {
+                    zecard.ammo++;
+                }
                 zecard.coolleft = 0;
-                zecard.ammo++;
+                
             }
             p1.mana += 3;
+        }
+        if (Object.hasOwn(p1.relics,"beamturret") && (turns+1) % 8 == 0 && p1.mana > 0) {
+            p1.mana -= 1;
+            if (Object.keys(p2.inventory).length > 0) {
+                let card = p2.inventory(Object.keys(p2.inventory)[0]);
+                card.hp -= p1.relics.beamturret.attr;
+            } else {
+                p2.health -= p1.relics.beamturret.attr;
+            }
         }
     }
     if (plr.name == "goldslime") {
         plr.health -= 20;
+    }
+    if (plr.name == "magicapprentice") {
+        // to get a cycle, do: turns % 6 == 0, turns % 6 == 2, and turns % 6 == 4
+        if (turns % 6 == 0) {
+            if (Object.keys(p2.inventory).length > 0) {
+                let card = p2.inventory[Object.keys(p2.inventory)[0]];
+                card.hp += 50;
+            }
+        } 
+        // ^^ WALL ^^
+        if (turns % 6 == 2) {
+            for (let i = 0; i < 2; i++) {
+                let card = randKey(p1.inventory);
+                if (card != null) {
+                    card.coolleft += 2;
+                }
+            }
+        }
+        // ^^ LOCK CARD ^^
+        if (turns % 6 == 4) {
+            for (let i = 0; i < 4; i++) {
+                let card = randKey(p1.inventory);
+                if (card != null) {
+                    if (randNum(1,4) == 4) {
+                        plr.health -= 11+(i*2);
+                    } else {
+                        card.hp -= 11+(i*2);
+                        if (arrHas(card.effects,"Shock") == false) {
+                            card.effects.push("Shock{2,2}");
+                        }
+                    }
+                    
+                }
+            }
+        } 
+        // ^^ LIGHTNING CLOUD ^^
     }
     if (plr.name == "janjo" && turns % 4 == 0) {
         for (let i = 0; i < 3; i++) {
@@ -2713,6 +3150,15 @@ function turnover(player) {
             p1.mana = 0;
         }
     }
+    if (plr.name == "trafficlord" && randNum(1,3) == 3) {
+        let card = randKey(p1.inventory);
+        card.coolleft += 2;
+    }
+    if (plr.name == "trafficlord" && randNum(1,10) == 10 && Object.keys(p1.inventory).length > 1) {
+        let card = randKey(p1.deck);
+        let key = getKeyByValue(p1.deck,card);
+        delete p1.deck[key];
+    }
     
     plr.discards = plr.maxdiscards;
     plr.mana += plr.managain;
@@ -2739,6 +3185,9 @@ function turnover(player) {
             // [0] == scale; [1] == timeleft
             if (flatfx == "Burning") {
                 zecard.hp -= Number(args[0])*8;
+                if (zecard.cardmods.includes("infernalfoil")) {
+                    zecard.hp += Number(args[0])*14;
+                }
             }
             if (flatfx == "Shock") {
                 zecard.hp -= 15;
@@ -2785,8 +3234,9 @@ function turnover(player) {
                 zecard.ammo += 1;
             }
         }
-        if (zecard.name == "charger" && zecard.atk < 80) {
-            zecard.atk += 30;
+        if (zecard.name == "charger") {
+            zecard.hp += 10;
+            zecard.atk += 22;
         }
         if (zecard.name == "bank") {
             zecard.storedmana += 2;
@@ -3255,24 +3705,36 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                             opponent.mana = 2;
                         }
                     }
+                    if (card.cardmods.includes("infernalfoil") && arrHas(zeattacked.effects,"Burning") == false) {
+                        if (randNum(1,5) == 5) {
+                            extraatk += 25;
+                            zeattacked.effects.push("Burning{3,1}");
+                        }
+                    }
                     /* MAIN DAMAGE */
                     zeattacked.hp -= card.atk+extraatk;
                     if (arrHas(zeattacked.effects,"Bubbly")) {
                         zeattacked.hp += card.atk+extraatk;
                     }
+                    
                     if (card.name == "solarprism") {
                         opponent.health -= card.atk;
                     }
                     /* UNMAIN DAMAGE */
                     if (card.name == "charger") {
                         card.atk = 40;
-                        for (let i = 0; i < 3; i++) {
+                        for (let i = 0; i < 4; i++) {
                             let card = opponent.inventory[Object.keys(opponent.inventory)[i]];
                             if (card != undefined) {
                                 let substr = "Shock";
                                 if (card.effects.some(str => str.includes(substr)) == false) {
                                     card.effects.push("Shock{1,1}");
-                                    
+                                }
+                                if (randNum(1,2)) {
+                                    substr = "Stunned";
+                                    if (arrHas(card.effects,substr) == false) {
+                                        card.effects.push("Stunned{1,1}");
+                                    }
                                 }
                             } else {
                                 opponent.health -= 20;
@@ -3400,7 +3862,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                            
                         } else {
                             if (chosen.effects.some(str => str.includes(substr)) == false) {
-                                chosen.effects.push("Death{1,2}");
+                                chosen.effects.push("Death{1,1}");
                             }
                         }
                     }
@@ -3499,6 +3961,9 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                             }
                             
                         }
+                        if (zeattacked.cardmods.includes("infernalfoil") && randNum(1,5) == 5){
+                            delete opponent.deck[attacked];
+                        }
                         if (zeattacked.effects.some(str => str.includes("Guarded")) == false) {
                             delete opponent.inventory[attacked];
                             if (currentmode == "Custom" && customtype == "flagship" && strmain == "p2") {
@@ -3584,7 +4049,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         let badeffects = ["Burning","Death","Fear","Frozen","Stunned","Shock"];
                         for (let j = 0; j < chosencard.effects.length; j++) {
                             let zefect = chosencard.effects[j];
-                            if (badeffects.includes(zefect)) {
+                            if (badeffects.includes(formateffect("FlatEffect",zefect))) {
                                 chosencard.effects.splice(chosencard.effects.indexOf(zefect),1);
                             }
                         }
@@ -3948,8 +4413,9 @@ function enterAdventureScreen() {
     adventurescreen.style.display = "block";
     curloctxt.innerHTML = "Current Location: "+curlocation.formal;
     curlocdesctxt.innerHTML = curlocation.desc;
+    console.log(curlocation.desc);
     loretxt.innerHTML = curlocation.loretext;
-    
+    let zelist = ["destroycard","upgcard","energizer","duplicatecard","infernalfoil","diamondfoil"];
     
     if (Object.hasOwn(curlocation,"skipallowed")) {
         alttravelbtn.style.display = "block";
@@ -3990,15 +4456,18 @@ function enterAdventureScreen() {
         byId("sc2").style.display = "block";
         byId("sc3").style.display = "block";
         let special = curlocation.special;
+        shopmod = null;
         if (curlocation.special.includes("|") == false) {
             curspecial1 = curlocation.special;
         } else {
             let secondhalf = curlocation.special.split("|");
+            shopmod = secondhalf[0];
             secondhalf.splice(0, 1);
             curspecial1 = secondhalf[0];
             curspecial2 = secondhalf[1];
             console.log(secondhalf,curlocation.special);
         }
+        
         console.log(special,curspecial1,curspecial2);
         if (curspecial1 == "gaincard") {
             specialdiv.style.display = "block";
@@ -4006,7 +4475,7 @@ function enterAdventureScreen() {
                 if (element.getAttribute("id").includes("a")) {
                     return;
                 }
-                let card = randKey(shopcards);
+                let card = randKey(shopcards,"subobj?obtainable=false");
                 /*let tempobj = {};
                 assign(tempobj,card);
                 card = tempobj;*/
@@ -4074,7 +4543,7 @@ function enterAdventureScreen() {
                 if (element.getAttribute("id").includes("a")) {
                     return false;
                 }
-                let card = randKey(shopcards);
+                let card = randKey(shopcards,"subobj?obtainable=false");
                 /*let tempobj = {};
                 assign(tempobj,card);
                 card = tempobj;*/
@@ -4242,6 +4711,30 @@ function enterAdventureScreen() {
             byId("sc3").style.display = "none";
             byId("sc1").innerHTML = "<h2>Climb the statue.</h2><p>Seems a little dangerous.. Surely isn't that bad.. right?</p>";
         }
+        if (curspecial1 == "crowattack") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Throw cards at them!</h2><p>Lose 2 random cards.</p>";
+            byId("sc2").innerHTML = "<h2>Run through the crows.</h2><p>Rahh!! They can't attack me!! -80 health.</p>";
+        }
+        if (curspecial1 == "suddenurge") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            byId("sc2").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Steal.</h2><p>Gain an extra item for free!</p>";
+        }
+        if (curspecial1 == "danceclubspill") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Take the Cards</h2><p>Take all the cards you see, may or may not be yours.</p>";
+            byId("sc2").innerHTML = "<h2>Leave Quickly</h2><p>Lose two random cards.</p>";
+        }
+        if (curspecial1 == "cardtornado") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Block the Tornado With Your Backpack</h2><p>+2 random cards.</p>";
+            byId("sc2").innerHTML = "<h2>Run Through the Tornado</h2><p>-80 health.</p>";
+        }
         if (curspecial1 == "rest") {
             specialdiv.style.display = "block";
             byId("sc3").style.display = "none";
@@ -4259,7 +4752,8 @@ function enterAdventureScreen() {
             byId("sc3").style.display = "none";
             byId("sc1").innerHTML = "<h2>Mystery Box</h2><p>Lose 120 coda coins, but get a random card with DOUBLE stats.</p>";
         }
-        if (curspecial1 == "destroycard" || curspecial1 == "upgcard" || curspecial2 == "upgcard") {
+        
+        if (zelist.includes(curspecial1) || zelist.includes(curspecial2) && shopmod != "showopt") {
             specialdiv.style.display = "none";
             specialdiv2.style.display = "none";
             if (curlocation.name == "cosmeticshop") {
@@ -4269,6 +4763,33 @@ function enterAdventureScreen() {
         if (curspecial1 == "gamble") {
             specialdiv.style.display = "none";
             specialdiv2.style.display = "none";
+        }
+        if (curspecial1 == "jamodarcardsdealer") {
+            specialdiv.style.display = "block";
+            specialdiv2.style.display = "none";
+            byId("sc1").innerHTML = "<h2>1</h2><p>1 is simple. 1 is not composite or prime. 1 is superior.</p>";
+            byId("sc2").innerHTML = "<h2>2</h2><p>2*2 and 2+2 are the same. 2 is the only even prime. 2 is the way.</p>";
+            byId("sc3").innerHTML = "<h2>3</h2><p>3 rhymes with tree. 3 is a conservationist. #TeamThrees</p>";
+        }
+        if (curspecial1 == "jamodarcardsvendingmachine") {
+            specialdiv.style.display = "block";
+            specialdiv2.style.display = "none";
+            byId("sc2").style.display = "none";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Use Vending Machine</h2><p>Get a random drink.</p>";
+        }
+        if (shopmod == "showopt") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            let zespec1 = specials[curspecial1];
+            let zespec2 = specials[curspecial2];
+            byId("sc1").innerHTML = `<h2>${zespec1.formal}</h2><p>${zespec1.desc}</p>`;
+            byId("sc1").setAttribute("data-specialset",zespec1.name);
+            byId("sc2").innerHTML = `<h2>${zespec2.formal}</h2><p>${zespec2.desc}</p>`;
+            byId("sc2").setAttribute("data-specialset",zespec2.name);
+        } else {
+            byId("sc1").removeAttribute("data-specialset");
+            byId("sc2").removeAttribute("data-specialset");
         }
     } else {
         specialdiv.style.display = "none";
@@ -4302,12 +4823,17 @@ function enterAdventureScreen() {
         } else {
             alttravelbtn.style.display = "none";
         }
+        if (Object.hasOwn(curlocation,"forceaction") && speciallock == false) {
+            travelbtn.style.display = "none";
+        } else {
+            travelbtn.style.display = "block";
+        }
         console.log(curspecial1 != null && curspecial1 != "upgcard" && curspecial1 != "destroycard");
-        if (curspecial1 != null && curspecial1 != "upgcard" && curspecial1 != "destroycard") {
+        if (curspecial1 != null && zelist.includes(curspecial1) == false) {
             specialdiv.style.display = "block";
             console.log("yo");
         }
-        if (curspecial2 != null && ["destroycard", "upgcard", "mystery"].includes(curspecial2) == false) {
+        if (curspecial2 != null && zelist.includes(curspecial2) == false && curspecial1 != "mystery") {
             specialdiv2.style.display = "block";
         }
         if (textfinished == true) {
@@ -4328,6 +4854,7 @@ function enterAdventureScreen() {
     
 }
 function updateAdventureScreen() {
+    checkDead();
     let totalpower = 0;
     statsdiv.innerHTML = `
     <p>
@@ -4480,6 +5007,17 @@ function updateAdventureScreen() {
                     invspecial.innerHTML = "ONLY ONE CARD LEFT";
                     return false;
                 }
+                if (Object.hasOwn(curlocation,"specialmax")) {
+                    if (speciallock == curlocation.specialmax) {
+                        invspecial.innerHTML = "MAX DESTROYS REACHED";
+                        return false;
+                    }
+                    if (typeof speciallock == "boolean") {
+                        speciallock = 1;
+                    } else {
+                        speciallock++;
+                    }
+                }
                 let card = p1.deck[element.getAttribute("data-card")];
                 if (curlocation.name == "behindtallmart") {
                     p1.coins += 15;
@@ -4504,7 +5042,7 @@ function updateAdventureScreen() {
                 updateAdventureScreen();
             }
             if (sCondition("upgcard")[0]) {
-                if (curlocation.name == "cheesedinovictory") {
+                if (curlocation.name == "unclerictorappear") {
                     if (curspecial1 == "upgcard" && speciallock < 3) {
                         if (p1.coins < 30) {
                             invspecial.innerHTML = "INSUFFICIENT FUNDS";
@@ -4565,6 +5103,36 @@ function updateAdventureScreen() {
                         invspecial.innerHTML = "MAX CARD UPGRADES REACHED";
                     }
                 }
+                if (curlocation.name == "jamodarcards2") {
+                    if (curspecial1 == "upgcard" && speciallock < 2) {
+                        if (speciallock === true) { // very important; keyword 'true' is often converted to 1, so 1 == 1
+                            return false;
+                        }
+                        if (typeof speciallock == "boolean") {
+                            speciallock = 1;
+                        } else {
+                            speciallock++;
+                        }
+                        p1.coins -= 50;
+                        let card = p1.deck[element.getAttribute("data-card")];
+                        card.hp *= 1.3;
+                        card.hp = Math.round(card.hp);
+                        if (Object.hasOwn(card,"atk")) {
+                            card.atk *= 1.3;
+                            card.atk = Math.round(card.atk);
+                        }
+                        if (Object.hasOwn(card,"heal")) {
+                            card.heal *= 1.3;
+                            card.heal = Math.round(card.heal);
+                        }
+                        if (Object.hasOwn(card,"stat")) {
+                            card.stat += card.statincrease*3;
+                        }
+                        updateAdventureScreen();
+                    } else {
+                        invspecial.innerHTML = "MAX CARD UPGRADES REACHED";
+                    }
+                }
             }
             if (sCondition("gamble")[0]) {
                 if (p1.coins < 50) {
@@ -4614,6 +5182,46 @@ function updateAdventureScreen() {
                 if (card.coolleft < 0) {
                     card.coolleft = 0;
                 }
+                updateAdventureScreen();
+            }
+            if (curspecial1 == "infernalfoil" && p1.coins >= 150 && speciallock == false && p1.deck[element.getAttribute("data-card")].cardmods.includes("infernalfoil") == false) {
+                if (typeof speciallock == "number") {
+                    return false;
+                }
+                speciallock = true;
+                p1.coins -= 150;
+                let card = p1.deck[element.getAttribute("data-card")];
+                card.cardmods.push("infernalfoil");
+                updateAdventureScreen();
+            }
+            if (curspecial1 == "diamondfoil" && p1.coins >= 200 && speciallock == false && p1.deck[element.getAttribute("data-card")].cardmods.includes("diamondfoil") == false) {
+                speciallock = true;
+                p1.coins -= 200;
+                let card = p1.deck[element.getAttribute("data-card")];
+                card.cardmods.push("diamondfoil");
+                card.hp *= 5;
+                card.hp = Math.round(card.hp);
+                if (Object.hasOwn(card,"atk")) {
+                    card.atk *= 2;
+                    card.atk = Math.round(card.atk);
+                }
+                updateAdventureScreen();
+            }
+            if (curspecial1 == "duplicatecard" &&speciallock == false) {
+                speciallock = true;
+                p1.coins += 50;
+                let card = p1.deck[element.getAttribute("data-card")];
+                let names = element.getAttribute("data-card");
+                if (/\d/.test(names)) {
+                    names = names.substring(0,names.length()-1);
+                }
+                let tries = 0;
+                let newname;
+                do {
+                    newname = names+tries;
+                    tries++;
+                } while (Object.keys(p1.deck).includes(newname) == true && tries < 50);
+                p1.deck[newname] = structuredClone(card);
                 updateAdventureScreen();
             }
         });
@@ -4684,7 +5292,7 @@ togglecardmode.addEventListener('click',function() {
     }
 })
 drawbtn.addEventListener('click',function(){
-    if (p1.mana >= 3 && turn == 1 && Object.keys(p1.inventory).length < 10) {
+    if (p1.mana >= 3 && turn == 1 && Object.keys(p1.inventory).length < 10 && reloading == false) {
         p1.mana -= 3;
         if (currentmode == "Custom" && customtype == "industrial") {
             drawCard("p1",true,"factory");
@@ -4807,6 +5415,18 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
             rerolls = 0;
             element.removeAttribute("data-fight");
         }
+        let con1 = false;
+        let con2 = false;
+        if (Object.hasOwn(curlocation,"actiontext") && speciallock == false) {
+            con1 = true;
+        }
+        if (Object.hasOwn(curlocation,"forceaction") && speciallock == false) {
+            con2 = true;
+        }
+        if (element.hasAttribute("data-specialset")) {
+            curspecial1 = element.getAttribute("data-specialset");
+        }
+
         if (sCondition("gaincard")[0] == true && element.hasAttribute("data-card")) {
             if (curlocation.name == "cosmeticshop" && speciallock2 == 2) {
                 return false;
@@ -4983,6 +5603,103 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
             
             updateAdventureScreen();
         }
+        if (sCondition("crowattack")[0] && speciallock ==false) {
+            speciallock = true;
+            let zeoption = element.getAttribute("id");
+            if (zeoption == "sc1" && Object.keys(p1.deck).length > 2) {
+                let zecards = sample(Object.keys(p1.deck),2);
+                for (let i =0; i < zecards.length; i++) {
+                    delete p1.deck[zecards[i]];
+                }
+            } else {
+                p1.health -= 80;
+            }
+            updateAdventureScreen();
+        }
+        if (sCondition("suddenurge")[0] && speciallock ==false) {
+            speciallock = true;
+            p1.health -= 80;
+            updateAdventureScreen();
+        }
+        if (sCondition("danceclubspill")[0] && speciallock ==false) {
+            speciallock = true;
+            let zeoption = element.getAttribute("id");
+            if (zeoption == "sc2" && Object.keys(p1.deck).length > 2) {
+                let zecards = sample(Object.keys(p1.deck),2);
+                for (let i =0; i < zecards.length; i++) {
+                    delete p1.deck[zecards[i]];
+                }
+            } else {
+                let zecards = sample(Object.keys(p1.deck),2);
+                for (let i =0; i < zecards.length; i++) {
+                    delete p1.deck[zecards[i]];
+                }
+                let card = randKey(cards);
+                drawCard("p1",true,card.name,"addToDeck");
+                card = randKey(cards);
+                drawCard("p1",true,card.name,"addToDeck");
+            }
+            
+        }
+        if (sCondition("cardtornado")[0] && speciallock ==false) {
+            speciallock = true;
+            let zeoption = element.getAttribute("id");
+            if (zeoption == "sc1") {
+                let card = randKey(cards);
+                drawCard("p1",true,card.name,"addToDeck");
+                card = randKey(cards);
+                drawCard("p1",true,card.name,"addToDeck");
+            } else {
+                p1.health -= 80;
+
+            }
+            
+        }
+        if (sCondition("jamodarcardsvendingmachine")[0] && speciallock ==false) {
+            speciallock = true;
+            p1.coins -= 50;
+            let rand = randNum(1,5);
+            if (rand == 1) {
+                p1.health += 50;
+                p1.maxhealth += 50;
+            } // GOOD DRINK!
+            if (rand == 2) {
+                p1.health += 25;
+                p1.maxhealth += 25;
+            } // Eh, decent!
+            if (rand == 3) {
+                let rand2 = randNum(-10,10);
+                p1.health += rand2;
+                p1.maxhealth += rand2;
+            } // True rand
+            if (rand == 4) {
+                p1.health -= 25;
+                p1.maxhealth -= 25;
+            }
+            if (rand == 5) {
+                p1.health -= 50;
+                p1.maxhealth -= 50;
+            }// RIP
+        }
+        if (sCondition("jamodarcardsdealer")[0] && speciallock ==false) {
+            speciallock = true;
+            let chosen = randNum(1,3);
+            console.log(element.getAttribute("id").split("sc"));
+            if (Number(element.getAttribute("id").split("sc")[0])== chosen) {
+                p1.coins += 100;
+            } else {
+                p1.coins -= 100;
+            }
+        }
+        element.style.border = "7px solid black";
+        if (con1) {
+            currenttext += "<br>"+curlocation.actiontext;
+            loretxt.innerHTML = currenttext;
+        }
+        if (con2) {
+            enterAdventureScreen();
+        }
+        updateAdventureScreen();
     });
 });
 
@@ -5154,8 +5871,8 @@ function replaceChar(origString, replaceChar, index) {
 var changelogtab = byId("changelogtab");
 var tutorialtab = byId("tutorialtab");
 var importanttab = byId("importanttab");
-var annot_in = [".text-yell{",".text-blue{",".text-purp{",".text-green{",".text-red{",".text-highlight~~{",".text-linedeco~~{",".text-custom~~{",".text-woah{",".text-skewdash{"];
-var annot_out = ["<span class='text-yell'>|||</span>","<span class='text-blue'>|||</span>","<span class='text-purp'>|||</span>","<span class='text-green'>|||</span>","<span class='text-red'>|||</span>","<mark style='background-color:zespecial;'>|||</mark>","<span style='text-decoration:zespecial;'>|||</span>","<span style='zespecial'>|||</span>","<span class='text-woah'>|||</span>","<div class='text-skewdash'><span>|||</span></div>"];
+var annot_in = [".text-yell{",".text-blue{",".text-purp{",".text-green{",".text-red{",".text-highlight~~{",".text-linedeco~~{",".text-custom~~{",".text-woah{",".text-skewdash{",".text-italic{",".text-bold{",".text-maxi{"];
+var annot_out = ["<span class='text-yell'>|||</span>","<span class='text-blue'>|||</span>","<span class='text-purp'>|||</span>","<span class='text-green'>|||</span>","<span class='text-red'>|||</span>","<mark style='background-color:zespecial;'>|||</mark>","<span style='text-decoration:zespecial;'>|||</span>","<span style='zespecial'>|||</span>","<span class='text-woah'>|||</span>","<div class='text-skewdash'><span>|||</span></div>","<span style='font-style:italic;'>|||</span>","<span style='font-weight:bolder;'>|||</span>","<span class='text-maxi'>|||</span>"];
 function annotateText(element) {
     for (let i =0; i < annot_in.length; i++) {
         let annot = annot_in[i];
@@ -5199,7 +5916,7 @@ function annotateText(element) {
             zetext = zetext.substring(0,index2)+annot2+zetext.substring(index2+annot2.length-1);*/
             tries++;
             
-        } while (element.innerHTML.includes(annot.replace("~~{","")) && tries < 1);
+        } while (element.innerHTML.includes(annot.replace("~~{","")) && tries < 20);
     }
 }
 Array.from(document.getElementsByClassName("modal-content")).forEach(function(element) {
