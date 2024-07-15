@@ -2371,6 +2371,7 @@ function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
         assign(key,chosenkey);
         key.effects = [];
         player.deck[key.name] = key;
+        key["cardmods"] = [];
         return false;
     }
     if (otherargs[0] == "None" && player == "p1" && reloading == true) {
