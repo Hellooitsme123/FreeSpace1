@@ -1944,7 +1944,7 @@ var locationplacing = {
 var keywords = ["anyshops","mysteryloc","mysteryloc2","mysteryloc3","mysteryfight","mysteryfight2"];
 var locationsarr = [];
 var curlocationindex = 0;
-var curlocationstage = 2;
+var curlocationstage = 1;
 var curlocationpart = 1;
 
 for (let i = 0; i < 100; i++) {
