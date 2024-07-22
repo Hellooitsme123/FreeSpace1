@@ -63,6 +63,11 @@
             <div id="lore">
                 <p id="loretext"></p>
             </div>
+            <div class="open-modal-btn-wrapper" id="event-modal-btn-wrapper">
+                <button class="open-modal-btn" id="event-modal-btn" data-target="event-overlay">
+                    Open Shop
+                </button>
+            </div>
             <div id="special" class="hide">
                 <h2 id="specialtitle">SPECIAL</h2>
                 <div id="sc1" class="specialcard">
@@ -92,7 +97,7 @@
                 </div>
                 
             </div>
-            <button id="reroll" class="reroll" type="button">Reroll (15 coda coins)</button>
+            
             <hr>
             <div id="proceedoverview">
                 <h2 id="proceed">Travel To Next Area: Road To Coda</h2>
@@ -102,6 +107,7 @@
             </div>
         </div>
         <div id="a2" class="asplit">
+            
             <h1 style="font-size:40px;">BACKPACK</h1>
             <div id="plrstats">
 
@@ -117,8 +123,63 @@
                 
             </div>
         </div>
-        
+        <div id="backpack-toggle">Ja hallo guys</div>
+        <div id="event-overlay" class="modal-overlay hide">
+            <div id="event-wrapper" class="modal-wrapper">
+                <div class="close-btn-wrapper">
+                    <button class="close-modal-btn" data-target="event-overlay">
+                        Close
+                    </button>
+                </div>
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event,'eventtab')">
+                        Event
+                    </button>
+                </div>
+                <div id="eventtab" class="tabcontent">
+                    <div id="emth-wrapper"><h1 class="m-0" id="event-modal-tab1-header">Shop</h1></div>
+                    
+                    <hr>
+                    <div class="modal-content" id="modal-content3">
+                        <h2 style="text-align:center;">Cards</h2>
+                        <div id="asp-1-flex" class="event-flex">
+                            <div id="opt1" class="asp-1">
+                                <div id="opt1-main" class="asp-main">
+
+                                </div>
+                                <div id="opt1-tag" class="asp-tag">
+
+                                </div>
+                            </div>
+                            
+                            <div id="opt2" class="asp-1">
+                                <div id="opt2-main" class="asp-main">
+
+                                </div>
+                                <div id="opt2-tag" class="asp-tag">
+
+                                </div>
+                            </div>
+                            
+                            <div id="opt3" class="asp-1">
+                                <div id="opt3-main" class="asp-main">
+
+                                </div>
+                                <div id="opt3-tag" class="asp-tag">
+
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                <button id="reroll" class="reroll" type="button">Reroll (15 coda coins)</button>
+            </div>
+            
+        </div>
     </div>
+    
     <div id="modes" class="hide">
         <div id="easymode" class="modes">
             <h2>Easy</h2>
@@ -154,7 +215,7 @@
         <div id="background">
             <h1 id="gametitle">QUEST FOR BEAN</h1>
             <div class="open-modal-btn-wrapper">
-                <button class="open-modal-btn">
+                <button class="open-modal-btn" data-target="modal-overlay">
                     Changelog
                 </button>
             </div>
@@ -163,7 +224,7 @@
             </button>
             
         </div>
-        <p id="versiontext">v0.3 - STELLAR UPDATE</p>
+        <p id="versiontext">v0.3.1 - UPDATE OF TWILIGHT</p>
     </div>
     <div id="game" class="hide">
         <h2 id="battletitle">FIGHT AGAINST</h2>
@@ -232,10 +293,10 @@
     </div>
     
  
-    <div class="modal-overlay hide">
-        <div class="modal-wrapper">
+    <div class="modal-overlay hide" id="modal-overlay">
+        <div class="modal-wrapper" id="modal-wrapper">
             <div class="close-btn-wrapper">
-                <button class="close-modal-btn">
+                <button class="close-modal-btn" data-target="modal-overlay">
                     Close
                 </button>
             </div>
@@ -251,25 +312,30 @@
                 </button>
             </div>
             <div id="changelogtab" class="tabcontent">
-                <h1>Update v0.3OFFICIAL - Official Adventure Update Release</h1>
+                <h1>Update v0.3.1 - Aftermath of Adventure</h1>
                 <hr>
                 <div class="modal-content" id="modal-content">
                     <h3>Important Note</h3>
-                    <p>Card modifiers have been implemented (you can buy them at some locations) but as of current do nothing. Do not buy them if you want to save up money!</p>
+                    <p>New design is in very early development! Please let me know if anything should be changed! (The shop design, the inventory thing design, etc.)</p>
+                    <p>Added cheat menu.. try to find it :)</p>
                     <h3>New cards!</h3>
                     <ul>
                         <li>Bubblemancer, a card that heals multiple allies and gives them an attack boost. Was added 2 updates ago but forgot to mention.</li>
+                        <li>Celestial Striker, applies starstruck effect. Deals 60 damage with 4 ammo, but with 3 cooldown.</li>
                     </ul>
                     <h3>New relics!</h3>
                     <ul>
-                        <li>Quincy's Chainsaw of Omega Doom - Deal 50% more damage after death mode.</li>
-                        <li>Red Star Staff - Double all card stats every 5 turns at the cost of 20 health.</li>
-                        <li>SXR-500 - Deal 50 damage to first opponent card for 1 mana every 4 turns.</li>
+                        <li>1.</li>
+                    </ul>
+                    <h3>Bean Power</h3>
+                    <ul>
+                        <li>Added rare events giving you legendary bean relics.</li>
                     </ul>
                     <h3>YASSIFICATION</h3>
                     <ul>
                         <li style="mask:url(#mask-1)">Locations & fights (not all as of yet) will now have faint image backgrounds!</li>
                         <li>Button designs somewhat changed.</li>
+                        <li>Modals now have a clean transition effect. </li>
                     </ul>
                     <h3>RandKey Conditioning!</h3>
                     <p>randKey() conditioning! There is now a second argument to the function randKey(), which is .text-bold{con}. Since I am too lazy to learn regex, I have created my own, which follows this style: 'subobj?val=target;subobj?val2=target2;' etc.. Any keys that qualify for those conditions will be eliminated from the random process, which disables gaining unobtainable cards in shops. This is necessary to stop people from gaining unobtainable cards specific to other cards or enemies.</p>
@@ -388,10 +454,21 @@
                     <h3>SVG Usage</h3>
                     <p style="mask:url(#mask-1);">This is mask 1. I love mask 1. Mask one is my life.</p>
                     <p>Each card has a 1% chance of gaining either a dotted or striped mask. If you get one, you're lucky!</p>
+                    <h3>Card Test</h3>
+                    <p>This is the display of a card.</p>
+                    <table><td id="card-test-display">Test Card</td></table>
+                    <input id="card-test-display-input" type="text" placeholder="Enter Card Name Here...">
+                    <button id="card-test-display-submit">Submit</button>
                 </div>
             </div>
         </div>
         </div>
+    </div>
+    <div id="cheat-menu" class="hide">
+        <h2 id="cheat-menu-header">Cheat Menu</h1>
+        <button class="cheat-btn" type="button" data-cheat="1">Kill Opponent</button>
+        <input type="text" class="cheat-input" id="cheat-input-2" placeholder="Enter card here..">
+        <button class="cheat-btn" type="button" data-cheat="2">Gain Card</button>
     </div>
     <audio id="sfx1">
         <source src="sounds/draw-card.mp3" type="audio/mpeg">

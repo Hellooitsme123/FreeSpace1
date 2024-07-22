@@ -72,12 +72,12 @@ var enemies = {
         coinsgive: 70,
         // battle stats
         health: 70,
-        mana: 7,
+        mana: 5,
         discards: 0,
         inventory: {},
         simpledeck: ["wizard","froster","soulkeeper","reaper","bubblemancer"],
         deck: {},
-        mods: ["Strength{20}","Healing{50}"],
+        mods: ["Strength{20}","Tank{-20}"],
         fightimg: "",
     },
     "taverngroup": {
@@ -94,6 +94,21 @@ var enemies = {
         simpledeck: ["spearman","atkpotion","weakener","turret"],
         deck: {},
         mods: [],
+    },
+    "potato": {
+        name: "potato",
+        formal: "Potato",
+        managain: 7,
+        maxdiscards: 1,
+        coinsgive: 40,
+        // battle stats
+        health: 170,
+        mana: 7,
+        discards: 1,
+        inventory: {},
+        simpledeck: ["juggernaut","hotpotato"],
+        deck: {},
+        mods: ["Tank{50}"],
     },
     "janjo": {
         name: "janjo",
@@ -328,7 +343,7 @@ var locations = {
         name: "magicapprenticeappear",
         formal: "Road To Coda",
         desc: "The long path to Coda, one of the biggest cities in the world. There, you'll be able to stock up on cards to continue your journey.",
-        loretext: "On the road, you saw a weird dude in the distance doing what you thought were kung fu moves. He had a black hat and was in robes, and he was dancing around moving his arms and legs in a strange manner. Was he crazy? Had he overdosed on beans? You couldn't really tell what he was doing until he got closer. || It turns out that he was actually a mage in training, who was just flexing off his spells. He was pretty obnoxious, casting random spells everywhere, like shrinking some poor guy's cat or blasting random stuff. He came up to you, wanting to show off his skills. || Magic Apprentice: Hey pbro! I'm going to be the next master of magic! Wanna see my spells? || You: No.. || Magic Apprentice: Fine then, you'll be able to see them in the fight.",
+        loretext: "On the road, you saw a weird dude in the distance doing what you thought were kung fu moves. He had a black hat and was in robes, and he was dancing around moving his arms and legs in a strange manner. Was he crazy? Had he overdosed on beans? You couldn't really tell what he was doing until he got closer. || It turns out that he was actually a mage in training, who was just flexing off his spells. He was pretty obnoxious, casting random spells everywhere, like shrinking some poor guy's cat or blasting random stuff. He came up to you, wanting to show off his skills. || Magic Apprentice: Hey bro! I'm going to be the next master of magic! Wanna see my spells? || You: No.. || Magic Apprentice: Fine then, you'll be able to see them in the fight.",
         proceedtext: "Fight the magic apprentice.",
         proceedspecial: "fight|magicapprentice",
         nextloc: "andreasvictory",
@@ -372,6 +387,24 @@ var locations = {
         proceedspecial: "fight|taverngroup",
         nextloc: "taverngroupvictory",
         skipallowed: true,
+    },
+    "potato": {
+        name: "potato",
+        formal: "Janjo's Tavern",
+        desc: "A tavern made by the one and only Janjo, allowing people to talk about cards and drink at the same time.",
+        loretext: "After entering the tavern and exploring, you suddenly got hit in the face by some strange, warm object. Once you recovered from the shock, you realied that.. you got hit by a potato? Oh no! Hot potato!!",
+        proceedtext: "Hot potatoto!!",
+        proceedspecial: "fight|potato",
+        nextloc: "potatovictory",
+    },
+    "potatovictory": {
+        name: "potatovictory",
+        formal: "Janjo's Tavern",
+        desc: "A tavern made by the one and only Janjo, allowing people to talk about cards and drink at the same time.",
+        loretext: "Finally! That potato was almost about to explode on you! Fortunately, you safely disposed of it. Unfortunately, an even stronger enemy came up to you, taking notice of the great ruckus you caused in the previous fight. It was Janjo, the Tavern Owner. || Janjo: Hey man, what's all this noise you're making? || You: Um.. It's celebration!! My net worth just tripled because of Beanmelon stocks today! || Janjo: Oh really? Maybe I should invest.. || You: Yeah... || Janjo: About that, are you good at card battling? || You: What? No? I don't battle with cards. I just thought that everybody should know about what happened today! || Sadly, Janjo didn't take the bait.",
+        proceedtext: "Battle Janjo.",
+        proceedspecial: "fight|janjo",
+        nextloc: "janjovictory",
     },
     "taverngroupvictory": {
         name: "taverngroupvictory",
@@ -655,6 +688,15 @@ var locations = {
         proceedtext: "Leave the statue.", 
         nextloc: "roadtocoda4",
     },
+    "flamebean": {
+        name: "flamebean",
+        formal: "Strange Bean Can",
+        desc: "A bean can, but strange. Different than normal..",
+        loretext: "You were walking along the road when you started smelling smoke. It was coming from somewhere, you just couldn't tell what direction. You looked around, and saw tiny sparks of fire in the distance. Following more walking, you came to a bean can.. on fire. Should you take it?",
+        special: "flamebean",
+        proceedtext: "Leave.", 
+        nextloc: "roadtocoda4",
+    },
     "roadtocoda4": {
         name: "roadtocoda4",
         formal: "Road To Coda",
@@ -891,17 +933,78 @@ var locations = {
         name: "ancientlibrary",
         formal: "Ancient Library",
         desc: "An old library full of ancient manuscripts and texts dating back to hundreds of years ago.",
-        loretext: "After looking at the city map, you decided that it'd be best to walk to the city library, which contained thousands of important texts that might be helpful for your journey. You made your way up the marble stairs, amazed by the slick and smooth, glossy design. The librarian greeted you at the entrance, showing off the many books that the library held.",
+        loretext: "After looking at the city map, you decided that it'd be best to walk to the city library, which contained thousands of important texts that might be helpful for your journey. You made your way up the marble stairs, amazed by the slick and smooth, glossy design. You went up to the entrance, seeing a wide array of books, it was almost endless. Is this.. the end? Before you knew it, you were lost in the many aisles of the library. There were so many staircases and ramps that led up and down.. will you be here forever?",
         proceedtext: "Continue exploring the library.",
         nextloc: "cursedtome",
     },
     "cursedtome": {
         name: "cursedtome",
-        formal: "Cursed Tome",
+        formal: "Strange Tome",
         desc: "A book full of vile, dark spells that should not be unveiled.",
-        loretext: "You walked around the library, and the first thing that caught your attention was a dusty, purple book that was on a large, wooden pedestal. Its title was in some strange language you didn't understand, but nevertheless, it piqued you interest. The librarian quickly came up to stop you, but it was too late.. || The cursed tome immediately sprang up into a jumble of pages and random stuff, with a purple glow surrounding it. You have to save the library!",
+        loretext: "You walked around the library, coming up to a strange area where multiple aisles circled around one large, wooden and cylindrical pedestal, with a purple book lying on it. Its title was in some strange language you didn't understand, but nevertheless, it piqued your interest. The massiveness and lifelessness of the library only made the experience more strange. You decided to see what was in the book. || The book immediately sprang up into a jumble of pages and random stuff, with a purple glow surrounding it. There's so many twists and turns, where's the exit??",
         proceedtext: "Battle the Cursed Tome",
         proceedspecial: "fight|cursedtome",
+        nextloc: "cursedtomevictory",
+    },
+    "cursedtomevictory": {
+        name: "cursedtomevictory",
+        formal: "Cursed Tome",
+        desc: "A book full of vile, dark spells that should not be unveiled.",
+        loretext: "Whew! That was close.. The Cursed Tome almost defeated you. After besting the tome, it slowly closed and fell back to its pedestal, where it lay still, unmoving and lifeless, looking like nothing had ever happened. It's been almost an hour now..",
+        proceedtext: "Explore more of the library.",
+        nextloc: "knowledge",
+    },
+    "knowledge": {
+        name: "knowledge",
+        formal: "Knowledge",
+        desc: "An all-powerful thing.",
+        loretext: "After a few more minutes of walking, you noticed two different books. One was blue and one was green. Which one should you read?",
+        proceedtext: "Continue.",
+        special: "knowledge",
+        nextloc: "zeend",
+    },
+    "codastreets2": {
+        name: "codastreets2",
+        formal: "Streets of Coda",
+        desc: "The thousands of walkways that lead people from place to place throughout the great city of Coda.",
+        loretext: "It took you another 30 minutes after finding the books to get to the exit. There were so many different aisles and layouts and floors that you kept getting lost, not knowing where was where. Fortunately, you saw a familiar place and managed to get back to the entrance. Now you're back on the streets, looking for some other place to explore.",
+        proceedtext: "Keep exploring.",
+        special: "constructionsite",
+        nextloc: "zeend",
+    },
+    "constructionsite": {
+        name: "constructionsite",
+        formal: "Construction Site",
+        desc: "Something that will eventually be something else.",
+        loretext: "After a few minutes, you came by a small construction site. There was a small crane building up a structure that was 3-floors tall, well in its current state. You decided to ask about what was being built, wondering about the various stairways and hallways that you saw. || Construct: Hey, my name's Construct. You say you're wondering about what we're building, huh? || You: Yeah. || Construct: Well, it's an office building. You know, to improve the economy. || You: A square office building? Boring. || Construct: Hey! It's not like I have a choice about what to build. I just follow whatever the engineer says. || You: Maybe you shouldn't. || Construct: Hmm.. you might be on to something.. || There was not much to see of that boring office building, so you decided to keep walking. ",
+        proceedtext: "Keep exploring.",
+        special: "constructionsite",
+        nextloc: "zeend",
+    },
+    "maskedpeople": {
+        name: "maskedpeople",
+        formal: "Masked Group",
+        desc: "A strange group of people in eerie masks and cloaks.",
+        loretext: "You were walking down the city streets when a group of people in strange masks and dark, black cloaks started going towards you. Once they were up close, one of the masked people started talking in a rough, hoarse voice. || ???: The stars will align in a few weeks. Join us. || You: What do you mean? ||| ???: Join the cause. || When you took a closer look at them, you saw an awfully familiar object: A glistening red star medallion. Afer a long silence, they spoke again. || ???: We can make an offer. One special card for your membership. Choose wisely. || What do you do?",
+        proceedtext: "Keep exploring.",
+        special: "celestial",
+        nextloc: "zeend",
+    },
+    "greenhouse": {
+        name: "greenhouse",
+        formal: "Greenhouse",
+        desc: "A glass building housing hundreds and hundreds of wild plants.",
+        loretext: "Following a long walk along the streets, you came by an interesting greenhouse. You could see a mesmerizing, glass structure and hundreds of plants in pots and whatnot. You decided to come in and see what was going on. || ???: Howdy, whatcha doin' here? Want to buy some plants? || You: What plants are there? || Clover: Well, my name's Clover. There's a bunch of different plants here, from blazing hot Horned Ember Melons to chaotic Death Beets. You know what, I'll give you an offer. One .text-italic{Horned Ember Melon} for 60 coda coins. It'll increase your maximum health and health by 50, and you will inflict double damage for the next 2 fights, but you will take 3x more damage during that duration.",
+        proceedtext: "Keep exploring.",
+        special: "hornedembermelon",
+        nextloc: "zeend",
+    },
+    "bridge": {
+        name: "bridge",
+        formal: "Coda Bridge",
+        desc: "An old, interstate bridge.",
+        loretext: "Following some walking, you came up to a section of the road where a bridge went over. There was lots of graffiti all over, with random texts writting on the various pillars of the bridge. You looked closer, trying to make out the faded, dusty text on one of the pillars. This is what you saw:<br><div style='width:120px;height:120px;clip-path: polygon(22% 52%, 15% 18%, 15% 0%, 63% 14%, 85% 15%, 64% 48%, 100% 85%, 85% 85%, 85% 100%, 44% 80%, 15% 85%, 0% 85%);background:rgb(115,110,100);font-weight:bolder;'>DON'T FORGET! The code is 'STAR OF RED', okay? Be there tmr at 7pm.</div><br>What could it possibly mean?",
+        proceedtext: "Keep exploring.",
         nextloc: "zeend",
     },
     "zeend": {
@@ -1210,7 +1313,7 @@ var relics = {
         advdesc: "Gain 1 extra starting mana.",
         rarity: 3,
         attr: 1,
-        attrincrease: 0.5,
+        attrincrease: 1,
         attrtype: "int",
         img: "blueprint.png",
     },
@@ -1268,6 +1371,17 @@ var relics = {
         attrincrease: 15,
         attrtype: "int",
         img: "beamturret.png",
+    },
+    flamebean: {
+        name: "flamebean",
+        formal: "Flame Bean",
+        desc: "A  legendary bean can containing fiery powers.",
+        advdesc: "When attacking, have a 1/4 chance of dealing explosive damage, which deals 25 damage to 3 random opponent cards and applies extreme burn to them.",
+        rarity: 5,
+        attr: 0,
+        attrincrease: 0,
+        attrtype: "int",
+        img: "flamebean.png",
     },
 }
 var cards = {
@@ -1821,6 +1935,36 @@ var cards = {
         img: "bubblemancer.png",
         sound: "bubbles.mp3",
     },
+    celestialstriker: {
+        name: "celestialstriker",
+        formal: "Celestial Striker",
+        hp: 35,
+        atk: 60,
+        ammo: 4,
+        maxammo: 4,
+        cool: 3,
+        coolleft: 0,
+        manause: 1,
+        desc:"Strikes enemies with powerful blasts from space.",
+        funnyname: "CELESTIAL STRIKER'S PEAK",
+        type: "Attack",
+        obtainable: false,
+        img: "celestialstriker.png",
+        sound: "stars.mp3",
+    },
+    hotpotato: {
+        name: "hotpotato",
+        formal: "Hot Potato",
+        hp: 30,
+        timer: 4,
+        manause: 1,
+        desc:"Make sure it's not in your inventory!",
+        funnyname: "HOT POTATOLOGY",
+        type: "Action",
+        //obtainable: false,
+        img: "hotpotato.png",
+        sound: "potato.mp3",
+    },
 }
 var modifiers = {
     "flametouch": {
@@ -1887,6 +2031,8 @@ var blockoppturn = false;
 var blockturnover = false;
 var playerpower = 0;
 var powertxt = byId("playerpower");
+var embtnWrap = byId("event-modal-btn-wrapper");
+var embtn = byId("event-modal-btn");
 var template = {
     formalname: "",
     health: 300,
@@ -1935,8 +2081,9 @@ var locationplacing = {
         stages: {
             stage1: {
                 name: "CodaCity",
-                set: ["coda","hotel2","jamodarcards","jamodarcards2","mysteryloc","jamodarcards3","jamodarcardsroof","ancientlibrary","cursedtome","zeend"],
+                set: ["coda","hotel2","jamodarcards","jamodarcards2","mysteryloc","jamodarcards3","jamodarcardsroof","ancientlibrary","cursedtome","cursedtomevictory","knowledge","constructionsite","mysteryloc2","zeend"],
                 mysteryloc: ["jamodarcardsvendingmachine","jamodarcardsdealer"],
+                mysteryloc2: ["bridge","maskedpeople"],
             },
         },
     }
@@ -2074,15 +2221,97 @@ for (let k =0; k < Object.keys(enemies).length; k++) {
     }
 }
 var shopcards = structuredClone(cards);
+for (let i = 0; i < Object.keys(cards).length; i++) {
+    let card = cards[Object.keys(cards)[i]];
+    let card2 = shopcards[Object.keys(shopcards)[i]];
+    card.effects = [];
+    card.cardmods = [];
+    card2.effects = [];
+    card2.cardmods = [];
+}
 var reloading = false;
 var battletext = byId("battletext");
-var openBtn = document.querySelector(".open-modal-btn");
-var modal = document.querySelector(".modal-overlay");
-var closeBtn = document.querySelector(".close-modal-btn");
-var modalContent = byId("modal-content");
-modal.classList.add("hide");
 var keynames = ["name","formal","atk","hp","manause","ammo","maxammo","cool","coolleft","type","heal","uses","tempuses","obtainable","storedmana","sound"];
 var keyformal = ["Name","Formal Name","Attack","Health","Mana Use","Ammo","Maximum Default Ammo","Cooldown","Starting Cooldown","Card Type","Heal","Uses","Obtainable By Drawing Cards","Stored Mana","Sound"];
+var openBtn = document.querySelectorAll(".open-modal-btn");
+var modal = document.querySelectorAll(".modal-overlay");
+var closeBtn = document.querySelectorAll(".close-modal-btn");
+var modalContent = byId("modal-content");
+//modal.classList.add("hide");
+function openModal(e) {
+    byId(e.target.getAttribute("data-target")).style.background = "rgba(0,0,0,0.7)";
+    byId(e.target.getAttribute("data-target")).style.top = "0px";
+    byId(e.target.getAttribute("data-target").replace("-overlay","-wrapper")).style.top = "50%";
+}
+function closeModal(e, clickedOutside) {
+    let target;
+    if (clickedOutside) {
+        target = e.target;
+        if (target.classList.contains("modal-overlay"))
+            target.classList.add("hide");
+    } else {
+        target = byId(e.target.getAttribute("data-target"));
+        target.classList.add("hide");
+    }
+    byId(target.getAttribute("id").replace("-overlay","-wrapper")).style.top = "1000px";
+}
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+function openMiniTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("minitabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks-mini");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+for (let i =0; i < openBtn.length; i++) {
+    let elem = openBtn[i];
+    elem.addEventListener("click", function(e) {
+        byId(e.target.getAttribute("data-target")).classList.remove("hide");
+        
+        window.setTimeout(openModal,1,e);
+    });
+}
+for (let i =0; i < closeBtn.length; i++) {
+    let elem = closeBtn[i];
+    elem.addEventListener("click", function(e){
+        
+        byId(e.target.getAttribute("data-target")).style.background = "none";
+        byId(e.target.getAttribute("data-target").replace("-overlay","-wrapper")).style.top = "2000px";
+        window.setTimeout(closeModal,500,e);
+    });
+}
+for (let i =0; i < modal.length; i++) {
+    let elem = modal[i];
+    elem.addEventListener("click", function(e){
+        if (e.target == modal) {
+            e.target.style.background = "none";
+            byId(e.target.getAttribute("id").replace("-overlay","-wrapper")).style.top = "2000px";
+            window.setTimeout(closeModal,500,e,true);
+        }
+        
+    });
+}
+//openBtn.addEventListener("click", openModal);
+//modal.addEventListener("click", (e) => closeModal(e, true));
+//closeBtn.addEventListener("click", closeModal);
 // VERY USEFUL FUNCTIONS
 function arrHas(arr,substr) {
     return arr.some(str => str.includes(substr));
@@ -2091,15 +2320,19 @@ function arrFirst(arr,substr) {
     return arr.filter(str => str.includes(substr))[0];
 }
 function morphType(str) {
-    if (Number(str) != "NaN") {
+    /*if (stringIsArray(str)) {
+        return str.split(/^["'\d\[\]\{\}],/gm);
+    }*/
+    if (isNaN(str) == false) {
         return parseFloat(str);
     }
     if (str == "true") {
-        return true;
+        return 1;
     }
-    if (str == "true") {
-        return true;
+    if (str == "false") {
+        return 0;
     }
+    return str;
 }
 function randKey(obj,con = null) {
     var keys = Object.keys(obj);
@@ -2172,6 +2405,26 @@ Math.logb = function (x,base) {
 */
 String.prototype.splitTwo = function (delimiter1,delimiter2) {
     return this.split(delimiter1)[1].split(delimiter2)[0];
+}
+let remove = [
+    /\s+/g,
+    /'(\\.|[^'])*'/g,
+    /"(\\.|[^"])*"/g,
+    /\d+/g,
+];
+let emptyArray = /\[,*\]/g;
+function stringIsArray(str) {
+
+    for (let r of remove)
+        str = str.replace(r, '');
+
+    if (str[0] !== '[')
+        return false;
+
+    while (str.match(emptyArray))
+        str = str.replace(emptyArray, '');
+
+    return str.length === 0;
 }
 function shuffle([...arr]) {
     let m = arr.length;
@@ -2312,45 +2565,128 @@ for (let i = 0; i < Object.keys(enemies).length;i++) {
     img.height = "160";
     byId("cardstab").appendChild(img);*/
 }
-function openModal() {
-    modal.classList.remove("hide");
+function displayCard(elem,card) {
+    let id = elem.getAttribute("id");
+    if (card != null && card != undefined) {
+        elem.innerHTML = "<span class='title'>"+card.formal+":</span><br>"+card.hp+" HP | ";
+        if (Object.hasOwn(card,"timer")) {
+            elem.innerHTML += card.timer+" TIME LEFT | ";
+        }
+        if (Object.hasOwn(card,"atk")) {
+            elem.innerHTML += card.atk+" ATK | ";
+        }
+        if (Object.hasOwn(card,"heal")) {
+            elem.innerHTML += card.heal+" HEAL | ";
+        }
+        if (Object.hasOwn(card,"coolleft")) {
+            if ((Object.hasOwn(card,"uses") && card.uses != -1) || Object.hasOwn(card,"timer")) {
+            } else {
+                elem.innerHTML += card.coolleft+" CD | ";
+            }
+            
+        }
+        if (Object.hasOwn(card,"ammo")) {
+            elem.innerHTML += card.ammo+" AMMO | ";
+        }
+        if (Object.hasOwn(card,"uses") && Object.hasOwn(card,"ammo") == false) {
+            elem.innerHTML += card.uses+" USES | ";
+        }
+        if (Object.hasOwn(card,"storedmana")) {
+            elem.innerHTML += card.storedmana+" STORED MANA | ";
+        }
+        if (Object.hasOwn(card,"manause")) {
+            elem.innerHTML += card.manause+" MU";
+        }
+        if (card.effects.length > 0) {
+            elem.innerHTML += "<br>";
+            for (let i = 0; i < card.effects.length; i++) {
+                let args = formateffect("Attributes",card.effects[i]);
+                for (let z = 0; z < args.length; z++) {
+                    args[z] = Number(args[z]);
+                }
+                card.effects[i] = formateffect("FlatEffect",card.effects[i])+"{"+args+"}";
+                elem.innerHTML += formateffect("FlatEffect",card.effects[i])+" "+args[0];
+                if (card.effects.length-i > 1) {
+                    elem.innerHTML += " | ";
+                }
+            }
+        }
+        elem.innerHTML += "<br><hr><span class='desc'>"+card.desc+"</span>";
+        // CARD IMAGES //
+        /*#c1 {
+            background-image:url("img/cards/solarprism.png");
+            background-size: 140px 160px;
+        }*/
+        let tempimg;
+        if (card.img != "") {
+            tempimg = "url(img/cards/"+card.name+".png)";  
+            elem.style.backgroundSize = "140px 160px";
+            if (card.name == "oblivion" && card.manause == 0.5 && card.cool == 1) {
+                tempimg = "url('img/cards/enragedoblivion.png')";
+            }
+            
+        } else {
+            tempimg = "url()";
+            card.style.backgroundSize = "140px 160px";
+        }
+        if (card.effects.some(str => str.includes("Camouflaged")) == true) {
+            tempimg += ", url(img/foils/camofoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Frozen")) == true) {
+            tempimg += ", url(img/foils/frostfoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Confused")) == true) {
+            tempimg += ", url(img/foils/confusedfoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Burning")) == true) {
+            tempimg += ", url(img/foils/burningfoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Stunned")) == true) {
+            tempimg += ", url(img/foils/stunnedfoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Guarded")) == true) {
+            tempimg += ", url(img/foils/guardedfoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Shock")) == true) {
+            tempimg += ", url(img/foils/shockfoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Fear")) == true) {
+            tempimg += ", url(img/foils/fearfoil.png)";
+        }
+        if (card.effects.some(str => str.includes("Death")) == true) {
+            tempimg += ", url(img/foils/deathfoil.png)";
+        }
+        elem.style.backgroundSize = "140px 160px";
+        elem.style.backgroundImage = tempimg;
+        if (Object.hasOwn(card,"maskeffect")) {
+            elem.style.mask = "url(#"+elem.maskeffect+")";
+        }
+        
+        
+        /*
+        if (curcard.type == "Attack") {
+            card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.atk+" ATK | "+curcard.coolleft+" CD<br>"+curcard.ammo+" AMMO | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
+        }
+        if (curcard.type == "Healing") {
+            if (curcard.uses == -1) {
+                card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.heal+" HEAL | "+curcard.coolleft+" CD<br>"+curcard.tempuses+" AMMO | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
+            } else {
+                card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.heal+" HEAL | "+curcard.uses+" USES | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
+            }
+        }
+        if (curcard.type == "Support") {
+            card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
+        }*/
+        
+    } else {
+        elem.innerHTML = "NO CARD";
+        elem.style.backgroundImage = null;  
+    }
 }
 
-function closeModal(e, clickedOutside) {
-    if (clickedOutside) {
-        if (e.target.classList.contains("modal-overlay"))
-            modal.classList.add("hide");
-    } else modal.classList.add("hide");
-}
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-function openMiniTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("minitabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks-mini");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-openBtn.addEventListener("click", openModal);
-modal.addEventListener("click", (e) => closeModal(e, true));
-closeBtn.addEventListener("click", closeModal);
+
+
+
 
 function checkDead() {
     if (p1.health < 1) {
@@ -2372,6 +2708,23 @@ function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
         key.effects = [];
         player.deck[key.name] = key;
         key["cardmods"] = [];
+        return false;
+    }
+    if (otherargs.includes("setcard")) {
+        let key = choice;
+        let table = otherargs[1];
+        if (Object.hasOwn(Game[player][table],key.name)) {
+            let i2 = 0;
+            do {
+                i2++;
+            } while (i2 <1000 && Object.hasOwn(Game[player][table],key.name+i2));
+            
+            if (Object.hasOwn(Game[player][table],key.name+i2) == false) {
+                Game[player][table][key.name+i2] = key;
+            }
+        } else {
+            Game[player][table][key.name] = key;
+        }
         return false;
     }
     if (otherargs[0] == "None" && player == "p1" && reloading == true) {
@@ -2438,7 +2791,7 @@ function drawCard(player,specific = false,choice = null,otherargs = ["None"]) {
     } else {
         Game[player][table][key.name] = key;
     }
-    if (otherargs.includes("addToDeck")) {
+    if (otherargs.includes("addToDeck") || otherargs.includes("ignoreReload")) {
         key["cardmods"] = [];
     }
     playAudio("sounds/draw-card.mp3");
@@ -2674,6 +3027,34 @@ function update(reset = null) {
         } else {
             index = Number(id.replace("o",""))-1;
             curcard = p2.inventory[Object.keys(Game.p2.inventory)[index]];
+        }
+        if (curcard == undefined) {
+            card.innerHTML = "NO CARD";
+            card.style.backgroundImage = null;  
+            return false;
+        }
+        console.log(id,index,curcard);
+        if (curcard.hp <= 0 && id.includes("c")) {
+            delete p1.inventory[Object.keys(Game.p1.inventory)[index]];
+            update();
+            return false;
+        }
+        if (curcard.hp <= 0 && id.includes("o")) {
+            delete p2.inventory[Object.keys(Game.p2.inventory)[index]];
+            update();
+            return false; 
+        }
+        displayCard(element,curcard);
+        /*let card = element;
+        let id = element.getAttribute("id");
+        let index;
+        let curcard;
+        if (id.includes("c")) {
+            index = Number(id.replace("c",""))-1;
+            curcard = p1.inventory[Object.keys(Game.p1.inventory)[index]];
+        } else {
+            index = Number(id.replace("o",""))-1;
+            curcard = p2.inventory[Object.keys(Game.p2.inventory)[index]];
             
         }
         if (curcard != null && curcard != undefined) {
@@ -2730,10 +3111,6 @@ function update(reset = null) {
             }
             card.innerHTML += "<br><hr><span class='desc'>"+curcard.desc+"</span>";
             // CARD IMAGES //
-            /*#c1 {
-                background-image:url("img/cards/solarprism.png");
-                background-size: 140px 160px;
-            }*/
             let tempimg;
             if (curcard.img != "") {
                 tempimg = "url(img/cards/"+curcard.name+".png)";  
@@ -2780,25 +3157,10 @@ function update(reset = null) {
             }
             
             
-            /*
-            if (curcard.type == "Attack") {
-                card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.atk+" ATK | "+curcard.coolleft+" CD<br>"+curcard.ammo+" AMMO | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
-            }
-            if (curcard.type == "Healing") {
-                if (curcard.uses == -1) {
-                    card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.heal+" HEAL | "+curcard.coolleft+" CD<br>"+curcard.tempuses+" AMMO | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
-                } else {
-                    card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.heal+" HEAL | "+curcard.uses+" USES | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
-                }
-            }
-            if (curcard.type == "Support") {
-                card.innerHTML = "<span class='title'>"+curcard.formal+":</span><br>"+curcard.hp+" HP | "+curcard.manause+" MU<br><hr><span class='desc'>"+curcard.desc+"</span>";
-            }*/
-            
         } else {
             card.innerHTML = "NO CARD";
             card.style.backgroundImage = null;  
-        }
+        }*/
         
     
     });
@@ -2872,10 +3234,11 @@ function endBattle(outcome) {
         //window.setTimeout(enterAdventureScreen,200);
         gametitle.innerHTML = "Victory!";
         playbtn.innerHTML = "CONTINUE";
-        openBtn.style.display = "none";
+        openBtn[1].style.display = "none";
         let enemy = enemies[p2.name];
         p1.coins += Math.round((randNum(10,20)/10)*(enemy.health/10));
         p1.coins += enemy.coinsgive;
+        console.log("hello",p1.coins,enemy.coinsgive)
         if (Object.hasOwn(p1.relics,"coinsack")) {
             p1.coins += Math.round((randNum(10,20)/10)*(enemy.health/10)*p1.relics.coinsack.attr);
         }
@@ -2901,7 +3264,7 @@ function endBattle(outcome) {
         //window.setTimeout(enterAdventureScreen,200);
         gametitle.innerHTML = "You Lose..";
         playbtn.innerHTML = "RESTART";
-        openBtn.style.display = "none";
+        openBtn[1].style.display = "none";
     }
 }
 /*
@@ -3169,7 +3532,7 @@ function turnover(player) {
     }
     for (let i = 0; i < Object.keys(plr.inventory).length; i++) {
         let zecard = plr.inventory[Object.keys(plr.inventory)[i]];
-        if (zecard.coolleft != 0) {
+        if (Object.hasOwn(zecard,"coolleft") && zecard.coolleft != 0) {
             zecard.coolleft -= 1;
             
         }
@@ -3241,6 +3604,21 @@ function turnover(player) {
         }
         if (zecard.name == "bank") {
             zecard.storedmana += 2;
+        }
+        if (zecard.name == "hotpotato") {
+            zecard.timer -= 1;
+            if (zecard.timer == 0) {
+                delete plr.inventory[Object.keys(plr.inventory)[i]];
+                plr.health -= 80;
+                for (let i =0; i < 3; i++) {
+                    let zecard2 = randKey(plr.inventory);
+                    if (zecard2 != undefined) {
+                        zecard2.health = 0;
+                    } else {
+                        plr.health -= 20;
+                    }
+                }
+            }
         }
     }
     if (plr.name == "trafficlord" && randNum(1,6) == 6) {
@@ -3563,8 +3941,15 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
         if (card.effects.some(str => str.includes("Stunned")) || card.effects.some(str => str.includes("Frozen"))) {
             return false;
         }
-        if (card.coolleft == 0 && user.mana >= card.manause) {
+        if (user.mana >= card.manause) {
             /// WHEN APPLYING EFFECTS: TO ALLY, DO TURN+1 | TO ENEMY, DO TURN
+            if (Object.hasOwn(card,"coolleft") && card.coolleft > 0) {
+                if (Object.hasOwn(card,"evadecool")) {
+
+                } else {
+                    return false;
+                }
+            }
             if (element != null) {
                 element.style.border = "3px solid maroon";
                 window.setTimeout(unborder,500,id);
@@ -3962,7 +4347,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                             }
                             
                         }
-                        if (zeattacked.cardmods.includes("infernalfoil") && randNum(1,5) == 5){
+                        if (zeattacked.cardmods.includes("diamondfoil") && randNum(1,5) == 5){
                             delete opponent.deck[attacked];
                         }
                         if (zeattacked.effects.some(str => str.includes("Guarded")) == false) {
@@ -4124,7 +4509,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                     delete user.inventory[Object.keys(user.inventory)[index]];
                 }
                 if (card.name == "factory") {
-                    drawCard(strmain,true,"robot");
+                    drawCard(strmain,true,"robot",["ignoreReload"]);
                     card.ammo -= 1;
                     if (card.ammo <= 0) {
                         card.coolleft = card.cool;
@@ -4184,9 +4569,9 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                 }
                 if (card.name == "clonebox") {
                     if (index != null && index == 0) {
-                        drawCard(strmain,true,"oblivion")
+                        drawCard(strmain,true,"oblivion",["ignoreReload"])
                     } else {
-                        drawCard(strmain,true,user.inventory[Object.keys(user.inventory)[0]].name);
+                        drawCard(strmain,true,user.inventory[Object.keys(user.inventory)[0]].name,["ignoreReload"]);
                     }
                     
                     card.ammo -= 1;
@@ -4231,7 +4616,7 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                 
                 if (user == p1 && ["dysonsphere","factory"].includes(card.name) && Object.hasOwn(p1.relics,"hammerhammer")) {
                     if (card.name == "dysonsphere") {
-                        drawCard(strmain,true,"solarprism");
+                        drawCard(strmain,true,"solarprism",["ignoreReload"]);
                         card.ammo -= 1;
                         let chosen = firstOpp(stropp);
                         let substr = "Fear";
@@ -4244,15 +4629,15 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                         }
                     }
                     if (card.name == "factory") {
-                        drawCard(strmain,true,"robot");
+                        drawCard(strmain,true,"robot",["ignoreReload"]);
                     }
                 }
             }
             if (card.type == "Action") {
                 if (card.name == "ritual") {
-                    drawCard(strmain,true,"cultist");
-                    drawCard(strmain,true,"cultist");
-                    drawCard(strmain,true,"cultist");
+                    drawCard(strmain,true,"cultist",["ignoreReload"]);
+                    drawCard(strmain,true,"cultist",["ignoreReload"]);
+                    drawCard(strmain,true,"cultist",["ignoreReload"]);
                     delete user.inventory[Object.keys(user.inventory)[index]];
                     let loss = 20;
                     if (user.health - 20 < 1) {
@@ -4306,6 +4691,14 @@ function useCard(element = null,opp = null,index = null,select = null,selectp) {
                     if (opponent.health <= 1) {
                         opponent.health = 1;
                     }
+                    delete user.inventory[Object.keys(user.inventory)[index]];                    
+                }
+                if (card.name == "hotpotato") {
+                    let newcard = structuredClone(card);
+                    if (Object.keys(opponent.inventory).length == 10) {
+                        delete opponent.inventory[Object.keys(opponent.inventory)[0]];
+                    }
+                    drawCard(stropp,true,newcard,["setcard","inventory"]);
                     delete user.inventory[Object.keys(user.inventory)[index]];                    
                 }
             }
@@ -4414,9 +4807,9 @@ function enterAdventureScreen() {
     adventurescreen.style.display = "block";
     curloctxt.innerHTML = "Current Location: "+curlocation.formal;
     curlocdesctxt.innerHTML = curlocation.desc;
-    console.log(curlocation.desc);
     loretxt.innerHTML = curlocation.loretext;
-    let zelist = ["destroycard","upgcard","energizer","duplicatecard","infernalfoil","diamondfoil"];
+    let zelist = ["destroycard","upgcard","energizer","duplicatecard","infernalfoil","diamondfoil","gaincard","buycard"];
+    let emmodallist = ["gaincard","buycard"];
     
     if (Object.hasOwn(curlocation,"skipallowed")) {
         alttravelbtn.style.display = "block";
@@ -4471,12 +4864,14 @@ function enterAdventureScreen() {
         
         console.log(special,curspecial1,curspecial2);
         if (curspecial1 == "gaincard") {
-            specialdiv.style.display = "block";
-            Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
-                if (element.getAttribute("id").includes("a")) {
+            embtnWrap.style.display = "block";
+            embtn.innerHTML = "Choose Card";
+            Array.from(document.getElementsByClassName("asp-main")).forEach(function(element) {
+                /*if (element.getAttribute("id").includes("a")) {
                     return;
-                }
+                }*/
                 let card = randKey(shopcards,"subobj?obtainable=false");
+                card.effects = [];
                 /*let tempobj = {};
                 assign(tempobj,card);
                 card = tempobj;*/
@@ -4516,9 +4911,13 @@ function enterAdventureScreen() {
                         }
                     }
                 }
-                element.innerHTML = `<h2>${card.formal}</h2>`;
+                element.style.width = "140px";
+                element.style.height = "160px";
+                displayCard(element,card);
+                //element.innerHTML = `<h2>${card.formal}</h2>`;
                 element.setAttribute("data-card",card.name);
-                let text = `<p>${card.desc}<br><span style='font-size:13px;'>${card.hp} HP`;
+                byId(element.getAttribute("id").replace("-main","-tag")).innerHTML = "";
+                /*let text = `<p>${card.desc}<br><span style='font-size:13px;'>${card.hp} HP`;
                 if (Object.hasOwn(card, "atk")) {
                     text +=` | ${card.atk} ATK`;
                 }
@@ -4535,15 +4934,16 @@ function enterAdventureScreen() {
                 text += "</span></p>";
                 console.log(text);
                 element.innerHTML += text;
-                console.log(element.innerHTML);
+                console.log(element.innerHTML);*/
             });
         }
         if (curspecial1 == "buycard") {
-            specialdiv.style.display = "block";
-            Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
-                if (element.getAttribute("id").includes("a")) {
+            embtnWrap.style.display = "block";
+            embtn.innerHTML = "Open Shop";
+            Array.from(document.getElementsByClassName("asp-main")).forEach(function(element) {
+                /*if (element.getAttribute("id").includes("a")) {
                     return false;
-                }
+                }*/
                 let card = randKey(shopcards,"subobj?obtainable=false");
                 /*let tempobj = {};
                 assign(tempobj,card);
@@ -4581,7 +4981,7 @@ function enterAdventureScreen() {
                         }
                     }
                 }
-                element.innerHTML = `<h2>${card.formal}</h2>`;
+                //element.innerHTML = `<h2>${card.formal}</h2>`;
                 element.setAttribute("data-card",card.name);
                 let cost = Math.round(Math.log(card.hp)**1.3)*3;
                 console.log(cost);
@@ -4603,7 +5003,8 @@ function enterAdventureScreen() {
                 cost = Math.round(cost);
                 element.setAttribute("data-cost",cost);
                 
-                let text = `<p>${card.desc}<br>${card.hp} HP`;
+                byId(element.getAttribute("id").replace("-main","-tag")).innerHTML = cost+" Coda Coins";
+                /*let text = `<p>${card.desc}<br>${card.hp} HP`;
                 if (Object.hasOwn(card, "atk")) {
                     text +=` | ${card.atk} ATK`;
                 }
@@ -4618,7 +5019,8 @@ function enterAdventureScreen() {
                 text += "</p>";
                 console.log(text);
                 element.innerHTML += text;
-                console.log(element.innerHTML);
+                console.log(element.innerHTML);*/
+                displayCard(element,card);
             });
         }
         if (curspecial2 == "buyrelic") {
@@ -4631,7 +5033,7 @@ function enterAdventureScreen() {
                 if (element.getAttribute("id").includes("a") == false) {
                     return false;
                 }
-                let relic = randKey(relics);
+                let relic = randKey(relics,"subobj?obtainable=false");
                 console.log(relic);
                 let chance = randNum(1,10);
                 element.innerHTML = `<h2>${relic.formal}</h2>`;
@@ -4712,6 +5114,18 @@ function enterAdventureScreen() {
             byId("sc3").style.display = "none";
             byId("sc1").innerHTML = "<h2>Climb the statue.</h2><p>Seems a little dangerous.. Surely isn't that bad.. right?</p>";
         }
+        if (curspecial1 == "flamebean") {
+            specialdiv.style.display = "block";
+            byId("sc2").style.display = "none";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Take the Bean Can.</h2><p>-50 health, but it must be worth it.. right?</p>";
+        }
+        if (curspecial1 == "celestial") {
+            specialdiv.style.display = "block";
+            byId("sc2").style.display = "none";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Join.</h2><p>Seek a better future.</p>";
+        }
         if (curspecial1 == "crowattack") {
             specialdiv.style.display = "block";
             byId("sc3").style.display = "none";
@@ -4735,6 +5149,12 @@ function enterAdventureScreen() {
             byId("sc3").style.display = "none";
             byId("sc1").innerHTML = "<h2>Block the Tornado With Your Backpack</h2><p>+2 random cards.</p>";
             byId("sc2").innerHTML = "<h2>Run Through the Tornado</h2><p>-80 health.</p>";
+        }
+        if (curspecial1 == "knowledge") {
+            specialdiv.style.display = "block";
+            byId("sc3").style.display = "none";
+            byId("sc1").innerHTML = "<h2>Book of Mana Harnessing</h2><p>+0.5 mana gain.</p>";
+            byId("sc2").innerHTML = "<h2>Book of Life</h2><p>+25% more max health.</p>";
         }
         if (curspecial1 == "rest") {
             specialdiv.style.display = "block";
@@ -4817,6 +5237,7 @@ function enterAdventureScreen() {
         byId("reroll").style.display = "none";
         specialdiv.style.display = "none";
         specialdiv2.style.display = "none";
+        embtnWrap.style.display = "none";
     } else {
         alttravelbtn.innerHTML = "Skip";
         if (Object.hasOwn(curlocation,"skipallowed")) {
@@ -4829,6 +5250,11 @@ function enterAdventureScreen() {
         } else {
             travelbtn.style.display = "block";
         }
+        if (emmodallist.includes(curspecial1) || emmodallist.includes(curspecial2)) {
+            embtnWrap.style.display = "block";
+        } else {
+            embtnWrap.style.display = "none";
+        }
         console.log(curspecial1 != null && curspecial1 != "upgcard" && curspecial1 != "destroycard");
         if (curspecial1 != null && zelist.includes(curspecial1) == false) {
             specialdiv.style.display = "block";
@@ -4836,6 +5262,10 @@ function enterAdventureScreen() {
         }
         if (curspecial2 != null && zelist.includes(curspecial2) == false && curspecial1 != "mystery") {
             specialdiv2.style.display = "block";
+        }
+        if (emmodallist.includes(curspecial1) && (zelist.includes(curspecial2) == true || curspecial2 == null)) {
+            specialdiv.style.display = "none";
+            specialdiv2.style.display = "none";
         }
         if (textfinished == true) {
             loretxt.innerHTML = currenttext;
@@ -5584,6 +6014,7 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
             updateAdventureScreen();
         }
         if (sCondition("unclemanstatue")[0] == true) {
+            speciallock = true;
             let card = randKey(cards);
             drawCard("p1",true,card.name,"addToDeck");
             p1.health -= 100;
@@ -5591,6 +6022,19 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
                 p1.health = 1;
             }
             updateAdventureScreen();
+        }
+        if (sCondition("flamebean")[0] == true) {
+            speciallock = true;
+            p1.health -= 50;
+            let key = {};
+            assign(key,relics.flamebean);
+            p1.relics["flamebean"] = key;
+            updateAdventureScreen();
+        }
+        if (sCondition("celestial")[0] == true) {
+            p1.health -= 100;
+            speciallock = true;
+            drawCard("p1",true,"celestialstriker","addToDeck");
         }
         if (sCondition("rest")[0] == true) {
             if (p1.coins >= element.getAttribute("data-cost")) {
@@ -5602,6 +6046,18 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
                 speciallock= true;
             }
             
+            updateAdventureScreen();
+        }
+        if (sCondition("knowledge")[0] == true) {
+            speciallock = true;
+            let id  = element.getAttribute("id");
+            if (id == "sc1") {
+                p1.managain += 0.5;
+            } else if (id == "sc2") {
+                let am = Math.round(p1.maxhealth/4);
+                p1.maxhealth += am;
+                p1.health += am;
+            }
             updateAdventureScreen();
         }
         if (sCondition("crowattack")[0] && speciallock ==false) {
@@ -5703,6 +6159,41 @@ Array.from(document.getElementsByClassName("specialcard")).forEach(function(elem
         updateAdventureScreen();
     });
 });
+Array.from(document.getElementsByClassName("asp-main")).forEach(function(element) {
+    element.addEventListener("click",function() {
+        if (element.hasAttribute("data-specialset")) {
+            curspecial1 = element.getAttribute("data-specialset");
+        }
+
+        if (sCondition("gaincard")[0] == true && element.hasAttribute("data-card")) {
+            if (curlocation.name == "cosmeticshop" && speciallock2 == 2) {
+                return false;
+            }
+            let num = sCondition("gaincard")[1];
+            let card = element.getAttribute("data-card");
+            drawCard("p1",true,card,"addToDeck");
+            updateAdventureScreen();
+            if (num == 1) {
+                speciallock = true;
+            } else {
+                speciallock2 = true;
+            }
+            
+            element.style.border = "7px solid black";
+        }
+        if (sCondition("buycard")[0] == true && element.hasAttribute("data-card") && element.hasAttribute("data-cost")) {
+            let card = element.getAttribute("data-card");
+            if (p1.coins >= Number(element.getAttribute("data-cost"))) {
+                p1.coins -= Number(element.getAttribute("data-cost"));
+            } else {
+                return false;
+            }
+            drawCard("p1",true,card,"addToDeck");
+            updateAdventureScreen();
+            element.style.border = "7px solid black";
+        }
+    });
+});
 
 travelbtn.addEventListener("click", function() {
     skipped = false;
@@ -5710,7 +6201,7 @@ travelbtn.addEventListener("click", function() {
     speciallock2 = false;
     specialdiv.style.display = "none";
     specialdiv2.style.display = "none";
-    Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+    Array.from(document.querySelectorAll(".specialcard, .asp-main")).forEach(function(element) {
         element.style.border = "2px solid black";
     });
     invspecial.innerHTML = "";
@@ -5727,7 +6218,7 @@ travelbtn.addEventListener("click", function() {
                 //window.setTimeout(enterAdventureScreen,200);
                 gametitle.innerHTML = "You Lose..";
                 playbtn.innerHTML = "RESTART";
-                openBtn.style.display = "none";
+                openBtn[1].style.display = "none";
                 return false;
             } else {
                 p1.coins -= 600;
@@ -5736,7 +6227,7 @@ travelbtn.addEventListener("click", function() {
                 //window.setTimeout(enterAdventureScreen,200);
                 gametitle.innerHTML = "Coda At Last!";
                 playbtn.innerHTML = "CONTINUE";
-                openBtn.style.display = "none";
+                openBtn[1].style.display = "none";
                 nextLoc();
                 
                 currenttext = "";
@@ -5827,7 +6318,7 @@ travelbtn.addEventListener("click", function() {
     
 });
 alttravelbtn.addEventListener("click", function() {
-    Array.from(document.getElementsByClassName("specialcard")).forEach(function(element) {
+    Array.from(document.querySelectorAll(".specialcard, .asp-main")).forEach(function(element) {
         element.style.border = "2px solid black";
     });
     playAudio("sounds/pop.mp3");
@@ -5922,4 +6413,134 @@ function annotateText(element) {
 }
 Array.from(document.getElementsByClassName("modal-content")).forEach(function(element) {
     annotateText(element)
+});
+/* other stuff */
+var backpackactive = true;
+byId("backpack-toggle").addEventListener("click",function(e) {
+    if (backpackactive == true) {
+        backpackactive = false;
+        byId("a1").style.width = "100%";
+        byId("a2").style.width = "0px";
+    } else {
+        backpackactive =true;
+        byId("a1").style.width = "50%";
+        byId("a2").style.width = "50%";
+    }
+});
+byId("card-test-display-submit").addEventListener("click",function() {
+    if (cards[byId("card-test-display-input").value.split(";")[0]] != undefined) {
+        let input = byId("card-test-display-input").value;
+        input = input.split(";");
+        console.log(input);
+        let zecard = structuredClone(cards[input[0]]);
+        if (input.length > 1) {
+            for (let i =0; i < input.length-1; i++) {
+                let part = input[i+1].split("=");
+                console.log(part);
+                let part2 = part[1];
+                let part1 = part[0];
+                zecard[part1] = morphType(part2);
+            }
+        }
+        
+        displayCard(byId("card-test-display"),zecard);
+    }
+});
+// hidden functions
+function cheat(bool) {
+    if (bool == 0) {
+        byId("cheat-menu").classList.add("hide");
+    } else {
+        byId("cheat-menu").classList.remove("hide");
+    }
+}
+Array.from(document.getElementsByClassName("cheat-btn")).forEach(function(element) {
+    element.addEventListener("click",function() {
+        let zecheat = Number(element.getAttribute("data-cheat"));
+        if (zecheat == 1) {
+            p2.health = 0;
+            update();
+        }
+        if (zecheat == 2) {
+            drawCard("p1",true,byId("cheat-input-2").value,["addToDeck"]);
+            updateAdventureScreen();
+        }
+    });
+});
+dragElement(document.getElementById("cheat-menu"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "-header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+var lastkey;
+var keylist = [];
+document.addEventListener('keydown', function(event) {
+    if(event.key == "c") {
+        keylist.push("c");
+    }
+    if (lastkey == "c" && event.key == "h") {
+        keylist.push("h");
+    }
+    if (lastkey == "h" && event.key == "e") {
+        keylist.push("e");
+    }
+    if (lastkey == "e" && event.key =="a") {
+        keylist.push("a");
+    }
+    if (lastkey == "a" && event.key == "t") {
+        keylist.push("t");
+    }
+    if (keylist.toString().replaceAll(",","") == "cheat") {
+        if (byId("cheat-menu").classList.contains("hide")) {
+            cheat(1);
+        } else {
+            cheat(0);
+        }
+        keylist = [];
+    }
+    if (["c","h","e","a","t"].includes(event.key) == false) {
+        keylist = [];
+    }
+    if (keylist.length > 5) {
+        keylist = [];
+    }
+    console.log(lastkey,keylist);
+    lastkey = event.key;
 });
